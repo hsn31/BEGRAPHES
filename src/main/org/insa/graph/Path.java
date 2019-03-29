@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.insa.geo.utils.Conversion;
+
 /**
  * <p>
  * Class representing a path between nodes in a graph.
@@ -34,8 +36,38 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	
+    	if(nodes.size()<=0){
+    		throw new IllegalArgumentException();
+    	}
+    	if(nodes.size()==1) {
+    		return new Path(graph,nodes.get(0));
+    	}
+    	Node auxNode;
+    	Arc auxArc;
+    	double min;
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
+        
+        for(int i=0;i<nodes.size()-1;i++) {
+        	auxNode = nodes.get(i);
+        	auxArc=null;
+        	min=-1;
+        	for(Arc arc:auxNode.getSuccessors()) {
+        		if((arc.getDestination()==nodes.get(i+1))&&(min<0 || arc.getMinimumTravelTime()<min)) {
+        			auxArc=arc;
+        			
+        		}
+        	}
+        	if(auxArc==null) {
+        		throw new IllegalArgumentException();
+        	}
+        	else{
+        		arcs.add(auxArc);
+        	}
+        	
+        	
+        }
         return new Path(graph, arcs);
     }
 
@@ -228,9 +260,8 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
-    }
+        return this.getLength()/Conversion.toMeterPerSeconds(speed);
+    	}
 
     /**
      * Compute the time to travel this path if moving at the maximum allowed speed
@@ -241,8 +272,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double res=0;
+        for(Arc arc:this.arcs) {
+        	res+=arc.getMinimumTravelTime();
+        }
+        return res;
     }
 
 }
