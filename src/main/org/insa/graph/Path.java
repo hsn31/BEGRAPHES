@@ -230,11 +230,32 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean test=false;
+        
+    	if (this.isEmpty()) {
+    		return true;
+    		
+    	}else if (this.arcs.isEmpty() && this.size()==1) {
+    		return true;
+    		
+    	}else if (this.arcs.get(0).getOrigin()==this.getOrigin()){
+    		
+    		for (int i=1; i<arcs.size(); i++) {
+    			if (this.arcs.get(i).getOrigin()==this.arcs.get(i-1).getDestination()) {
+    				test=true;
+    			}else {
+    				return false;
+    			}
+    		}
+
+    			return true;
+   
+    	}else {
+    		return false;
+    	}
+    		
     }
 
     /**
@@ -242,11 +263,18 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float total=0;
+    	
+    	if(this.arcs.isEmpty()) {
+    		total=0;
+    	}else
+    	for (int i=0; i<arcs.size(); i++) {
+    		total = total+ arcs.get(i).getLength();
+    	}
+    	
+        return total;
     }
 
     /**
@@ -259,6 +287,8 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
+    
+    //BRICE
     public double getTravelTime(double speed) {
         return this.getLength()/Conversion.toMeterPerSeconds(speed);
     	}
@@ -271,6 +301,8 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
+    
+    //BRICE
     public double getMinimumTravelTime() {
         double res=0;
         for(Arc arc:this.arcs) {
