@@ -1,7 +1,8 @@
 package org.insa.geo;
 
 public class Conversion {
-	public static double toMetersPerSecond(double speed){
-		return speed*3.6;
+	public static double toMetersPerSeconds(double speed){
+		//Need to divide by 3.6
+		return speed*(1/3.6);
 	}
 }

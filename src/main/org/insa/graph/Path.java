@@ -3,8 +3,8 @@ package org.insa.graph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.insa.geo.utils.Conversion;
+//import org.insa.geo.utils.Conversion;
+import org.insa.geo.Conversion;
 
 /**
  * <p>
@@ -32,13 +32,17 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Test Case is correct. 30-03-19
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
     	
-    	if(nodes.size()<=0){
+    	if(nodes.size()<0){
     		throw new IllegalArgumentException();
+    	}
+    	//Add case node.size()==0
+    	if(nodes.size()==0){
+    		return new Path(graph);
     	}
     	if(nodes.size()==1) {
     		return new Path(graph,nodes.get(0));
@@ -83,7 +87,7 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     // @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
@@ -202,6 +206,9 @@ public class Path {
      * Check if this path is empty (it does not contain any node).
      * 
      * @return true if this path is empty, false otherwise.
+     * 
+     * Test Case is correct. 30-03-19
+     * 
      */
     public boolean isEmpty() {
         return this.origin == null;
@@ -230,6 +237,7 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
+     * Test Case is correct. 30-03-19
      */
     public boolean isValid() {
         boolean test=false;
@@ -250,7 +258,7 @@ public class Path {
     			}
     		}
 
-    			return true;
+    			return test;
    
     	}else {
     		return false;
@@ -262,6 +270,8 @@ public class Path {
      * Compute the length of this path (in meters).
      * 
      * @return Total length of the path (in meters).
+     * 
+     * Test Case is correct. 30-03-19
      * 
      */
     public float getLength() {
@@ -285,12 +295,12 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
+     * Test Case Correct 30-03-19 
      */
     
     //BRICE
     public double getTravelTime(double speed) {
-        return this.getLength()/Conversion.toMeterPerSeconds(speed);
+        return this.getLength()/Conversion.toMetersPerSeconds(speed);
     	}
 
     /**
@@ -299,7 +309,8 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
+     * Test Case is correct. 30-03-19
+     * 
      */
     
     //BRICE
