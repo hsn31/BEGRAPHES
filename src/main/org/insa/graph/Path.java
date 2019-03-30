@@ -91,8 +91,43 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+        
+        if(nodes.size()<0){
+    		throw new IllegalArgumentException();
+    	}
+    	//Add case node.size()==0
+    	if(nodes.size()==0){
+    		return new Path(graph);
+    	}
+    	if(nodes.size()==1) {
+    		return new Path(graph,nodes.get(0));
+    	}
+    	
+    	Node auxNode;
+    	Arc auxArc;
+    	double min;
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
+        
+        for(int i=0;i<nodes.size()-1;i++) {
+        	auxNode = nodes.get(i);
+        	auxArc=null;
+        	min=-1;
+        	for(Arc arc:auxNode.getSuccessors()) {
+        		if((arc.getDestination()==nodes.get(i+1))&&(min<0 || arc.getLength()<min)) {
+        			auxArc=arc;
+        			
+        		}
+        	}
+        	if(auxArc==null) {
+        		throw new IllegalArgumentException();
+        	}
+        	else{
+        		arcs.add(auxArc);
+        	}
+        	
+        	
+        }
         return new Path(graph, arcs);
     }
 
