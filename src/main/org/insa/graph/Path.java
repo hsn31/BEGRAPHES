@@ -60,6 +60,7 @@ public class Path {
         	for(Arc arc:auxNode.getSuccessors()) {
         		if((arc.getDestination()==nodes.get(i+1))&&(min<0 || arc.getMinimumTravelTime()<min)) {
         			auxArc=arc;
+        			min=arc.getMinimumTravelTime(); //Update the minimum found
         			
         		}
         	}
@@ -116,6 +117,7 @@ public class Path {
         	for(Arc arc:auxNode.getSuccessors()) {
         		if((arc.getDestination()==nodes.get(i+1))&&(min<0 || arc.getLength()<min)) {
         			auxArc=arc;
+        			min=arc.getLength(); //Update the minimum found
         			
         		}
         	}
