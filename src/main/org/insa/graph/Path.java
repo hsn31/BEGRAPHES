@@ -3,8 +3,7 @@ package org.insa.graph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-//import org.insa.geo.utils.Conversion;
-import org.insa.geo.Conversion;
+import org.insa.geo.utils.Conversion;
 
 /**
  * <p>
@@ -337,8 +336,12 @@ public class Path {
     
     //BRICE
     public double getTravelTime(double speed) {
-        return this.getLength()/Conversion.toMetersPerSeconds(speed);
-    	}
+        double res=0;
+        for(Arc arc :this.arcs) {
+        	res+=arc.getTravelTime(speed);
+        }
+        return res;
+    }
 
     /**
      * Compute the time to travel this path if moving at the maximum allowed speed
