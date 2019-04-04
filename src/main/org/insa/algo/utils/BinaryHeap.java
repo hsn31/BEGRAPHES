@@ -72,7 +72,12 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     private int index_left(int index) {
         return index * 2 + 1;
     }
-
+    /**
+     * @return Index of the right child of the given index.
+     */
+    private int index_right(int index) {
+        return index * 2 + 2;
+    }
     /**
      * Internal method to percolate up in the heap.
      * 
@@ -107,7 +112,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
             E right = (hasRight) ? this.array.get(iright) : null;
 
             if (!hasRight || left.compareTo(right) < 0) {
-                // Left is smaller
+                // Left is smaller than right
                 if (left.compareTo(current) < 0) {
                     this.arraySet(index, left);
                     this.arraySet(ileft, current);
@@ -115,7 +120,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
                 }
             }
             else {
-                // Right is smaller
+                // Right is smaller than left
                 if (right.compareTo(current) < 0) {
                     this.arraySet(index, right);
                     this.arraySet(iright, current);
@@ -124,7 +129,35 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
             }
         }
     }
-
+    
+    public void removeAtIndex(int index) {
+    	int ileft=index_left(index);
+    	int iright=index_right(index);
+    	//On traite les cas feuilles extremes
+    	if (index==this.currentSize-1)  {
+    		array.set(index, null);
+    		this.currentSize--;
+    	}
+    	//Cas feuille generique
+    	else if(ileft>=this.currentSize && iright>=this.currentSize) {
+    		arraySet(index,array.get(this.currentSize-1) );
+    		this.currentSize--;
+    		percolateUp(index);
+    	}
+    	//Cas generique
+    	else {
+    		if(this.array.get(ileft).compareTo(this.array.get(iright))<0) {
+    			this.arraySet(index, this.array.get(ileft));
+    			this.removeAtIndex(ileft);
+    		}
+    		else {
+    			this.arraySet(index, this.array.get(iright));
+    			this.removeAtIndex(iright);
+    		}
+    	}
+    	
+    }
+    
     @Override
     public boolean isEmpty() {
         return this.currentSize == 0;
