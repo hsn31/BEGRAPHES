@@ -1,14 +1,15 @@
 package org.insa.algo.shortestpath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.utils.BinaryHeap;
-import org.insa.graph.Arc;
-import org.insa.graph.Graph;
-import org.insa.graph.Node;
-import org.insa.graph.Path;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.insa.graph.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
@@ -41,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 
 		boolean destinationReached = false;
-		while (binaryHeap.size() >= 0 && destinationReached != true) {
+		while (binaryHeap.size() > 0 && destinationReached != true) {
 			System.out.println(binaryHeap.size());
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
@@ -67,6 +68,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								} else {
 									//		notifyNodeReached(suiv.getNode());
 								}
+								binaryHeap.insert(suiv);
 
 							}
 						}
@@ -93,4 +95,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 		return solution;
 	}
+
+
+
+
 }
+

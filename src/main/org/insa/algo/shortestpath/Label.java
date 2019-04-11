@@ -1,5 +1,4 @@
 package org.insa.algo.shortestpath;
-
 import org.insa.graph.Arc;
 import org.insa.graph.Node;
 
@@ -66,4 +65,6 @@ public class Label implements Comparable<Label> {
 			return 1;
 		}
 	}
+
+
 }
