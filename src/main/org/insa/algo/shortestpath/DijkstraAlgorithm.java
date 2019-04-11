@@ -68,6 +68,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								} else {
 									//		notifyNodeReached(suiv.getNode());
 								}
+								binaryHeap.insert(suiv);
 
 							}
 						}
