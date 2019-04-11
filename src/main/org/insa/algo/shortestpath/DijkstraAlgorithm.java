@@ -51,19 +51,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
-					Label suiv = labels.get(arc.getDestination());
-					if (suiv.getState() != Label.LabelState.MARKED) {
-						double d = heuristic(item, suiv, arc);
-						if (d < suiv.getCost()) {
-							suiv.setCost(d);
-							if (suiv.getState() == Label.LabelState.VISITED) {
-								binaryHeap.remove(suiv);
-							} else {
-								notifyNodeReached(suiv.getNode());
+					if (data.isAllowed(arc)) {
+						Label suiv = labels.get(arc.getDestination());
+						if (suiv.getState() != Label.LabelState.MARKED) {
+							double d = heuristic(item, suiv, arc);
+							if (d < suiv.getCost()) {
+								suiv.setCost(d);
+								if (suiv.getState() == Label.LabelState.VISITED) {
+									binaryHeap.remove(suiv);
+								} else {
+									notifyNodeReached(suiv.getNode());
+								}
+								binaryHeap.insert(suiv);
 							}
-							binaryHeap.insert(suiv);
-						}
 
+						}
 					}
 				}
 			}
