@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 
 		boolean destinationReached = false;
-		while (binaryHeap.size() >= 0 && destinationReached!=true) {
+		while (binaryHeap.size() >= 0 && destinationReached != true) {
 			System.out.println(binaryHeap.size());
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
@@ -54,20 +54,23 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				//System.out.println(destinationReached); Test
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
-					Label suiv = labels.get(arc.getDestination());
-					if (suiv.getState() != Label.LabelState.MARKED) {
-						double d = heuristic(item, suiv, arc);
-						if (d < suiv.getCost()) {
-							suiv.setCost(d);
-							suiv.setPrev(arc);
-							if (suiv.getState() == Label.LabelState.VISITED) {
-								binaryHeap.remove(suiv);
-							} else {
-						//		notifyNodeReached(suiv.getNode());
-							}
-							binaryHeap.insert(suiv);
-						}
 
+					if (data.isAllowed(arc)) {
+
+						Label suiv = labels.get(arc.getDestination());
+						if (suiv.getState() != Label.LabelState.MARKED) {
+							double d = heuristic(item, suiv, arc);
+							if (d < suiv.getCost()) {
+								suiv.setCost(d);
+								suiv.setPrev(arc);
+								if (suiv.getState() == Label.LabelState.VISITED) {
+									binaryHeap.remove(suiv);
+								} else {
+									//		notifyNodeReached(suiv.getNode());
+								}
+
+							}
+						}
 					}
 				}
 			}
@@ -79,7 +82,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		while (cursor.getPrev() != null) {
 			//Attention c'est un add
 			nodePath.add(0, cursor.getPrev().getOrigin());
-			cursor=labels.get(cursor.getPrev().getOrigin());
+			cursor = labels.get(cursor.getPrev().getOrigin());
 			//System.out.println("Path constructing"); TEST
 		}
 		if (nodePath.size() > 1) {
@@ -94,6 +97,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 
 
-}
 
+}
 
