@@ -17,6 +17,7 @@ public class Label implements Comparable<Label> {
 		this.state = state;
 	}
 
+	
 	public Arc getPrev() {
 		return prev;
 	}
