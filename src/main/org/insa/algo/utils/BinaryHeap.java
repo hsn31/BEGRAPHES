@@ -141,6 +141,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     	//Cas feuille generique
     	else if(ileft>=this.currentSize && iright>=this.currentSize) {
     		arraySet(index,array.get(this.currentSize-1) );
+    		arraySet(this.currentSize-1,null);
     		this.currentSize--;
     		percolateUp(index);
     	}
