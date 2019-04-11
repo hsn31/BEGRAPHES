@@ -48,6 +48,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			binaryHeap.deleteMin();
 			item.setState(Label.LabelState.MARKED);
 			notifyNodeMarked(item.getNode());
+			if(item.getNode().getId()%5==0){
+				System.out.println(item.getCost());
+			}
 			if (item.getNode() == data.getDestination()) {
 				notifyDestinationReached(item.getNode());
 				destinationReached = true;
@@ -66,7 +69,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								if (suiv.getState() == Label.LabelState.VISITED) {
 									binaryHeap.remove(suiv);
 								} else {
-									//		notifyNodeReached(suiv.getNode());
+									notifyNodeReached(suiv.getNode());
 								}
 								binaryHeap.insert(suiv);
 
