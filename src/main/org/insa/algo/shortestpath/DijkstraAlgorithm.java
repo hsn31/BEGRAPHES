@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 
 		boolean destinationReached = false;
-		while (binaryHeap.size() >= 0 && destinationReached != true) {
+		while (binaryHeap.size() > 0 && destinationReached != true) {
 			System.out.println(binaryHeap.size());
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
