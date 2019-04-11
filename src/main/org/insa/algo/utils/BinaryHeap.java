@@ -83,7 +83,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      * 
      * @param index Index at which the percolate begins.
      */
-    private void percolateUp(int index) {
+    private int percolateUp(int index) {
         E x = this.array.get(index);
 
         for (; index > 0
@@ -94,6 +94,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         }
 
         this.arraySet(index, x);
+        return index;
     }
 
     /**
@@ -131,35 +132,22 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
     
     public void removeAtIndex(int index) {
-    	int ileft=index_left(index);
-    	int iright=index_right(index);
     	//On traite les cas feuilles extremes
     	if (index==this.currentSize-1)  {
-    		array.set(index, null);
-    		this.currentSize--;
+    		array.remove(index);
+		    this.currentSize--;
+
     	}
     	//Cas feuille generique
-    	else if(ileft>=this.currentSize && iright>=this.currentSize) {
-    		arraySet(index,array.get(this.currentSize-1) );
-    		this.currentSize--;
-    		percolateUp(index);
-    	}
-    	//Cas generique
-    	else {
-    		if(iright>=this.currentSize) {
-    			this.arraySet(index, this.array.get(ileft));
-    			this.arraySet(ileft, null);
-    			this.currentSize--;
-    		}
-    		else if(this.array.get(ileft).compareTo(this.array.get(iright))<0) {
-    			this.arraySet(index, this.array.get(ileft));
-    			this.removeAtIndex(ileft);
-    		}
-    		else {
-    			this.arraySet(index, this.array.get(iright));
-    			this.removeAtIndex(iright);
-    		}
-    	}
+    	else if(index<this.currentSize) {
+    		this.arraySet(index,this.array.get(this.currentSize-1));
+    		this.array.remove(this.currentSize-1);
+		    this.currentSize--;
+		    percolateDown(percolateUp(index));
+
+	    }
+
+
     	
     	
     }
