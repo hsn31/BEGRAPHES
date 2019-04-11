@@ -41,7 +41,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 
 		boolean destinationReached = false;
-		while (binaryHeap.size() > 0 && !destinationReached) {
+		while (binaryHeap.size() >= 0 && destinationReached != true) {
+			System.out.println(binaryHeap.size());
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
 			item.setState(Label.LabelState.MARKED);
@@ -49,32 +50,39 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			if (item.getNode() == data.getDestination()) {
 				notifyDestinationReached(item.getNode());
 				destinationReached = true;
+				//System.out.println(destinationReached); Test
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
+
 					if (data.isAllowed(arc)) {
+
 						Label suiv = labels.get(arc.getDestination());
 						if (suiv.getState() != Label.LabelState.MARKED) {
 							double d = heuristic(item, suiv, arc);
 							if (d < suiv.getCost()) {
 								suiv.setCost(d);
+								suiv.setPrev(arc);
 								if (suiv.getState() == Label.LabelState.VISITED) {
 									binaryHeap.remove(suiv);
 								} else {
-									notifyNodeReached(suiv.getNode());
+									//		notifyNodeReached(suiv.getNode());
 								}
-								binaryHeap.insert(suiv);
-							}
 
+							}
 						}
 					}
 				}
 			}
 		}
+		//System.out.println("Test Sortie de Boucle");  TEST
 		Label cursor = labels.get(data.getDestination());
 
 		nodePath.add(data.getDestination());
 		while (cursor.getPrev() != null) {
-			nodePath.set(0, cursor.getPrev().getOrigin());
+			//Attention c'est un add
+			nodePath.add(0, cursor.getPrev().getOrigin());
+			cursor = labels.get(cursor.getPrev().getOrigin());
+			//System.out.println("Path constructing"); TEST
 		}
 		if (nodePath.size() > 1) {
 			status = AbstractSolution.Status.OPTIMAL;
@@ -85,5 +93,4 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 		return solution;
 	}
-
 }
