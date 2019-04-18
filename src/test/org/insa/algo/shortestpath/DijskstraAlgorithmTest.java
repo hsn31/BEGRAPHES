@@ -10,7 +10,6 @@ import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,8 +28,8 @@ public class DijskstraAlgorithmTest {
 	private static Graph graph;
 
 	//Graph from map
-	private static Graph mapGraph;
-	private static String mapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	private static Graph squareMapGraph;
+	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 
 	// List of nodes
@@ -100,10 +99,10 @@ public class DijskstraAlgorithmTest {
 
 		// Create a graph reader.
 		GraphReader reader = new BinaryGraphReader(
-				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+				new DataInputStream(new BufferedInputStream(new FileInputStream(squareMapName))));
 
 		//Read the graph.
-		mapGraph = reader.read();
+		squareMapGraph = reader.read();
 		mapArcInspector = ArcInspectorFactory.getAllFilters().get(0);
 
 
@@ -150,17 +149,17 @@ public class DijskstraAlgorithmTest {
 	public void dijkstraAlgorithmMapWithOracleTest() {
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
-			int from = random.nextInt(mapGraph.size());
-			int to = random.nextInt(mapGraph.size());
+			int from = random.nextInt(squareMapGraph.size());
+			int to = random.nextInt(squareMapGraph.size());
 			System.out.println("FROM: " + from + " TO " + to);
-			ShortestPathData shortestPathData = new ShortestPathData(mapGraph, mapGraph.get(from), mapGraph.get(to), mapArcInspector);
+			ShortestPathData shortestPathData = new ShortestPathData(squareMapGraph, squareMapGraph.get(from), squareMapGraph.get(to), mapArcInspector);
 			BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
 			DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(shortestPathData);
 
 			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 			ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
 
-			assertEquals("Bellman Ford and Dijkstra finished with different status on map " + mapName, bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
+			assertEquals("Bellman Ford and Dijkstra finished with different status on map " + squareMapName, bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
 			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+dijkstraSolution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 			//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
