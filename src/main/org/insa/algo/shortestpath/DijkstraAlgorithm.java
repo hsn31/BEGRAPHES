@@ -51,6 +51,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				for (Arc arc : item.getNode().getSuccessors()) {
 
 					if (data.isAllowed(arc)) {
+						
 
 						Label suiv = labels.get(arc.getDestination());
 						if (suiv.getState() != Label.LabelState.MARKED) {
@@ -80,11 +81,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			cursor = labels.get(cursor.getPrev().getOrigin());
 			//System.out.println("Path constructing"); TEST
 		}
-		if (nodePath.size() > 1) {
+		if (nodePath.size() > 1 || data.getOrigin()==data.getDestination()) { // si on a bien atteint la destination ou si origine et destination étaient identiques
 			status = AbstractSolution.Status.OPTIMAL;
 			solutionPath = Path.createShortestPathFromNodes(graph, nodePath);
 			solution = new ShortestPathSolution(data, status, solutionPath);
-		} else {
+		}
+		else {
 			solution = new ShortestPathSolution(data, status);
 		}
 		return solution;
