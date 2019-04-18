@@ -3,15 +3,23 @@ package org.insa.algo.shortestpath;
 import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
+import org.insa.algo.ArcInspectorFactory;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
+import org.insa.graph.io.BinaryGraphReader;
+import org.insa.graph.io.GraphReader;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +30,7 @@ public class DijskstraAlgorithmTest {
 
 	//Graph from map
 	private static Graph mapGraph;
+	private static String mapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 
 	// List of nodes
@@ -32,6 +41,7 @@ public class DijskstraAlgorithmTest {
 	private static Arc x1_x2, x1_x3, x2_x4, x2_x5, x2_x6, x3_x1, x3_x6, x3_x2, x6_x5, x5_x3, x5_x4, x5_x6;
 
 	private static ArcInspector defaultArcInspector;
+	private static ArcInspector mapArcInspector;
 
 	@BeforeClass
 	public static void initAll() throws IOException {
@@ -88,6 +98,15 @@ public class DijskstraAlgorithmTest {
 		};
 
 
+		// Create a graph reader.
+		GraphReader reader = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+
+		//Read the graph.
+		mapGraph = reader.read();
+		mapArcInspector = ArcInspectorFactory.getAllFilters().get(0);
+
+
 	}
 
 
@@ -102,10 +121,12 @@ public class DijskstraAlgorithmTest {
 		ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
 
 		assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-		//On peut aussi utiliser Assume?
-		if (bellmanFordSolution.getStatus() == AbstractSolution.Status.FEASIBLE) {
-			assertEquals("BellmanFord and Dijkstra solution give differrent number of nodes in path", bellmanFordSolution.getPath().getArcs(), dijkstraSolution.getPath().size());
+		assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
+
+		//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
+		if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
+			assertEquals("BellmanFord and Dijkstra solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), dijkstraSolution.getPath().size());
 			assertTrue("Different lenghth for BellmanFord solution and Dijkstra solution", bellmanFordSolution.getPath().getLength() == dijkstraSolution.getPath().getLength());
 			for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
 				assertEquals("Different arcs founded for Dijkstra and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), dijkstraSolution.getPath().getArcs().get(i));
@@ -126,7 +147,30 @@ public class DijskstraAlgorithmTest {
 	}
 
 	@Test
-	public void dijkstraAlgorithmMapWithOracleTest(){
+	public void dijkstraAlgorithmMapWithOracleTest() {
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) {
+			int from = random.nextInt(mapGraph.size());
+			int to = random.nextInt(mapGraph.size());
+			System.out.println("FROM: " + from + " TO " + to);
+			ShortestPathData shortestPathData = new ShortestPathData(mapGraph, mapGraph.get(from), mapGraph.get(to), mapArcInspector);
+			BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
+			DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(shortestPathData);
+
+			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
+			ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
+
+			assertEquals("Bellman Ford and Dijkstra finished with different status on map " + mapName, bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
+			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+dijkstraSolution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+
+			//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
+			if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
+				assertTrue(bellmanFordSolution.getPath().getLength() == dijkstraSolution.getPath().getLength());
+			}
+
+
+		}
+
 
 	}
 
