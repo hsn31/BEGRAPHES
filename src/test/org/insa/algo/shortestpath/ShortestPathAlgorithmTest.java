@@ -23,7 +23,7 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DijskstraAlgorithmTest {
+public abstract class ShortestPathAlgorithmTest {
 	// Simple Test graph from subject
 	private static Graph graph;
 
@@ -41,6 +41,10 @@ public class DijskstraAlgorithmTest {
 
 	private static ArcInspector defaultArcInspector;
 	private static ArcInspector mapArcInspector;
+
+	protected abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData data);
+	protected abstract AbstractSolution.Status statusWhenNoMoverequired();
+
 
 	@BeforeClass
 	public static void initAll() throws IOException {
@@ -109,26 +113,31 @@ public class DijskstraAlgorithmTest {
 	}
 
 
-	public void dijkstraAlgorithmSimpleGraphWithOraclePathTest(int from, int to) {
+	public void simpleGraphWithOraclePathTest(int from, int to) {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
 		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
-		DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(shortestPathData);
+		ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
 
 
 		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
-		ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
+		ShortestPathSolution solution = algorithm.doRun();
 
-		assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-		assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+
+		if(shortestPathData.getOrigin()!=shortestPathData.getDestination()){
+		assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());}
+		else{
+			assertEquals("Incorrect solution status when origin is destination",statusWhenNoMoverequired(),solution.getStatus());
+		}
+		assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 
 		//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
-		if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
-			assertEquals("BellmanFord and Dijkstra solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), dijkstraSolution.getPath().size());
-			assertTrue("Different lenghth for BellmanFord solution and Dijkstra solution", bellmanFordSolution.getPath().getLength() == dijkstraSolution.getPath().getLength());
+		if (bellmanFordSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
+			assertEquals("BellmanFord and Testes algorithm solutions give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
+			assertTrue("Different lenghth for BellmanFord solution and tested algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
 			for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
-				assertEquals("Different arcs founded for Dijkstra and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), dijkstraSolution.getPath().getArcs().get(i));
+				assertEquals("Different arcs founded for tested algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
 			}
 		}
 
@@ -136,17 +145,17 @@ public class DijskstraAlgorithmTest {
 	}
 
 	@Test
-	public void dijkstraAlgorithmSimpleGraphWithOracleTest() {
+	public void simpleGraphWithOracleTest() {
 		for (int from = 0; from < nodes.length; from++) {
 			for (int to = 0; to < nodes.length; to++) {
-				dijkstraAlgorithmSimpleGraphWithOraclePathTest(from, to);
+				simpleGraphWithOraclePathTest(from, to);
 			}
 		}
 
 	}
 
 	@Test
-	public void dijkstraAlgorithmMapWithOracleTest() {
+	public void mapWithOracleTest() {
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			int from = random.nextInt(squareMapGraph.size());
@@ -154,17 +163,21 @@ public class DijskstraAlgorithmTest {
 			System.out.println("FROM: " + from + " TO " + to);
 			ShortestPathData shortestPathData = new ShortestPathData(squareMapGraph, squareMapGraph.get(from), squareMapGraph.get(to), mapArcInspector);
 			BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
-			DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(shortestPathData);
+			ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
 
 			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
-			ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
+			ShortestPathSolution solution = algorithm.doRun();
 
-			assertEquals("Bellman Ford and Dijkstra finished with different status on map " + squareMapName, bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
-			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+dijkstraSolution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+			if(shortestPathData.getOrigin()!=shortestPathData.getDestination()){
+				assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());}
+			else{
+				assertEquals("Incorrect solution status when origin is destination",statusWhenNoMoverequired(),solution.getStatus());
+			}
+			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+solution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 			//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
-			if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
-				assertTrue(bellmanFordSolution.getPath().getLength() == dijkstraSolution.getPath().getLength());
+			if (bellmanFordSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
+				assertTrue(bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
 			}
 
 
