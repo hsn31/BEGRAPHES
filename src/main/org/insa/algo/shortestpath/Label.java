@@ -48,17 +48,22 @@ public class Label implements Comparable<Label> {
 	public double getCost() {
 		return cost;
 	}
+	
+//Pour A*
+	public double getTotalCost() {
+		return this.cost;
+	}
 
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
 
-	@Override
+	@Override //Modification en lien avec A*
 	public int compareTo(Label o) {
-		if(this.getCost()<o.getCost()){
+		if(this.getTotalCost()<o.getTotalCost()){
 			return -1;
 		}
-		else if(this.getCost()==o.getCost()){
+		else if(this.getTotalCost()==o.getTotalCost()){
 			return 0;
 		}
 		else{
