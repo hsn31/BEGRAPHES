@@ -123,10 +123,11 @@ public class DijskstraAlgorithmTest {
 
 		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 		ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
-
+		
+		if (from !=to) {
 		assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
 		assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
-
+		
 
 		//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 		if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
@@ -135,6 +136,7 @@ public class DijskstraAlgorithmTest {
 			for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
 				assertEquals("Different arcs founded for Dijkstra and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), dijkstraSolution.getPath().getArcs().get(i));
 			}
+		}
 		}
 
 
@@ -163,16 +165,17 @@ public class DijskstraAlgorithmTest {
 
 			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 			ShortestPathSolution dijkstraSolution = dijkstraAlgorithm.doRun();
-
+			
+			if (from!=to) {
 			assertEquals("Bellman Ford and Dijkstra finished with different status on map " + squareMapName, bellmanFordSolution.getStatus(), dijkstraSolution.getStatus());
 			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+dijkstraSolution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == dijkstraSolution.getStatus() || dijkstraSolution.getStatus() == AbstractSolution.Status.INFEASIBLE);
-
+			
 			//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 			if (dijkstraSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
 				assertTrue(bellmanFordSolution.getPath().getLength() == dijkstraSolution.getPath().getLength());
 			}
 
-
+			}
 		}
 
 
@@ -213,13 +216,12 @@ public class DijskstraAlgorithmTest {
 			//Hors du graph
 			
 			System.out.println("ERREUR : Paramètres invalides ");
-			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(),
-					AbstractSolution.Status.OPTIMAL == solution.getStatus()
-							|| solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+			assertTrue("End status incorrect,should be INFEASIBLE is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
-			System.out.println("Origine et Destination identiques"); //Il y a un pb ici, on devrait obtenir null puisqu'il n'y a rien à faire ?
-			assertEquals(expected.getPath(), solution.getPath());
+			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
+			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
+			assertTrue("error"+solution.getPath().getArcs().size(), solution.getPath().getArcs().size()==0);
 
 		} else if (solution.getPath() == null) {
 			assertEquals(expected.getPath(), solution.getPath());
@@ -236,8 +238,13 @@ public class DijskstraAlgorithmTest {
 				costSolution = solution.getPath().getLength();
 				costExpected = expected.getPath().getLength();
 			}
-			assertEquals(costExpected, costSolution, 0.001);
 			System.out.println("Cout solution: " + costSolution);
+			//assertTrue("expected"+costExpected+ "and was" +costSolution, costExpected==costSolution);
+			
+			assertEquals("BellmanFord and Dijkstra solution give differrent number of nodes in path", expected.getPath().size(), solution.getPath().size());
+			assertTrue("Different lenghth for BellmanFord solution and Dijkstra solution", expected.getPath().getLength() == solution.getPath().getLength());
+			assertEquals("Different arcs founded for Dijkstra and Bellman_Ford solutions", expected.getPath().getArcs(), solution.getPath().getArcs());
+			
 		}
 
 		System.out.println();
@@ -267,19 +274,19 @@ public class DijskstraAlgorithmTest {
 		DijkstraAlgorithm Dijkstra = new DijkstraAlgorithm(data);
 
 		/* Recuperation de la solution de Dijkstra */
-		ShortestPathSolution solution = Dijkstra.run();
+		ShortestPathSolution solution = Dijkstra.doRun();
 		
 		if (origine < 0 || destination < 0 || origine >= (graph.size() - 1) || destination >= (graph.size() - 1)) { 
 			//Hors du graph
 			
 			System.out.println("ERREUR : Paramètres invalides ");
-			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(),
-					AbstractSolution.Status.OPTIMAL == solution.getStatus()
-							|| solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
-			System.out.println("Origine et Destination identiques"); //Il y a un pb ici, on devrait obtenir null puisqu'il n'y a rien à faire ?
-			assertTrue(solution.getPath()==null);
+			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
+			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
+			assertEquals(solution.getPath().getArcs().size(),0);
+			
 
 		} else if (solution.getPath() == null) {
 			assertTrue(solution.getPath() == null);
@@ -289,7 +296,6 @@ public class DijskstraAlgorithmTest {
 
 			costFastestSolutionInTime = solution.getPath().getMinimumTravelTime();
 			costFastestSolutionInDistance = solution.getPath().getLength();
-		}
 
 		
 		arcInspectorDijkstra = ArcInspectorFactory.getAllFilters().get(0);
@@ -298,7 +304,7 @@ public class DijskstraAlgorithmTest {
 
 		Dijkstra = new DijkstraAlgorithm(data);
 
-		solution = Dijkstra.run();
+		solution = Dijkstra.doRun();
 
 
 		if (solution.getPath() == null) {
@@ -317,7 +323,7 @@ public class DijskstraAlgorithmTest {
 		assertTrue(costFastestSolutionInDistance >= costShortestSolutionInDistance);
 		System.out.println("Cout en distance du chemin le plus rapide : " + costFastestSolutionInDistance);
 		System.out.println("Cout en distance du chemin le plus court  : " + costShortestSolutionInDistance);
-
+	}
 		System.out.println();
 		System.out.println();
 	}
@@ -390,22 +396,22 @@ public class DijskstraAlgorithmTest {
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    
 			
 			System.out.println("----- Cas d'un chemin simple ------");
-			origine = 38926;
-			destination = 59015;
+			origine = 99490;
+			destination = 85265;
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    	
 		
 			System.out.println("----- Cas de sommets inexistants ------");
 			System.out.println("----- Origine : N'existe pas ----------");
 			System.out.println("----- Destination : Existe ------------");
 			origine = -1;
-			destination = 59015;
+			destination = 85265;
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    	
 
 			System.out.println("----- Cas de sommets inexistants ------");
 			System.out.println("----- Origine : Existe ----------------");
 			System.out.println("----- Destination : N'existe pas ------");
 			origine = 38926;
-			destination = 200000;
+			destination = 300000;
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    	
 			
 			System.out.println("----- Cas de sommets inexistants ------");
@@ -482,8 +488,8 @@ public class DijskstraAlgorithmTest {
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    
 			
 			System.out.println("----- Cas d'un chemin simple ------");
-			origine = 607;
-			destination = 857;
+			origine = 44;
+			destination = 541;
 			dijkstraAlgorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);    	
 		
 			System.out.println("----- Cas de sommets inexistants ------");
@@ -618,7 +624,12 @@ public class DijskstraAlgorithmTest {
 			System.out.println("----- Cas d'un chemin nul ------");
 			origine = 0 ;
 			destination = 0;
-			dijkstraAlgorithmMapWithoutOracleTest(mapName,origine,destination);   
+			dijkstraAlgorithmMapWithoutOracleTest(mapName,origine,destination);
+			
+			System.out.println("----- Cas d'un chemin nul ------");
+			origine = 4 ;
+			destination = 4;
+			dijkstraAlgorithmMapWithoutOracleTest(mapName,origine,destination);
 			
 			System.out.println("----- Cas d'un chemin simple ------");
 			origine = 38926;
