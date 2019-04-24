@@ -238,9 +238,8 @@ public class DijskstraAlgorithmTest {
 				costSolution = solution.getPath().getLength();
 				costExpected = expected.getPath().getLength();
 			}
-			System.out.println("Cout solution: " + costSolution);
-			//assertTrue("expected"+costExpected+ "and was" +costSolution, costExpected==costSolution);
 			
+			assertTrue("expected"+costExpected+ "and was" +costSolution, costExpected==costSolution);
 			assertEquals("BellmanFord and Dijkstra solution give differrent number of nodes in path", expected.getPath().size(), solution.getPath().size());
 			assertTrue("Different lenghth for BellmanFord solution and Dijkstra solution", expected.getPath().getLength() == solution.getPath().getLength());
 			assertEquals("Different arcs founded for Dijkstra and Bellman_Ford solutions", expected.getPath().getArcs(), solution.getPath().getArcs());
@@ -317,12 +316,9 @@ public class DijskstraAlgorithmTest {
 		}
 
 		assertTrue(costFastestSolutionInTime <= costShortestSolutionInTime);
-		System.out.println("Cout en temps du chemin le plus rapide : " + costFastestSolutionInTime);
-		System.out.println("Cout en temps du chemin le plus court  : " + costShortestSolutionInTime);
 
 		assertTrue(costFastestSolutionInDistance >= costShortestSolutionInDistance);
-		System.out.println("Cout en distance du chemin le plus rapide : " + costFastestSolutionInDistance);
-		System.out.println("Cout en distance du chemin le plus court  : " + costShortestSolutionInDistance);
+
 	}
 		System.out.println();
 		System.out.println();
