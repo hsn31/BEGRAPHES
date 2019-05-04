@@ -34,7 +34,7 @@ public class DijskstraAlgorithmTest {
 	//Graph from map
 	private static Graph squareMapGraph;
 	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
-	private static String squareMapName ="D:\\Téléchargements\\carre.mapgr";
+	private static String squareMapName ="D:\\Tï¿½lï¿½chargements\\carre.mapgr";
 
 
 	// List of nodes
@@ -212,10 +212,10 @@ public class DijskstraAlgorithmTest {
 		ShortestPathSolution solution = Dijkstra.doRun();
 		ShortestPathSolution expected = Bellman.doRun();
 
-		if (origine < 0 || destination < 0 || origine >= (graph.size() - 1) || destination >= (graph.size() - 1)) { 
+		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
 			//Hors du graph
 			
-			System.out.println("ERREUR : Paramètres invalides ");
+			System.out.println("ERREUR : Paramï¿½tres invalides ");
 			assertTrue("End status incorrect,should be INFEASIBLE is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
@@ -275,10 +275,10 @@ public class DijskstraAlgorithmTest {
 		/* Recuperation de la solution de Dijkstra */
 		ShortestPathSolution solution = Dijkstra.doRun();
 		
-		if (origine < 0 || destination < 0 || origine >= (graph.size() - 1) || destination >= (graph.size() - 1)) { 
+		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
 			//Hors du graph
 			
-			System.out.println("ERREUR : Paramètres invalides ");
+			System.out.println("ERREUR : Paramï¿½tres invalides ");
 			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
@@ -329,12 +329,12 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioDistanceHG() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\haute-garonne.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\haute-garonne.mapgr";
 			
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : Haute-Garonne -------------------------");
 			System.out.println("----- Mode : DISTANCE -------------------------------");
 			System.out.println();
@@ -376,12 +376,12 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioTempsHG() throws Exception {
 		
-			String mapName = "D:\\Téléchargements\\haute-garonne.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\haute-garonne.mapgr";
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : Haute-Garonne -------------------------");
 			System.out.println("----- Mode : TEMPS ----------------------------------");
 			System.out.println();
@@ -421,13 +421,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioDistanceINSA() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\insa.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\insa.mapgr";
 
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : INSA ----------------------------------");
 			System.out.println("----- Mode : DISTANCE -------------------------------");
 			System.out.println();
@@ -467,13 +467,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioTempsINSA() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\insa.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\insa.mapgr";
 
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : INSA ----------------------------------");
 			System.out.println("----- Mode : TEMPS ----------------------------------");
 			System.out.println();
@@ -513,13 +513,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioDistanceCarre() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\carre.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\carre.mapgr";
 
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : CARRE ---------------------------------");
 			System.out.println("----- Mode : DISTANCE -------------------------------");
 			System.out.println();
@@ -533,13 +533,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioTempsCarre() throws Exception {
 			
-			String mapName = "D:\\Téléchargements\\carre.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\carre.mapgr";
 
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : CARRE ---------------------------------");
 			System.out.println("----- Mode : TEMPS ----------------------------------");
 			System.out.println();
@@ -554,13 +554,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioDistanceGuadeloupe() throws Exception {
 	
-			String mapName = "D:\\Téléchargements\\guadeloupe.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\guadeloupe.mapgr";
 
 		
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : GUADELOUPE ----------------------------");
 			System.out.println("----- Mode : DISTANCE -------------------------------");
 			System.out.println();
@@ -580,13 +580,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioTempsGuadeloupe() throws Exception {
 			
-			String mapName = "D:\\Téléchargements\\guadeloupe.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\guadeloupe.mapgr";
 
 			
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité avec oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ avec oracle sur une carte-----");
 			System.out.println("----- Carte : GUADELOUPE ----------------------------");
 			System.out.println("----- Mode : TEMPS ----------------------------------");
 			System.out.println();
@@ -607,13 +607,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioMinTempsDistHG() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\haute-garonne.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\haute-garonne.mapgr";
 			
 	
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité sans oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ sans oracle sur une carte-----");
 			System.out.println("----- Carte : Haute-Garonne -------------------------");
 			System.out.println();
 
@@ -658,13 +658,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioMinTempsDistCarreDense() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\carre.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\carre.mapgr";
 			
 	
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité sans oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ sans oracle sur une carte-----");
 			System.out.println("----- Carte : CARRE ---------------------------");
 			System.out.println();
 
@@ -677,13 +677,13 @@ public class DijskstraAlgorithmTest {
 		@Test
 		public void testScenarioMinTempsDistGuadeloupe() throws Exception {
 
-			String mapName = "D:\\Téléchargements\\guadeloupe.mapgr";
+			String mapName = "D:\\Tï¿½lï¿½chargements\\guadeloupe.mapgr";
 
 
 			int origine;
 			int destination;
 			System.out.println("*****************************************************");
-			System.out.println("----- Test de validité sans oracle sur une carte-----");
+			System.out.println("----- Test de validitï¿½ sans oracle sur une carte-----");
 			System.out.println("----- Carte : GUADELOUPE ----------------------------");
 			System.out.println();
 		
