@@ -11,8 +11,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     }
     @Override
     protected double heuristic(Label from, Label to, Arc arc) {
-        return super.heuristic(from, to, arc)+ Point.distance(from.getNode().getPoint(),to.getNode().getPoint());
-    }
+        return super.heuristic(from, to, arc)+ Point.distance(getInputData().getDestination().getPoint(),to.getNode().getPoint());
+    } // A mons sens ça suffit sans redéfinir de Label
+
     
 	protected Label newLabel(Node node, ShortestPathData data) {
 		return new LabelStar(node, data);

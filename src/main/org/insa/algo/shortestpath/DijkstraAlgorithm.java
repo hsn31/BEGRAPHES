@@ -21,7 +21,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	@Override
 	protected ShortestPathSolution doRun() {
 		ShortestPathData data = getInputData();
-		ShortestPathSolution solution = null;
+		ShortestPathSolution solution;
 		AbstractSolution.Status status = AbstractSolution.Status.INFEASIBLE;
 		Path solutionPath;
 		ArrayList<Node> nodePath = new ArrayList<>();
@@ -51,7 +51,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				for (Arc arc : item.getNode().getSuccessors()) {
 
 					if (data.isAllowed(arc)) {
-						
+
 
 						Label suiv = labels.get(arc.getDestination());
 						if (suiv.getState() != Label.LabelState.MARKED) {
@@ -71,9 +71,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				}
 			}
 		}
-		//System.out.println("Test Sortie de Boucle");  TEST
 		Label cursor = labels.get(data.getDestination());
-
 		nodePath.add(data.getDestination());
 		while (cursor.getPrev() != null) {
 			//Attention c'est un add
