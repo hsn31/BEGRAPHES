@@ -10,23 +10,22 @@ public class LabelStar extends Label implements Comparable<Label> {
 	private double distToDest;
 	public LabelStar(Node noeud, double cost, ShortestPathData data) {
 		super(noeud,cost);
-
-
-		if (data.getMode() == AbstractInputData.Mode.LENGTH) {
-			this.distToDest=Point.distance(noeud.getPoint(), data.getDestination().getPoint());
+		if (data.getMode() == AbstractInputData.Mode.TIME) {
+			int speed = data.getMaximumSpeed();
+			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(speed*3.6);
 		}
 		
 		else {
-			int vitesse = Math.max(data.getMaximumSpeed(), data.getGraph().getGraphInformation().getMaximumSpeed());
-			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(vitesse*1000/3600);
+			this.distToDest=Point.distance(noeud.getPoint(), data.getDestination().getPoint());
+
 		}
 	}
 	public double getDistToDest(){
 		return this.distToDest;
 	}
-	//red�finir getTotalCost dans LabelStar
+	//redéfinir getTotalCost dans LabelStar
 	public double getTotalCost() {
-		//co�t depuis l'origine + co�t estim� � la destination
+		//cout depuis l'origine + cout estimé à la destination
 		return this.getCost()+this.getDistToDest(); // Ici on voit le problème du static, LabelStar.cout aura la même valeur pour tous les labels
 	}
 
