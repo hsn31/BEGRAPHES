@@ -5,11 +5,12 @@ import org.insa.graph.Point; //Class representing a point (position) on Earth.
 import org.insa.algo.AbstractInputData;
 
 public class LabelStar extends Label implements Comparable<Label> {
-
-
 	private double distToDest;
 	public LabelStar(Node noeud, double cost, ShortestPathData data) {
 		super(noeud,cost);
+		System.out.println("Distance minimum estimée : "+Point.distance(noeud.getPoint(), data.getDestination().getPoint()));
+		System.out.println("Vitesse maximum : "+data.getMaximumSpeed());
+		System.out.println("Temps minimum estimé : "+Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(data.getMaximumSpeed()));
 		if (data.getMode() == AbstractInputData.Mode.TIME) {
 			int speed = data.getMaximumSpeed();
 			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(speed);
@@ -17,7 +18,6 @@ public class LabelStar extends Label implements Comparable<Label> {
 		
 		else {
 			this.distToDest=Point.distance(noeud.getPoint(), data.getDestination().getPoint());
-
 		}
 	}
 	public double getDistToDest(){
