@@ -10,6 +10,7 @@
 package org.insa.algo.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Implements a binary heap. Note that all "matching" is based on the compareTo
@@ -26,12 +27,16 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     // The heap array.
     private final ArrayList<E> array;
 
+    // Indexes of elements in array
+    private HashMap<E,Integer> indexMap;
+
     /**
      * Construct a new empty binary heap.
      */
     public BinaryHeap() {
         this.currentSize = 0;
         this.array = new ArrayList<E>();
+        this.indexMap = new HashMap<>();
     }
 
     /**
@@ -57,6 +62,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         else {
             this.array.set(index, value);
         }
+        this.indexMap.put(value,index);
     }
 
     /**
@@ -130,6 +136,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
             }
         }
     }
+
     
     public void removeAtIndex(int index) {
     	//On traite les cas feuilles extremes
@@ -169,13 +176,9 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         this.percolateUp(index);
     }
     
-    public int contains(E x) {
-        for (int i = 0; i < this.currentSize; i++) {
-            if (x.compareTo(this.array.get(i))==0){
-            	return i;
-            }
-        }
-        return -1;
+    public Integer contains(E x) {
+        return this.indexMap.get(x);
+
     	
     }
     
@@ -185,8 +188,8 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         	throw new ElementNotFoundException(x);
         }
         else {
-        	int index=this.contains(x);
-        	if(index==-1) {
+        	Integer index=this.contains(x);
+        	if(index==null) {
         		throw new ElementNotFoundException(x);
         	}
         	else {
