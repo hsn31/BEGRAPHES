@@ -4,10 +4,7 @@ import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
-import org.insa.graph.Arc;
-import org.insa.graph.Graph;
-import org.insa.graph.Node;
-import org.insa.graph.RoadInformation;
+import org.insa.graph.*;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
 import org.junit.BeforeClass;
@@ -59,7 +56,7 @@ public abstract class ShortestPathAlgorithmTest {
 		// Create nodes
 		nodes = new Node[6];
 		for (int i = 0; i < nodes.length; ++i) {
-			nodes[i] = new Node(i, null);
+			nodes[i] = new Node(i, new Point(i,i));
 		}
 
 		// Add arcs...
@@ -118,7 +115,7 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData);
 
-	public void DjikstraGraphWithOraclePathTest(int from, int to) {
+	public void simpleGraphWithOraclePathTest(int from, int to) {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
 		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
@@ -150,7 +147,7 @@ public abstract class ShortestPathAlgorithmTest {
 	public void algorithmSimpleGraphWithOracleTest() {
 		for (int from = 0; from < nodes.length; from++) {
 			for (int to = 0; to < nodes.length; to++) {
-				DjikstraGraphWithOraclePathTest(from, to);
+				simpleGraphWithOraclePathTest(from, to);
 			}
 		}
 
@@ -209,12 +206,12 @@ public abstract class ShortestPathAlgorithmTest {
 
 		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
 
-		BellmanFordAlgorithm Bellman = new BellmanFordAlgorithm(data);
+		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(data);
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(data);
 
 
 		ShortestPathSolution solution = algorithm.doRun();
-		ShortestPathSolution expected = Bellman.doRun();
+		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 
 		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
 			//Hors du graph
@@ -228,25 +225,26 @@ public abstract class ShortestPathAlgorithmTest {
 			assertTrue("error" + solution.getPath().getArcs().size(), solution.getPath().getArcs().size() == 0);
 
 		} else if (solution.getPath() == null) {
-			assertEquals(expected.getPath(), solution.getPath());
+			assertEquals(bellmanFordSolution.getPath(), solution.getPath());
 
 		} else {
+			assertEquals("Algorithm and oracle path have different number of nodes",bellmanFordSolution.getPath().size(),solution.getPath().size());
 			double costSolution;
 			double costExpected;
 			if (typeEvaluation == 0) {
 				//Time
 				costSolution = solution.getPath().getMinimumTravelTime();
-				costExpected = expected.getPath().getMinimumTravelTime();
+				costExpected = bellmanFordSolution.getPath().getMinimumTravelTime();
 
 			} else {
 				costSolution = solution.getPath().getLength();
-				costExpected = expected.getPath().getLength();
+				costExpected = bellmanFordSolution.getPath().getLength();
 			}
 
 			assertTrue("expected" + costExpected + "and was" + costSolution, costExpected == costSolution);
-			assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", expected.getPath().size(), solution.getPath().size());
-			assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", expected.getPath().getLength() == solution.getPath().getLength());
-			assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", expected.getPath().getArcs(), solution.getPath().getArcs());
+			assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
+			assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
+			assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs(), solution.getPath().getArcs());
 
 		}
 
