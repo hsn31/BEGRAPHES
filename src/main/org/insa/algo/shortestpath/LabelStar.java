@@ -12,7 +12,7 @@ public class LabelStar extends Label implements Comparable<Label> {
 		super(noeud,cost);
 		if (data.getMode() == AbstractInputData.Mode.TIME) {
 			int speed = data.getMaximumSpeed();
-			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(speed*3.6);
+			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(speed);
 		}
 		
 		else {
