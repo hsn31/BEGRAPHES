@@ -33,6 +33,7 @@ public abstract class ShortestPathAlgorithmTest {
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 
+
 	//Guadeloup Map
 
 	//Toulouse Map
