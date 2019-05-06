@@ -17,7 +17,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return new Label(node,cost);
 	}
 
-	protected double heuristic(Label from, Label to, Arc arc) {
+	protected double evalDist(Label from, Arc arc) {
 		return from.getCost() + arc.getLength();
 	}
 
@@ -58,7 +58,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 						Label suiv = labels.get(arc.getDestination());
 						if (suiv.getState() != Label.LabelState.MARKED) {
-							double d = heuristic(item, suiv, arc);
+							double d = evalDist(item, arc);
 							if (d < suiv.getCost()) {
 								suiv.setCost(d);
 								suiv.setPrev(arc);
