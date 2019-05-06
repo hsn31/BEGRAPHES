@@ -13,6 +13,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
+	private Label newLabel(Node node,double cost){
+		return new Label(node,cost);
+	}
 
 	protected double heuristic(Label from, Label to, Arc arc) {
 		return from.getCost() + arc.getLength();
@@ -29,7 +32,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		HashMap<Node, Label> labels = new HashMap<>();
 		BinaryHeap<Label> binaryHeap = new BinaryHeap<>();
 		for (Node node : graph.getNodes()) {
-			Label label = new Label(node, Double.POSITIVE_INFINITY);
+			Label label = newLabel(node, Double.POSITIVE_INFINITY);
 			if (node == data.getOrigin()) {
 				label.setCost(0);
 				binaryHeap.insert(label);

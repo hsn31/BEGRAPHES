@@ -6,29 +6,41 @@ import org.insa.algo.AbstractInputData;
 
 public class LabelStar extends Label implements Comparable<Label> {
 
-	private static double cout; // Static implique une variable globale commune à tous les membres de la classe LabelStar, pas forcément ce qu'on veut ici
-	private Node target;
+
+	private double distToDest;
 	public LabelStar(Node noeud, ShortestPathData data) {
-		super(noeud, cout); //Cout peut ne pas être initialisé ici
+		super(noeud,Double.POSITIVE_INFINITY); //Cout peut ne pas être initialisé ici
+
 
 		if (data.getMode() == AbstractInputData.Mode.LENGTH) {
-			LabelStar.cout = Point.distance(noeud.getPoint(), data.getDestination().getPoint()); //this.cout ?
+			this.distToDest=Point.distance(noeud.getPoint(), data.getDestination().getPoint());
 		}
 		
 		else {
 			int vitesse = Math.max(data.getMaximumSpeed(), data.getGraph().getGraphInformation().getMaximumSpeed());
-			LabelStar.cout = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(vitesse*1000.0f/3600.0f); //  idem pour this.cout, et peut être une méthode déjà prévu?
+			this.distToDest = Point.distance(noeud.getPoint(),data.getDestination().getPoint())/(vitesse*1000/3600);
 		}
 	}
-
+	public double getDistToDest(){
+		return this.distToDest;
+	}
 	//red�finir getTotalCost dans LabelStar
 	public double getTotalCost() {
 		//co�t depuis l'origine + co�t estim� � la destination
-		return LabelStar.cout+this.getCost(); // Ici on voit le problème du static, LabelStar.cout aura la même valeur pour tous les labels
+		return this.getCost()+this.getDistToDest(); // Ici on voit le problème du static, LabelStar.cout aura la même valeur pour tous les labels
 	}
 
-	public double getTotalCostBis(){
-		return this.getCost()+Point.distance(this.getNode().getPoint(),this.target.getPoint()); //Proposition
+	@Override
+	public int compareTo(Label o) {
+		assert o instanceof LabelStar;
+		if(o.getTotalCost()>this.getTotalCost()){
+			return -1;
+		}
+		else if(o.getTotalCost()==this.getTotalCost()){
+			return 0;
+		}
+		else{
+			return 1;
+		}
 	}
-	
 }
