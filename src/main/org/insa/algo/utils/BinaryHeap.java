@@ -178,8 +178,6 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     
     public Integer contains(E x) {
         return this.indexMap.get(x);
-
-    	
     }
     
     @Override
@@ -208,6 +206,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     @Override
     public E deleteMin() throws EmptyPriorityQueueException {
         E minItem = findMin();
+        indexMap.remove(minItem);
         E lastItem = this.array.get(--this.currentSize);
         this.arraySet(0, lastItem);
         this.percolateDown(0);
