@@ -8,8 +8,8 @@ public class LabelStar extends Label implements Comparable<Label> {
 
 
 	private double distToDest;
-	public LabelStar(Node noeud, ShortestPathData data) {
-		super(noeud,Double.POSITIVE_INFINITY); //Cout peut ne pas être initialisé ici
+	public LabelStar(Node noeud, double cost, ShortestPathData data) {
+		super(noeud,cost);
 
 
 		if (data.getMode() == AbstractInputData.Mode.LENGTH) {

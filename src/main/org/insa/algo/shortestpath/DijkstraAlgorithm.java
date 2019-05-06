@@ -13,7 +13,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
-	private Label newLabel(Node node,double cost){
+	protected Label newLabel(Node node,double cost){
 		return new Label(node,cost);
 	}
 
