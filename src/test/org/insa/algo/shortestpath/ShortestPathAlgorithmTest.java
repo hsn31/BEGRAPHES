@@ -23,13 +23,21 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+
 public abstract class ShortestPathAlgorithmTest {
 	// Simple Test graph from subject
 	private static Graph graph;
 
-	//Graph from map
+	//Square Map
 	private static Graph squareMapGraph;
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
+
+	//Guadeloup Map
+
+	//Toulouse Map
+
+	//INSA Map
 
 
 	// List of nodes
@@ -41,10 +49,6 @@ public abstract class ShortestPathAlgorithmTest {
 
 	private static ArcInspector defaultArcInspector;
 	private static ArcInspector mapArcInspector;
-
-	protected abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData data);
-	protected abstract AbstractSolution.Status statusWhenNoMoverequired();
-
 
 	@BeforeClass
 	public static void initAll() throws IOException {
@@ -101,7 +105,7 @@ public abstract class ShortestPathAlgorithmTest {
 		};
 
 
-		// Create a graph reader.
+//		// Create a graph reader.
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(squareMapName))));
 
@@ -111,9 +115,9 @@ public abstract class ShortestPathAlgorithmTest {
 
 
 	}
+	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData);
 
-
-	public void simpleGraphWithOraclePathTest(int from, int to) {
+	public void DjikstraGraphWithOraclePathTest(int from, int to) {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
 		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
@@ -123,21 +127,18 @@ public abstract class ShortestPathAlgorithmTest {
 		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 		ShortestPathSolution solution = algorithm.doRun();
 
-
-		if(shortestPathData.getOrigin()!=shortestPathData.getDestination()){
-		assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());}
-		else{
-			assertEquals("Incorrect solution status when origin is destination",statusWhenNoMoverequired(),solution.getStatus());
-		}
-		assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+		if (from != to) {
+			assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());
+			assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 
-		//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
-		if (bellmanFordSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
-			assertEquals("BellmanFord and Testes algorithm solutions give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
-			assertTrue("Different lenghth for BellmanFord solution and tested algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
-			for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
-				assertEquals("Different arcs founded for tested algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
+			//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
+			if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
+				assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
+				assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
+				for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
+					assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
+				}
 			}
 		}
 
@@ -145,17 +146,17 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 
 	@Test
-	public void simpleGraphWithOracleTest() {
+	public void algorithmSimpleGraphWithOracleTest() {
 		for (int from = 0; from < nodes.length; from++) {
 			for (int to = 0; to < nodes.length; to++) {
-				simpleGraphWithOraclePathTest(from, to);
+				DjikstraGraphWithOraclePathTest(from, to);
 			}
 		}
 
 	}
 
 	@Test
-	public void mapWithOracleTest() {
+	public void algorithmMapWithOracleTest() {
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			int from = random.nextInt(squareMapGraph.size());
@@ -168,22 +169,532 @@ public abstract class ShortestPathAlgorithmTest {
 			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
 			ShortestPathSolution solution = algorithm.doRun();
 
-			if(shortestPathData.getOrigin()!=shortestPathData.getDestination()){
-				assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());}
-			else{
-				assertEquals("Incorrect solution status when origin is destination",statusWhenNoMoverequired(),solution.getStatus());
+			if (from != to) {
+				assertEquals("Bellman Ford and Algorithm finished with different status on map " + squareMapName, bellmanFordSolution.getStatus(), solution.getStatus());
+				assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+
+				//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
+				if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
+					assertTrue(bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
+				}
+
 			}
-			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is "+solution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
-
-			//Assume.assumeTrue(dijkstraSolution.getStatus() != AbstractSolution.Status.INFEASIBLE);
-			if (bellmanFordSolution.getStatus()!=AbstractSolution.Status.INFEASIBLE) {
-				assertTrue(bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
-			}
-
-
 		}
 
 
+	}
+
+	//Test de la distance et du temps avec Oracle
+
+	public void algorithmMapWithOracleTestDistanceOrTime(String mapName, int typeEvaluation, int origine, int destination) throws Exception {
+		//Soit temps =0, soit distance =1.
+		GraphReader reader = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+
+		Graph graph = reader.read();
+
+		ArcInspector arcInspector;
+
+		if (typeEvaluation == 0) {
+			System.out.println("Mode : Temps");
+			arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+		} else {
+			System.out.println("Mode : Distance");
+			arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+		}
+
+		System.out.println("Origine : " + origine);
+		System.out.println("Destination : " + destination);
+
+		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
+
+		BellmanFordAlgorithm Bellman = new BellmanFordAlgorithm(data);
+		ShortestPathAlgorithm algorithm = instanciateAlgorithm(data);
+
+
+		ShortestPathSolution solution = algorithm.doRun();
+		ShortestPathSolution expected = Bellman.doRun();
+
+		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
+			//Hors du graph
+
+			System.out.println("ERREUR : Param�tres invalides ");
+			assertTrue("End status incorrect,should be INFEASIBLE is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+
+		} else if (origine == destination) {
+			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
+			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
+			assertTrue("error" + solution.getPath().getArcs().size(), solution.getPath().getArcs().size() == 0);
+
+		} else if (solution.getPath() == null) {
+			assertEquals(expected.getPath(), solution.getPath());
+
+		} else {
+			double costSolution;
+			double costExpected;
+			if (typeEvaluation == 0) {
+				//Time
+				costSolution = solution.getPath().getMinimumTravelTime();
+				costExpected = expected.getPath().getMinimumTravelTime();
+
+			} else {
+				costSolution = solution.getPath().getLength();
+				costExpected = expected.getPath().getLength();
+			}
+
+			assertTrue("expected" + costExpected + "and was" + costSolution, costExpected == costSolution);
+			assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", expected.getPath().size(), solution.getPath().size());
+			assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", expected.getPath().getLength() == solution.getPath().getLength());
+			assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", expected.getPath().getArcs(), solution.getPath().getArcs());
+
+		}
+
+		System.out.println();
+		System.out.println();
+	}
+
+	//Exactement le meme Test visant la distance et le temps mais sans Oracle
+
+	public void algorithmMapWithoutOracleTest(String mapName, int origine, int destination) throws Exception {
+
+		double costFastestSolutionInTime = Double.POSITIVE_INFINITY;
+		double costFastestSolutionInDistance = Double.POSITIVE_INFINITY;
+		double costShortestSolutionInTime = Double.POSITIVE_INFINITY;
+		double costShortestSolutionInDistance = Double.POSITIVE_INFINITY;
+
+		GraphReader reader = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+
+		Graph graph = reader.read();
+
+		/** Recherche du chemin le plus rapide **/
+		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+
+		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination),
+				arcInspector);
+
+		ShortestPathAlgorithm algorithm = instanciateAlgorithm(data);
+
+		/* Recuperation de la solution de Algorithm */
+		ShortestPathSolution solution = algorithm.doRun();
+
+		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
+			//Hors du graph
+
+			System.out.println("ERREUR : Param�tres invalides ");
+			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+
+		} else if (origine == destination) {
+			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
+			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
+			assertEquals(solution.getPath().getArcs().size(), 0);
+
+
+		} else if (solution.getPath() == null) {
+			assertTrue(solution.getPath() == null);
+		} else {
+
+			costFastestSolutionInTime = solution.getPath().getMinimumTravelTime();
+			costFastestSolutionInDistance = solution.getPath().getLength();
+
+
+			arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+
+			data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
+
+			algorithm = instanciateAlgorithm(data);
+
+			solution = algorithm.doRun();
+
+
+			if (solution.getPath() == null) {
+				assertTrue(solution.getPath() == null);
+			} else {
+				costShortestSolutionInTime = solution.getPath().getMinimumTravelTime();
+				costShortestSolutionInDistance = solution.getPath().getLength();
+			}
+
+			assertTrue(costFastestSolutionInTime <= costShortestSolutionInTime);
+
+			assertTrue(costFastestSolutionInDistance >= costShortestSolutionInDistance);
+
+		}
+		System.out.println();
+		System.out.println();
+	}
+
+	//DEBUT DES TESTS
+
+	@Test
+	public void testScenarioDistanceHG() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : Haute-Garonne -------------------------");
+		System.out.println("----- Mode : DISTANCE -------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 38926;
+		destination = 59015;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : Existe ------------");
+		origine = -1;
+		destination = 59015;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : Existe ----------------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 38926;
+		destination = 200000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = -1;
+		destination = 200000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+	}
+
+
+	@Test
+	public void testScenarioTempsHG() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : Haute-Garonne -------------------------");
+		System.out.println("----- Mode : TEMPS ----------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 99490;
+		destination = 85265;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : Existe ------------");
+		origine = -1;
+		destination = 85265;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : Existe ----------------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 38926;
+		destination = 300000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = -1;
+		destination = 200000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+	}
+
+	@Test
+	public void testScenarioDistanceINSA() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\insa.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : INSA ----------------------------------");
+		System.out.println("----- Mode : DISTANCE -------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 300;
+		destination = 300;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 607;
+		destination = 857;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : Existe ------------");
+		origine = 2000;
+		destination = 857;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : Existe ----------------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 607;
+		destination = 200000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 2000;
+		destination = 2000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+	}
+
+	@Test
+	public void testScenarioTempsINSA() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\insa.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : INSA ----------------------------------");
+		System.out.println("----- Mode : TEMPS ----------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 300;
+		destination = 300;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 44;
+		destination = 541;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : Existe ------------");
+		origine = 2000;
+		destination = 857;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : Existe ----------------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 607;
+		destination = 200000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 2000;
+		destination = 2000;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+	}
+
+	@Test
+	public void testScenarioDistanceCarre() throws Exception {
+
+		String mapName = squareMapName;
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : CARRE ---------------------------------");
+		System.out.println("----- Mode : DISTANCE -------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 0;
+		destination = 20;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+	}
+
+	@Test
+	public void testScenarioTempsCarre() throws Exception {
+
+		String mapName = squareMapName;
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : CARRE ---------------------------------");
+		System.out.println("----- Mode : TEMPS ----------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 0;
+		destination = 12;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+	}
+
+
+	@Test
+	public void testScenarioDistanceGuadeloupe() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : GUADELOUPE ----------------------------");
+		System.out.println("----- Mode : DISTANCE -------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 9922;
+		destination = 34328;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+		System.out.println("----- Cas de sommets non connexes ------");
+		origine = 9950;
+		destination = 15860;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+
+	}
+
+	@Test
+	public void testScenarioTempsGuadeloupe() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� avec oracle sur une carte-----");
+		System.out.println("----- Carte : GUADELOUPE ----------------------------");
+		System.out.println("----- Mode : TEMPS ----------------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 9922;
+		destination = 34328;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 10, origine, destination);
+
+		System.out.println("----- Cas de sommets non connexes ------");
+		origine = 9950;
+		destination = 15860;
+		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+
+	}
+
+
+	@Test
+	public void testScenarioMinTempsDistHG() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : Haute-Garonne -------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("----- Cas d'un chemin nul ------");
+		origine = 4;
+		destination = 4;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 38926;
+		destination = 59015;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : Existe ------------");
+		origine = -1;
+		destination = 59015;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : Existe ----------------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = 38926;
+		destination = 200000;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("----- Cas de sommets inexistants ------");
+		System.out.println("----- Origine : N'existe pas ----------");
+		System.out.println("----- Destination : N'existe pas ------");
+		origine = -1;
+		destination = 200000;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+	}
+
+	@Test
+	public void testScenarioMinTempsDistCarreDense() throws Exception {
+
+		String mapName = squareMapName;
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : CARRE ---------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 0;
+		destination = 10;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+	}
+
+	@Test
+	public void testScenarioMinTempsDistGuadeloupe() throws Exception {
+
+		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : GUADELOUPE ----------------------------");
+		System.out.println();
+
+		System.out.println("----- Cas d'un chemin simple ------");
+		origine = 9922;
+		destination = 3428;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("----- Cas de sommets non connexes ------");
+		origine = 9950;
+		destination = 15860;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
 	}
 
 }
