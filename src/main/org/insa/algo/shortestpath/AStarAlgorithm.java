@@ -1,12 +1,13 @@
 package org.insa.algo.shortestpath;
 
+import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.Arc;
 import org.insa.graph.Point;
 import org.insa.graph.Node;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
-    public AStarAlgorithm(ShortestPathData data) {
+    public AStarAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
         super(data);
     }
     @Override

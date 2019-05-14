@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.insa.algo.AbstractSolution.Status;
+import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -12,7 +13,7 @@ import org.insa.graph.Path;
 
 public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
 
-    public BellmanFordAlgorithm(ShortestPathData data) {
+    public BellmanFordAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
         super(data);
     }
 
