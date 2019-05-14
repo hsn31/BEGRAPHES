@@ -13,4 +13,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     protected Label newLabel(Node node, double cost) {
 		return new LabelStar(node, cost, getInputData());
 	}
+
+
 }

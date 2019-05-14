@@ -21,10 +21,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return new Label(node, cost);
 	}
 
-	protected double evalDist(Label from, Arc arc) {
+	private double evalDist(Label from, Arc arc) {
 		return from.getCost() + data.getCost(arc);
-
-
 	}
 
 	@Override
@@ -82,6 +80,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 									binaryHeap.remove(suiv);
 								} else {
 									notifyNodeReached(suiv.getNode());
+									suiv.setState(Label.LabelState.VISITED);
 								}
 								binaryHeap.insert(suiv);
 							}
