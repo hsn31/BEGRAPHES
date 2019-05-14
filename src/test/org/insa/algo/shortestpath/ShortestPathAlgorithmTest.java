@@ -51,6 +51,8 @@ public abstract class ShortestPathAlgorithmTest {
 	//HG Map
 	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
 
+	//HG Map
+
 
 	// List of nodes
 	private static Node[] nodes;
@@ -129,29 +131,35 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData) throws NodeOutOfGraphException;
 
+
+	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) throws NodeOutOfGraphException{
+		return new BellmanFordAlgorithm(shortestPathData);
+	}
+
+
 	public void simpleGraphWithOraclePathTest(int from, int to) throws NodeOutOfGraphException {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
-		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
+		ShortestPathAlgorithm oracleAlgorithm = instanciateOracle(shortestPathData);
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
 		
 
 
 
-		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
+		ShortestPathSolution oracleSolution = oracleAlgorithm.doRun();
 		ShortestPathSolution solution = algorithm.doRun();
 
 		if (from != to) {
-			assertEquals("Algorithms finished with different status", bellmanFordSolution.getStatus(), solution.getStatus());
+			assertEquals("Algorithms finished with different status", oracleSolution.getStatus(), solution.getStatus());
 			assertTrue("End status incorrect", AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 
 			//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 			if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
-				assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
-				assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
-				for (int i = 0; i < bellmanFordSolution.getPath().getArcs().size(); i++) {
-					assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
+				assertEquals("Oracle and Algorithm solution give differrent number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
+				assertTrue("Different lenghth for Oracle solution and Algorithm solution", oracleSolution.getPath().getLength() == solution.getPath().getLength());
+				for (int i = 0; i < oracleSolution.getPath().getArcs().size(); i++) {
+					assertEquals("Different arcs founded for Algorithm and Oracle solutions", oracleSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
 				}
 			}
 		}
@@ -182,19 +190,19 @@ public abstract class ShortestPathAlgorithmTest {
 			int to = random.nextInt(squareMapGraph.size());
 			System.out.println("FROM: " + from + " TO " + to);
 			ShortestPathData shortestPathData = new ShortestPathData(squareMapGraph, squareMapGraph.get(from), squareMapGraph.get(to), mapArcInspector);
-			BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(shortestPathData);
+			ShortestPathAlgorithm oracleAlgorithm = instanciateOracle(shortestPathData);
 			ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
 
-			ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
+			ShortestPathSolution oracleSolution = oracleAlgorithm.doRun();
 			ShortestPathSolution solution = algorithm.doRun();
 
 			if (from != to) {
-				assertEquals("Bellman Ford and Algorithm finished with different status on map " + squareMapName, bellmanFordSolution.getStatus(), solution.getStatus());
+				assertEquals("Oracle and Algorithm finished with different status on map " + squareMapName, oracleSolution.getStatus(), solution.getStatus());
 				assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 				//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 				if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
-					assertTrue(bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
+					assertTrue(oracleSolution.getPath().getLength() == solution.getPath().getLength());
 				}
 
 			}
@@ -227,12 +235,12 @@ public abstract class ShortestPathAlgorithmTest {
 
 		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
 
-		BellmanFordAlgorithm bellmanFordAlgorithm = new BellmanFordAlgorithm(data);
+		ShortestPathAlgorithm oracleAlgorithm = instanciateOracle(data);
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(data);
 
 
 		ShortestPathSolution solution = algorithm.doRun();
-		ShortestPathSolution bellmanFordSolution = bellmanFordAlgorithm.doRun();
+		ShortestPathSolution oracleSolution = oracleAlgorithm.doRun();
 
 		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
 			//Hors du graph
@@ -246,26 +254,26 @@ public abstract class ShortestPathAlgorithmTest {
 			assertTrue("error" + solution.getPath().getArcs().size(), solution.getPath().getArcs().size() == 0);
 
 		} else if (solution.getPath() == null) {
-			assertEquals(bellmanFordSolution.getPath(), solution.getPath());
+			assertEquals(oracleSolution.getPath(), solution.getPath());
 
 		} else {
-			assertEquals("Algorithm and oracle path have different number of nodes",bellmanFordSolution.getPath().size(),solution.getPath().size());
+			assertEquals("Algorithm and oracle path have different number of nodes",oracleSolution.getPath().size(),solution.getPath().size());
 			double costSolution;
 			double costExpected;
 			if (typeEvaluation == 0) {
 				//Time
 				costSolution = solution.getPath().getMinimumTravelTime();
-				costExpected = bellmanFordSolution.getPath().getMinimumTravelTime();
+				costExpected = oracleSolution.getPath().getMinimumTravelTime();
 
 			} else {
 				costSolution = solution.getPath().getLength();
-				costExpected = bellmanFordSolution.getPath().getLength();
+				costExpected = oracleSolution.getPath().getLength();
 			}
 
 			assertTrue("expected" + costExpected + "and was" + costSolution, costExpected == costSolution);
-			assertEquals("BellmanFord and Algorithm solution give differrent number of nodes in path", bellmanFordSolution.getPath().size(), solution.getPath().size());
-			assertTrue("Different lenghth for BellmanFord solution and Algorithm solution", bellmanFordSolution.getPath().getLength() == solution.getPath().getLength());
-			assertEquals("Different arcs founded for Algorithm and Bellman_Ford solutions", bellmanFordSolution.getPath().getArcs(), solution.getPath().getArcs());
+			assertEquals("Oracle and Algorithm solution give differrent number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
+			assertTrue("Different lenghth for Oracle solution and Algorithm solution", oracleSolution.getPath().getLength() == solution.getPath().getLength());
+			assertEquals("Different arcs founded for Algorithm and Oracle solutions", oracleSolution.getPath().getArcs(), solution.getPath().getArcs());
 
 		}
 
