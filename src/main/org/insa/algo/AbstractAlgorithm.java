@@ -23,6 +23,7 @@ public abstract class AbstractAlgorithm<Observer> {
      * @param data Input data for the algorithm.
      */
     protected AbstractAlgorithm(AbstractInputData data) {
+    	
         this.data = data;
         this.observers = new ArrayList<Observer>();
     }

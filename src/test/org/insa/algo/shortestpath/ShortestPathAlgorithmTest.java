@@ -4,21 +4,26 @@ import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
+import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.*;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 
 public abstract class ShortestPathAlgorithmTest {
@@ -27,15 +32,24 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//Square Map
 	private static Graph squareMapGraph;
-	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
+	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 
 
 	//Guadeloup Map
+	private static String guadeloupMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/guadeloupe.mapgr";
 
 	//Toulouse Map
+	private static String toulouseMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+	
 
 	//INSA Map
+	private static String insaMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
+	
+	//HG Map
+	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
 
 	//HG Map
 
@@ -115,16 +129,21 @@ public abstract class ShortestPathAlgorithmTest {
 
 
 	}
-	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData);
-	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData){
+	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData) throws NodeOutOfGraphException;
+
+
+	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) throws NodeOutOfGraphException{
 		return new BellmanFordAlgorithm(shortestPathData);
 	}
 
-	public void simpleGraphWithOraclePathTest(int from, int to) {
+
+	public void simpleGraphWithOraclePathTest(int from, int to) throws NodeOutOfGraphException {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
 		ShortestPathAlgorithm oracleAlgorithm = instanciateOracle(shortestPathData);
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
+		
+
 
 
 		ShortestPathSolution oracleSolution = oracleAlgorithm.doRun();
@@ -152,14 +171,19 @@ public abstract class ShortestPathAlgorithmTest {
 	public void algorithmSimpleGraphWithOracleTest() {
 		for (int from = 0; from < nodes.length; from++) {
 			for (int to = 0; to < nodes.length; to++) {
+				try {
 				simpleGraphWithOraclePathTest(from, to);
+				}
+				catch (NodeOutOfGraphException e) {
+					// TODO: handle exception
+				}
 			}
 		}
 
 	}
 
 	@Test
-	public void algorithmMapWithOracleTest() {
+	public void algorithmMapWithOracleTest() throws NodeOutOfGraphException{
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			int from = random.nextInt(squareMapGraph.size());
@@ -256,7 +280,25 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println();
 		System.out.println();
 	}
+	
 
+	public void algorithmOutOfGrapheTest(String mapName, int origine, int destination) throws IOException{
+		GraphReader reader = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+
+		Graph graph = reader.read();
+		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+		try {
+		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination),
+				arcInspector);
+		fail();
+		}
+		catch(IndexOutOfBoundsException e) {
+			
+		}
+		
+	}
+	
 	//Exactement le meme Test visant la distance et le temps mais sans Oracle
 
 	public void algorithmMapWithoutOracleTest(String mapName, int origine, int destination) throws Exception {
@@ -332,7 +374,7 @@ public abstract class ShortestPathAlgorithmTest {
 	@Test
 	public void testScenarioDistanceHG() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+		String mapName = hgMapName;
 
 		int origine;
 		int destination;
@@ -358,28 +400,29 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Destination : Existe ------------");
 		origine = -1;
 		destination = 59015;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
+	
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : Existe ----------------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 38926;
 		destination = 200000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : N'existe pas ----------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = -1;
 		destination = 200000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 
 	@Test
 	public void testScenarioTempsHG() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+		String mapName = hgMapName;
 
 		int origine;
 		int destination;
@@ -404,27 +447,27 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Destination : Existe ------------");
 		origine = -1;
 		destination = 85265;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : Existe ----------------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 38926;
 		destination = 300000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : N'existe pas ----------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = -1;
 		destination = 200000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
 	public void testScenarioDistanceINSA() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\insa.mapgr";
+		String mapName = insaMapName;
 
 
 		int origine;
@@ -450,27 +493,27 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Destination : Existe ------------");
 		origine = 2000;
 		destination = 857;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : Existe ----------------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 607;
 		destination = 200000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : N'existe pas ----------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 2000;
 		destination = 2000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
 	public void testScenarioTempsINSA() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\insa.mapgr";
+		String mapName = insaMapName;
 
 
 		int origine;
@@ -496,21 +539,21 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Destination : Existe ------------");
 		origine = 2000;
 		destination = 857;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : Existe ----------------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 607;
 		destination = 200000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : N'existe pas ----------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 2000;
 		destination = 2000;
-		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -532,6 +575,7 @@ public abstract class ShortestPathAlgorithmTest {
 		destination = 20;
 		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
 	}
+	
 
 	@Test
 	public void testScenarioTempsCarre() throws Exception {
@@ -557,7 +601,7 @@ public abstract class ShortestPathAlgorithmTest {
 	@Test
 	public void testScenarioDistanceGuadeloupe() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+		String mapName = guadeloupMap;
 
 
 		int origine;
@@ -583,7 +627,7 @@ public abstract class ShortestPathAlgorithmTest {
 	@Test
 	public void testScenarioTempsGuadeloupe() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+		String mapName = guadeloupMap;
 
 
 		int origine;
@@ -610,7 +654,7 @@ public abstract class ShortestPathAlgorithmTest {
 	@Test
 	public void testScenarioMinTempsDistHG() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\haute-garonne.mapgr";
+		String mapName = hgMapName;
 
 
 		int origine;
@@ -641,21 +685,21 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Destination : Existe ------------");
 		origine = -1;
 		destination = 59015;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : Existe ----------------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = 38926;
 		destination = 200000;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 
 		System.out.println("----- Cas de sommets inexistants ------");
 		System.out.println("----- Origine : N'existe pas ----------");
 		System.out.println("----- Destination : N'existe pas ------");
 		origine = -1;
 		destination = 200000;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
+		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -680,7 +724,7 @@ public abstract class ShortestPathAlgorithmTest {
 	@Test
 	public void testScenarioMinTempsDistGuadeloupe() throws Exception {
 
-		String mapName = "D:\\T�l�chargements\\guadeloupe.mapgr";
+		String mapName = guadeloupMap;
 
 
 		int origine;

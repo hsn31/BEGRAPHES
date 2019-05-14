@@ -4,6 +4,7 @@ import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
+import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DijskstraAlgorithmTest extends ShortestPathAlgorithmTest {
 	@Override
-	public ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData) {
+	public ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData) throws NodeOutOfGraphException {
 		return new DijkstraAlgorithm(shortestPathData);
 	}
 }
