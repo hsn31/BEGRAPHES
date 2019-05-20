@@ -20,22 +20,41 @@ public class PerfMain {
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 
 		Graph graph = reader.read();
+
+
 		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(0);
 		ShortestPathData data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), arcInspector);
-
 		ShortestPathPerformanceTest test = new DijkstraPerformanceTest(data);
 		System.out.println("DIJKSTRA TEST ON MAP : "+mapName);
 		System.out.println("ORIGIN : "+origin+" DESTINATION : "+destination);
-		System.out.println(comment);
-		System.out.println("TIME (ms) :"+test.evaluate());
+		if(!comment.equals("")) {
+			System.out.println(comment);
+		}
+		System.out.println("SHORTEST MODE");
+		System.out.println("EXECUTION TIME (ms) :"+test.evaluate());
+		arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+		data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), arcInspector);
+		test = new DijkstraPerformanceTest(data);
+		System.out.println("FASTEST MODE");
+		System.out.println("TIME (ms) : "+test.evaluate()+"\n");
 
+
+
+		arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+		data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), arcInspector);
 		test = new AStarPerformanceTest(data);
 		System.out.println("AStar TEST ON MAP : "+mapName);
 		System.out.println("ORIGIN : "+origin+" DESTINATION : "+destination);
-		if(!comment.equals("")){
+		if(!comment.equals("")) {
 			System.out.println(comment);
 		}
-		System.out.println("TIME (ms) :"+test.evaluate()+"\n");
+		System.out.println("SHORTEST MODE");
+		System.out.println("EXECUTION TIME (ms) :"+test.evaluate());
+		arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+		data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), arcInspector);
+		test = new AStarPerformanceTest(data);
+		System.out.println("FASTEST MODE");
+		System.out.println("TIME (ms) : "+test.evaluate()+"\n");
 
 
 
