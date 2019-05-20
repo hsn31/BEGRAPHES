@@ -32,8 +32,10 @@ public class PerfMain {
 		test = new AStarPerformanceTest(data);
 		System.out.println("AStar TEST ON MAP : "+mapName);
 		System.out.println("ORIGIN : "+origin+" DESTINATION : "+destination);
-		System.out.println(comment);
-		System.out.println("TIME (ms) :"+test.evaluate());
+		if(!comment.equals("")){
+			System.out.println(comment);
+		}
+		System.out.println("TIME (ms) :"+test.evaluate()+"\n");
 
 
 
