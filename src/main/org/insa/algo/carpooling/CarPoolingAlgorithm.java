@@ -9,8 +9,7 @@ public abstract class CarPoolingAlgorithm extends AbstractAlgorithm<CarPoolingOb
     }
 
     @Override
-    public CarPoolingSolution run() {
-        return (CarPoolingSolution) super.run();
+    public CarPoolingSolution run() { return (CarPoolingSolution) super.run();
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
-	public DijkstraAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
+	public DijkstraAlgorithm(ShortestPathData data){
 		super(data);
 	}
 
@@ -40,16 +40,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		labels.put(data.getOrigin(),newLabel(data.getOrigin(),0));
 		binaryHeap.insert(labels.get(data.getOrigin()));
 		notifyOriginProcessed(data.getOrigin());
-		/*for (Node node : graph.getNodes()) {
-			Label label = newLabel(node, Double.POSITIVE_INFINITY);
-			if (node == data.getOrigin()) {
-				label.setCost(0);
-				binaryHeap.insert(label);
-				notifyOriginProcessed(data.getOrigin());
-			}
-			labels.put(node, label);
-		}*/
-
 		boolean destinationReached = false;
 		while (binaryHeap.size() > 0 && !destinationReached) {
 			Label item = binaryHeap.findMin();

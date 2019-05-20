@@ -12,7 +12,11 @@ import org.insa.graph.GraphStatistics;
  */
 public abstract class AbstractInputData {
 
-    /**
+	public ArcInspector getArcInspector() {
+		return arcInspector;
+	}
+
+	/**
      * Enum specifying the top mode of the algorithms.
      * 
      * @see ArcInspector
@@ -25,7 +29,7 @@ public abstract class AbstractInputData {
     private final Graph graph;
 
     // Arc filter.
-    protected final ArcInspector arcInspector;
+    private final ArcInspector arcInspector;
 
     /**
      * Create a new AbstractInputData instance for the given graph, mode and filter.

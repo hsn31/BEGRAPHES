@@ -77,4 +77,13 @@ public class ShortestPathSolution extends AbstractSolution {
         return info;
     }
 
+    public double getCost(){
+    	if(getInputData().getMode()==Mode.TIME){
+    		return this.getPath().getMinimumTravelTime();
+	    }
+	    else{
+    		return this.getPath().getLength();
+	    }
+    }
+
 }

@@ -13,7 +13,7 @@ import org.insa.graph.Path;
 
 public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
 
-    public BellmanFordAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
+    public BellmanFordAlgorithm(ShortestPathData data) {
         super(data);
     }
 

@@ -6,14 +6,8 @@ import org.insa.graph.Node;
 
 public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPathObserver> {
 
-    protected ShortestPathAlgorithm(ShortestPathData data)throws NodeOutOfGraphException {
+    protected ShortestPathAlgorithm(ShortestPathData data){
         super(data);
-        if(!data.getGraph().getNodes().contains( data.getOrigin())) {
-        	throw new NodeOutOfGraphException();
-        }
-        if(!data.getGraph().getNodes().contains( data.getDestination())) {
-        	throw new NodeOutOfGraphException();
-        }
         
     }
 

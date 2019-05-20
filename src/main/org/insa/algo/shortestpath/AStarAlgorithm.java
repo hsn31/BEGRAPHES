@@ -7,7 +7,7 @@ import org.insa.graph.Node;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
-    public AStarAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
+    public AStarAlgorithm(ShortestPathData data) {
         super(data);
     }
     @Override

@@ -42,6 +42,6 @@ public class ShortestPathData extends AbstractInputData {
     @Override
     public String toString() {
         return "Shortest-path from #" + origin.getId() + " to #" + destination.getId() + " ["
-                + this.arcInspector.toString().toLowerCase() + "]";
+                + this.getArcInspector().toString().toLowerCase() + "]";
     }
 }

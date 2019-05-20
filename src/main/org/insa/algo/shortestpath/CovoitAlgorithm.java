@@ -10,31 +10,19 @@ import org.insa.graph.Node;
 import org.insa.graph.Path;
 
 public class CovoitAlgorithm extends ShortestPathAlgorithm{
-	public CovoitAlgorithm(ShortestPathData data) throws NodeOutOfGraphException {
+	public CovoitAlgorithm(ShortestPathData data) {
 		super(data);
 		
 	}
 	@Override
 	public ShortestPathSolution doRun() {
-		
+		ShortestPathData data = getInputData();
 		ShortestPathSolution res;
 		BinaryHeap<Label> binaryHeap=new BinaryHeap<>();
 		Path solutionPath;
 		ArrayList<Node> nodePath = new ArrayList<>();
 		Graph graph = data.getGraph();
 		HashMap<Node, Label> labels = new HashMap<>();
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		return null;
 		
 	}
