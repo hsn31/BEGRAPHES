@@ -32,6 +32,10 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		Node startA = getInputData().getUser_A();
 		Node startB = getInputData().getUser_B();
 		Node target = getInputData().getDestination();
+
+		if(startA == startB &&  startB == target){
+			return new CarPoolingSolution(getInputData(),AbstractSolution.Status.OPTIMAL,new Path(graph,startA),new Path(graph,startB),new Path(graph,target));
+		}
 		
 		System.out.println("MERGE LAUNCHED");
 		System.out.println("A : "+startA.getId());
@@ -100,7 +104,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		startLabel = newLabel(startB, 0,getInputData());
 		labels_B.put(startB, startLabel);
 		dijkstraHeap.insert(startLabel);
-		
+
 		//DIJKSTRA B
 		System.out.println("DIJKSTRA B LAUNCHED");
 		System.out.println(startLabel.getNode().getId());
@@ -110,7 +114,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			notifyNodeMarked(item.getNode());
 			Label item_A = labels_A.get(item.getNode());
 			if (item_A != null && item_A.getState() == Label.LabelState.MARKED) {
-				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getTotalCost() + item_A.getTotalCost(), getInputData(), item_A.getPrev(), item.getPrev(),MergingState.MERGED);
+				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getTotalCost() + item_A.getTotalCost(), getInputData(), true, true,MergingState.MERGED);
 				labels_AB.put(item.getNode(), mergeLabel);
 				aStarHeap.insert(mergeLabel);
 				notifyNodeMerged(item.getNode());
@@ -168,7 +172,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 
 						MergeLabel suiv = labels_AB.get(arc.getDestination());
 						if (suiv == null) {
-							suiv = new MergeLabel(arc.getDestination(), Double.POSITIVE_INFINITY, getInputData(), null, null,MergingState.MERGED);
+							suiv = new MergeLabel(arc.getDestination(), Double.POSITIVE_INFINITY, getInputData(), true, true,MergingState.MERGED);
 							labels_AB.put(arc.getDestination(), suiv);
 						}
 
@@ -179,12 +183,12 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 								suiv.setCost(d);
 								suiv.setPrev(arc);
 								if (suiv.getState() == Label.LabelState.VISITED) {
-									dijkstraHeap.remove(suiv);
+									aStarHeap.remove(suiv);
 								} else {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
-								dijkstraHeap.insert(suiv);
+								aStarHeap.insert(suiv);
 							}
 						}
 					}

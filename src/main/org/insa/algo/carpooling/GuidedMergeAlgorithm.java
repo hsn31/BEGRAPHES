@@ -62,7 +62,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 		HashMap<Node, Label> labels_B = new HashMap<>();
 		HashMap<Node, Label> labels_AB = new HashMap<>();
 
-		labels_AB.put(target, new MergeLabel(target,directCostA+directCostB,getInputData(),null,null,MergingState.MERGED));
+		labels_AB.put(target, new MergeLabel(target,directCostA+directCostB,getInputData(),true,true,MergingState.MERGED));
 
 
 
@@ -151,7 +151,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 									if(computingState==COMPUTING_A && labels_B.get(suiv.getNode())!=null && labels_B.get(suiv.getNode()).getState()==LabelState.MARKED){
 										MergeLabel mergeLabel;
 										if(labels_AB.get(suiv.getNode())==null) {
-										mergeLabel = new MergeLabel(suiv.getNode(), Double.POSITIVE_INFINITY, getInputData(), arc, labels_B.get(suiv.getNode()).getPrev(),MergingState.MERGED);
+										mergeLabel = new MergeLabel(suiv.getNode(), Double.POSITIVE_INFINITY, getInputData(), true, true,MergingState.MERGED);
 										labels_AB.put(suiv.getNode(),mergeLabel);
 										}
 										mergeLabel=(MergeLabel)labels_AB.get(suiv.getNode());
@@ -166,7 +166,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 									if(computingState==COMPUTING_B && labels_A.get(suiv.getNode())!=null && labels_A.get(suiv.getNode()).getState()==LabelState.MARKED){
 										MergeLabel mergeLabel;
 										if(labels_AB.get(suiv.getNode())==null) {
-										mergeLabel = new MergeLabel(suiv.getNode(), Double.POSITIVE_INFINITY, getInputData(), labels_A.get(suiv.getNode()).getPrev(), arc,MergingState.MERGED);
+										mergeLabel = new MergeLabel(suiv.getNode(), Double.POSITIVE_INFINITY, getInputData(), true, true,MergingState.MERGED);
 										labels_AB.put(suiv.getNode(),mergeLabel);
 										}
 										mergeLabel=(MergeLabel)labels_AB.get(suiv.getNode());

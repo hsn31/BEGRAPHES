@@ -5,9 +5,9 @@ import org.insa.algo.AbstractSolution;
 import org.insa.graph.Arc;
 import org.insa.graph.Path;
 
+import java.util.ArrayList;
+
 public class CarPoolingSolution extends AbstractSolution {
-    private Path path_A;
-    private Path path_B;
     private Path commonPath;
 
     private double costA;
@@ -15,14 +15,23 @@ public class CarPoolingSolution extends AbstractSolution {
     private double costAB;
     private double cost;
 
+    private ArrayList<Path> pathUO;
+
 
     protected CarPoolingSolution(CarPoolingData data, Status status) {
         super(data, status);
     }
+    protected CarPoolingSolution(CarPoolingData data,Status status,ArrayList<Path> pathUO,Path commonPath){
+        super(data,status);
+        this.pathUO=pathUO;
+        this.commonPath=commonPath;
+
+    }
     protected CarPoolingSolution(CarPoolingData data,Status status,Path path_A,Path path_B,Path commonPath) {
         super(data, status);
-        this.path_A = path_A;
-        this.path_B = path_B;
+        this.pathUO=new ArrayList<>();
+        this.pathUO.add(path_A);
+        this.pathUO.add(path_B);
         this.commonPath = commonPath;
         this.costA=0;
         this.costB=0;
@@ -30,11 +39,11 @@ public class CarPoolingSolution extends AbstractSolution {
         this.cost=0;
 
         if (isFeasible()) {
-            for (Arc arc : getPath_A().getArcs()) {
+            for (Arc arc : getIndividualPaths().get(0).getArcs()) {
 
                 this.costA += getInputData().getCost(arc);
             }
-            for (Arc arc : getPath_B().getArcs()) {
+            for (Arc arc : getIndividualPaths().get(1).getArcs()) {
 
                 this.costB += getInputData().getCost(arc);
             }
@@ -63,10 +72,10 @@ public class CarPoolingSolution extends AbstractSolution {
             info = String.format("Found a path from node #%d and #%d to node #%d",
                     getInputData().getUser_A().getId(), getInputData().getUser_B().getId(),getInputData().getDestination().getId());
             if (getInputData().getMode() == AbstractInputData.Mode.LENGTH) {
-                info = String.format("%s, AO : %.4f km BO : %.4f km AB : %.4f km TOTAL : %.4f km", info, costA / 1000.0,costB / 1000.0,costAB/1000.0,cost / 1000.0);
+                info = String.format("%s, AO : %.4f km BO : %.4f km AB : %.4f km TOTAL : %.4f km", info, getCostA()/ 1000.0,getCostB() / 1000.0,getCommonCost()/1000.0,getCost() / 1000.0);
             }
             else {
-                info = String.format("%s, AO : %.4f mn BO : %.4f mn AB : %.4f mn TOTAL : %.4f mn", info, costA / 60.0,costB / 60.0,costAB/60.0,cost / 60.0);
+                info = String.format("%s, AO : %.4f mn BO : %.4f mn AB : %.4f mn TOTAL : %.4f mn", info,getCostA() / 60.0,getCostB() / 60.0,getCommonCost()/60.0,getCost() / 60.0);
             }
         }
         info += " in " + getSolvingTime().getSeconds() + " seconds.";
@@ -74,11 +83,11 @@ public class CarPoolingSolution extends AbstractSolution {
     }
 
     public Path getPath_A() {
-        return path_A;
+        return pathUO.get(0);
     }
 
     public Path getPath_B() {
-        return path_B;
+        return pathUO.get(1);
     }
 
     public Path getCommonPath() {
@@ -86,18 +95,32 @@ public class CarPoolingSolution extends AbstractSolution {
     }
 
     public double getCostA() {
-        return costA;
+        if(getInputData().getMode()==AbstractInputData.Mode.LENGTH){
+            return pathUO.get(0).getLength();
+        }
+        else{
+            return pathUO.get(0).getMinimumTravelTime();
+        }
     }
 
     public double getCostB() {
-        return costB;
+        if(getInputData().getMode()==AbstractInputData.Mode.LENGTH){
+            return pathUO.get(1).getLength();
+        }
+        else{
+            return pathUO.get(1).getMinimumTravelTime();
+        }
     }
 
-    public double getCostAB() {
+    public double getCommonCost() {
         return costAB;
     }
 
     public double getCost() {
         return cost;
+    }
+
+    public ArrayList<Path> getIndividualPaths() {
+        return pathUO;
     }
 }

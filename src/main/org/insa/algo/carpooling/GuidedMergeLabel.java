@@ -12,7 +12,7 @@ public class GuidedMergeLabel extends MergeLabel {
 	private double costB;
 	private double costAT;
 	private double costBT;
-	public GuidedMergeLabel(Node noeud, double cost, CarPoolingData data,Arc prevA,Arc prevB,MergingState mergingState) {
+	public GuidedMergeLabel(Node noeud, double cost, CarPoolingData data,boolean prevA,boolean prevB,MergingState mergingState) {
 		super(noeud, cost, data,prevA,prevB,mergingState);
 		if (data.getMode() == AbstractInputData.Mode.TIME) {
 			int speed = data.getMaximumSpeed();
