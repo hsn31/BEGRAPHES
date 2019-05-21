@@ -9,7 +9,7 @@ public class CarPoolingData extends AbstractInputData {
     private Node user_A;
     private Node user_B;
     private Node destination;
-    protected CarPoolingData(Graph graph, Node user_A,Node user_B,Node destination,ArcInspector arcFilter) {
+    public CarPoolingData(Graph graph, Node user_A,Node user_B,Node destination,ArcInspector arcFilter) {
         super(graph, arcFilter);
         this.user_A=user_A;
         this.user_B=user_B;

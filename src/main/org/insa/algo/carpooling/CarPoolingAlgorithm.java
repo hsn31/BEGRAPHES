@@ -66,5 +66,17 @@ public abstract class CarPoolingAlgorithm extends AbstractAlgorithm<CarPoolingOb
 			obs.notifyDestinationReached(node);
 		}
 	}
+	
+	public void notifyMergedNodeMarked(Node node) {
+		for (CarPoolingObserver obs: getObservers()) {
+			obs.notifyMergedNodeMarked(node);
+		}
+		
+	}
+	public void notifyNodeMerged(Node node) {
+		for (CarPoolingObserver obs: getObservers()) {
+			obs.notifyNodeMerged(node);
+		}
+	}
 }
 

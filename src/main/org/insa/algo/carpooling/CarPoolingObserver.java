@@ -32,5 +32,9 @@ public interface CarPoolingObserver {
 	 * @param node Destination.
 	 */
 	public void notifyDestinationReached(Node node);
+	
+	public void notifyNodeMerged(Node node);
+	
+	public void notifyMergedNodeMarked(Node node);
 
 }

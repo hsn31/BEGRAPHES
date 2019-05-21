@@ -13,6 +13,8 @@ import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathAlgorithm;
 import org.insa.algo.weakconnectivity.WeaklyConnectedComponentsAlgorithm;
 
+import org.insa.algo.carpooling.*;
+
 /**
  * Factory class used to register and retrieve algorithms based on their common
  * ancestor and name.
@@ -34,8 +36,8 @@ public class AlgorithmFactory {
         registerAlgorithm(ShortestPathAlgorithm.class, "A*", AStarAlgorithm.class);
 
         // Register your algorithms here:
-        // registerAlgorithm(CarPoolingAlgorithm.class, "My Awesome Algorithm",
-        // MyCarPoolingAlgorithm.class);
+        registerAlgorithm(CarPoolingAlgorithm.class, "Dijkstra Merge",MergeAlgorithm.class);
+        registerAlgorithm(CarPoolingAlgorithm.class, "Guided Merge",GuidedMergeAlgorithm.class);
     }
 
     /**

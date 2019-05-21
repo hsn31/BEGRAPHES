@@ -26,6 +26,14 @@ public class CarPoolingTextObserver implements CarPoolingObserver {
 	public void notifyNodeMarked(Node node) {
 		stream.println("Node " + node.getId() + " marked.");
 	}
+	@Override
+	public void notifyNodeMerged(Node node) {
+		stream.println("Node " + node.getId() + " merged.");
+	}
+	@Override
+	public void notifyMergedNodeMarked(Node node) {
+		stream.println("Node " + node.getId() + " marked.");
+	}
 
 	@Override
 	public void notifyDestinationReached(Node node) {
