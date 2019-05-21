@@ -54,7 +54,6 @@ public class LabelStar extends Label implements Comparable<Label> {
 
 	@Override
 	public int compareTo(Label o) {
-		assert o instanceof LabelStar;
 		if(o.getTotalCost()>this.getTotalCost()){
 			return -1;
 		}

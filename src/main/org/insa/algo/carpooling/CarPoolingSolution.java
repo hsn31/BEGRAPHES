@@ -10,15 +10,40 @@ public class CarPoolingSolution extends AbstractSolution {
     private Path path_B;
     private Path commonPath;
 
+    private double costA;
+    private double costB;
+    private double costAB;
+    private double cost;
+
 
     protected CarPoolingSolution(CarPoolingData data, Status status) {
         super(data, status);
     }
-    protected CarPoolingSolution(CarPoolingData data,Status status,Path path_A,Path path_B,Path commonPath){
-        super(data,status);
-        this.path_A=path_A;
-        this.path_B=path_B;
-        this.commonPath=commonPath;
+    protected CarPoolingSolution(CarPoolingData data,Status status,Path path_A,Path path_B,Path commonPath) {
+        super(data, status);
+        this.path_A = path_A;
+        this.path_B = path_B;
+        this.commonPath = commonPath;
+        this.costA=0;
+        this.costB=0;
+        this.costAB=0;
+        this.cost=0;
+
+        if (isFeasible()) {
+            for (Arc arc : getPath_A().getArcs()) {
+
+                this.costA += getInputData().getCost(arc);
+            }
+            for (Arc arc : getPath_B().getArcs()) {
+
+                this.costB += getInputData().getCost(arc);
+            }
+            for (Arc arc : getCommonPath().getArcs()) {
+
+                this.costAB += getInputData().getCost(arc);
+            }
+            this.cost=this.costA+this.costB+this.costAB;
+        }
     }
 
     @Override
@@ -35,22 +60,6 @@ public class CarPoolingSolution extends AbstractSolution {
                     getInputData().getUser_A().getId(), getInputData().getUser_B().getId(),getInputData().getDestination().getId());
         }
         else {
-            double costA=0;
-            double costB=0;
-            double costAB=0;
-            double cost = 0;
-            for (Arc arc: getPath_A().getArcs()) {
-                cost += getInputData().getCost(arc);
-                costA+=getInputData().getCost(arc);
-            }
-            for (Arc arc: getPath_B().getArcs()) {
-                cost += getInputData().getCost(arc);
-                costB += getInputData().getCost(arc);
-            }
-            for (Arc arc: getCommonPath().getArcs()) {
-                cost+=getInputData().getCost(arc);
-                costAB += getInputData().getCost(arc);
-            }
             info = String.format("Found a path from node #%d and #%d to node #%d",
                     getInputData().getUser_A().getId(), getInputData().getUser_B().getId(),getInputData().getDestination().getId());
             if (getInputData().getMode() == AbstractInputData.Mode.LENGTH) {
@@ -74,5 +83,21 @@ public class CarPoolingSolution extends AbstractSolution {
 
     public Path getCommonPath() {
         return commonPath;
+    }
+
+    public double getCostA() {
+        return costA;
+    }
+
+    public double getCostB() {
+        return costB;
+    }
+
+    public double getCostAB() {
+        return costAB;
+    }
+
+    public double getCost() {
+        return cost;
     }
 }
