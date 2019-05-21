@@ -176,6 +176,20 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         this.arraySet(index, x);
         this.percolateUp(index);
     }
+
+    private void update(E x){
+        this.percolateDown(this.percolateUp(this.contains(x)));
+    }
+
+    public void insertOrUpdate(E x){
+        Integer index = this.contains(x);
+        if(index!=null){
+            this.update(x);
+        }
+        else {
+            this.insert(x);
+        }
+    }
     
     public Integer contains(E x) {
         return this.indexMap.get(x);
