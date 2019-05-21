@@ -28,4 +28,10 @@ public class CarPoolingData extends AbstractInputData {
     public Node getDestination() {
         return destination;
     }
+
+    @Override
+    public String toString() {
+        return "Carpooling from #" + user_A.getId() + " and #" + user_B.getId()+" to #" + destination.getId() + " ["
+                + this.getArcInspector().toString().toLowerCase() + "]";
+    }
 }
