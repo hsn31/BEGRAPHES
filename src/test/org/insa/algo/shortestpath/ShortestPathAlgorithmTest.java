@@ -72,7 +72,7 @@ public abstract class ShortestPathAlgorithmTest {
 		// Create nodes
 		nodes = new Node[6];
 		for (int i = 0; i < nodes.length; ++i) {
-			nodes[i] = new Node(i, new Point(i,i));
+			nodes[i] = new Node(i, new Point(0,0));
 		}
 
 		// Add arcs...
