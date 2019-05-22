@@ -40,6 +40,10 @@ public class CarPoolingData extends AbstractInputData {
         return users;
     }
 
+    public int getNbUsers(){
+        return this.users.size();
+    }
+
     @Override
     public String toString() {
         return "Carpooling from #" + users.get(0).getId() + " and #" + users.get(1).getId()+" to #" + destination.getId() + " ["
