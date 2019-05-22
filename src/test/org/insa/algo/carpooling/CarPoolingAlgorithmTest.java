@@ -1,15 +1,16 @@
 package org.insa.algo.carpooling;
 
 import org.insa.algo.AbstractInputData;
+import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.AStarAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathData;
+import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.graph.*;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -65,7 +66,7 @@ public abstract class CarPoolingAlgorithmTest {
 		// Create nodes
 		nodes = new Node[6];
 		for (int i = 0; i < nodes.length; ++i) {
-			nodes[i] = new Node(i, new Point(0,0));
+			nodes[i] = new Node(i, new Point(0, 0));
 		}
 
 		// Add arcs...
@@ -122,61 +123,71 @@ public abstract class CarPoolingAlgorithmTest {
 
 
 	}
+
 	protected abstract CarPoolingAlgorithm instanciateAlgorithm(CarPoolingData data);
-	protected CarPoolingAlgorithm instanciateOracle(CarPoolingData data){
+
+	protected CarPoolingAlgorithm instanciateOracle(CarPoolingData data) {
 		return new MergeAlgorithm(data);
 	}
 
-	protected void upperBoundTest(Graph graph,CarPoolingSolution solution){
-		double upperBound = new AStarAlgorithm(new ShortestPathData(graph,solution.getInputData().getUser_A(),solution.getInputData().getDestination(),ArcInspectorFactory.getAllFilters().get(0))).run().getCost()+
-				new AStarAlgorithm(new ShortestPathData(graph,solution.getInputData().getUser_B(),solution.getInputData().getDestination(),ArcInspectorFactory.getAllFilters().get(0))).run().getCost();
-
-		Assert.assertTrue("Path cost is superior to upper bound AT+BT",solution.getCost()<=upperBound);
-	}
-
-	protected void segmentOptimalityTest(Graph graph,CarPoolingSolution solution){
-		Assume.assumeTrue(solution.isFeasible());
-		Node A = solution.getPath_A().getOrigin();
-		Node B = solution.getPath_B().getOrigin();
-		Node O = solution.getPath_A().getDestination();
-		Node T = solution.getCommonPath().getDestination();
-
-		double distAO = new AStarAlgorithm(new ShortestPathData(graph,A,O,solution.getInputData().getArcInspector())).run().getCost();
-		double distBO = new AStarAlgorithm(new ShortestPathData(graph,B,O,solution.getInputData().getArcInspector())).run().getCost();
-		double distOT = new AStarAlgorithm(new ShortestPathData(graph,O,T,solution.getInputData().getArcInspector())).run().getCost();
-
-		Assert.assertTrue("AO path is not the shortest possible",distAO==solution.getCostA());
-		Assert.assertTrue("BO path is not the shortest possible",distBO==solution.getCostB());
-		Assert.assertTrue("OT path is not the shortest possible",distOT==solution.getCostAB());
-	}
-
-	protected void validityTest(Graph graph,CarPoolingSolution solution){
-		Assert.assertEquals("Origin node of AO differs from userA",solution.getInputData().getUser_A(),solution.getPath_A().getOrigin());
-		Assert.assertEquals("Origin node of BO differs from userB",solution.getInputData().getUser_B(),solution.getPath_B().getOrigin());
-		Assert.assertEquals("Incorrect end node of path OT,should be destination",solution.getInputData().getDestination(),solution.getCommonPath().getDestination());
-		Assert.assertEquals("Destination nodes of AO and BO differs",solution.getPath_A().getDestination(),solution.getPath_B().getDestination());
-
-
+	protected void upperBoundTest(Graph graph, CarPoolingSolution solution) {
 
 	}
 
-	protected void carPoolingTest(Graph graph,Node userA,Node userB,Node destination){
+	protected void segmentOptimalityTest(Graph graph, CarPoolingSolution solution) {
+		if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
+			Assert.assertEquals("Algorithm end status incorrect, should be OPTIMAL", AbstractSolution.Status.OPTIMAL,solution.getStatus());
+			Node A = solution.getPath_A().getOrigin();
+			Node B = solution.getPath_B().getOrigin();
+			Node O = solution.getPath_A().getDestination();
+			Node T = solution.getCommonPath().getDestination();
+
+			double distAO = new AStarAlgorithm(new ShortestPathData(graph, A, O, solution.getInputData().getArcInspector())).run().getCost();
+			double distBO = new AStarAlgorithm(new ShortestPathData(graph, B, O, solution.getInputData().getArcInspector())).run().getCost();
+			double distOT = new AStarAlgorithm(new ShortestPathData(graph, O, T, solution.getInputData().getArcInspector())).run().getCost();
+
+
+			Assert.assertTrue("AO path is not the shortest possible, should be " + distAO + " is " + solution.getCostA(), distAO == solution.getCostA());
+			Assert.assertTrue("BO path is not the shortest possible, should be " + distBO + " is ", distBO == solution.getCostB());
+			Assert.assertTrue("OT path is not the shortest possible, should be " + distOT + " is ", distOT == solution.getCommonCost());
+		}
+	}
+
+
+	protected void validityTest(Graph graph, CarPoolingSolution solution) {
+		ShortestPathSolution oracleAT = new AStarAlgorithm(new ShortestPathData(graph, solution.getInputData().getUser_A(), solution.getInputData().getDestination(), ArcInspectorFactory.getAllFilters().get(0))).run();
+		ShortestPathSolution oracleBT = new AStarAlgorithm(new ShortestPathData(graph, solution.getInputData().getUser_B(), solution.getInputData().getDestination(), ArcInspectorFactory.getAllFilters().get(0))).run();
+		if (oracleAT.getStatus() == AbstractSolution.Status.OPTIMAL && oracleBT.getStatus() == AbstractSolution.Status.OPTIMAL) {
+			double upperBound = oracleAT.getCost() + oracleBT.getCost();
+			Assert.assertTrue("Path cost is superior to upper bound AT+BT", solution.getCost() <= upperBound);
+			Assert.assertEquals("Origin node of AO differs from userA", solution.getInputData().getUser_A(), solution.getPath_A().getOrigin());
+			Assert.assertEquals("Origin node of BO differs from userB", solution.getInputData().getUser_B(), solution.getPath_B().getOrigin());
+			Assert.assertEquals("Incorrect end node of path OT,should be destination", solution.getInputData().getDestination(), solution.getCommonPath().getDestination());
+			Assert.assertEquals("Destination nodes of AO and BO differs", solution.getPath_A().getDestination(), solution.getPath_B().getDestination());
+		} else {
+			Assert.assertEquals("Algorithm end status incorrect, should be INFEASIBLE", AbstractSolution.Status.INFEASIBLE, solution.getStatus());
+		}
+
+
+	}
+
+
+	protected void carPoolingTest(Graph graph, Node userA, Node userB, Node destination) {
 		ArcInspector defaultInspector = ArcInspectorFactory.getAllFilters().get(0);
-		CarPoolingData data = new CarPoolingData(graph,userA,userB,destination,defaultInspector);
+		CarPoolingData data = new CarPoolingData(graph, userA, userB, destination, defaultInspector);
 		CarPoolingSolution solution = instanciateAlgorithm(data).run();
-		validityTest(graph,solution);
-		upperBoundTest(graph,solution);
-		segmentOptimalityTest(graph,solution);
+		validityTest(graph, solution);
+		segmentOptimalityTest(graph, solution);
 
 
 	}
 
 	@Test
-	public void simpleGraphTest(){
-		for(int i= 0;i<nodes.length;i++){
-			for(int j=0;j<nodes.length;j++){
-				for(int k = 0;k<nodes.length;k++){
-					carPoolingTest(simpleGraph,nodes[i],nodes[j],nodes[k]);
+	public void simpleGraphTest() {
+		for (int i = 0; i < nodes.length; i++) {
+			for (int j = 0; j < nodes.length; j++) {
+				for (int k = 0; k < nodes.length; k++) {
+					carPoolingTest(simpleGraph, nodes[i], nodes[j], nodes[k]);
 				}
 			}
 		}

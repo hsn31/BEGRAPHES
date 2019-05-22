@@ -32,8 +32,8 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//Square Map
 	private static Graph squareMapGraph;
-	private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
-	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
+	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 	
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 
