@@ -140,6 +140,8 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 
     
     public void removeAtIndex(int index) {
+        E value = this.array.get(index);
+        this.indexMap.remove(value);
     	//On traite les cas feuilles extremes
     	if (index==this.currentSize-1)  {
     		array.remove(index);
@@ -155,6 +157,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 		    percolateDown(percolateUp(index));
 
 	    }
+
 
     	
     	

@@ -227,7 +227,7 @@ public class Path {
      * @return Last node of the path.
      */
     public Node getDestination() {
-        return arcs.get(arcs.size() - 1).getDestination();
+        return (arcs.size()>0)?arcs.get(arcs.size() - 1).getDestination():origin;
     }
 
     /**
