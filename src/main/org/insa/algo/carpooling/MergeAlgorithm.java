@@ -116,6 +116,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			Label item_A = labels_A.get(item.getNode());
 			if (item_A != null && item_A.getState() == Label.LabelState.MARKED) {
 				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getCost() + item_A.getCost(), getInputData(),MergingState.MERGED);
+				mergeLabel.setState(Label.LabelState.VISITED);
 				System.out.println("Merging at "+item.getNode().getId()+" Cost A "+item_A.getCost()+" Cost B "+item.getCost());
 				labels_AB.put(item.getNode(), mergeLabel);
 				aStarHeap.insert(mergeLabel);
