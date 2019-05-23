@@ -19,6 +19,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Random;
 
 public abstract class CarPoolingAlgorithmTest {
 	// Simple Test graph from subject
@@ -139,7 +140,7 @@ public abstract class CarPoolingAlgorithmTest {
 			Assert.assertEquals("Algorithm end status incorrect, should be OPTIMAL", AbstractSolution.Status.OPTIMAL,solution.getStatus());
 			Node A = solution.getPath_A().getOrigin();
 			Node B = solution.getPath_B().getOrigin();
-			Node O = solution.getPath_A().getDestination();
+			Node O = solution.getCommonPath().getOrigin();
 			Node T = solution.getCommonPath().getDestination();
 
 			double distAO = new AStarAlgorithm(new ShortestPathData(graph, A, O, solution.getInputData().getArcInspector())).run().getCost();
@@ -147,9 +148,9 @@ public abstract class CarPoolingAlgorithmTest {
 			double distOT = new AStarAlgorithm(new ShortestPathData(graph, O, T, solution.getInputData().getArcInspector())).run().getCost();
 
 
-			Assert.assertTrue("AO path is not the shortest possible, should be " + distAO + " is " + solution.getCostA(), distAO == solution.getCostA());
-			Assert.assertTrue("BO path is not the shortest possible, should be " + distBO + " is ", distBO == solution.getCostB());
-			Assert.assertTrue("OT path is not the shortest possible, should be " + distOT + " is ", distOT == solution.getCommonCost());
+			Assert.assertTrue("AO path is not the shortest possible, should be " + distAO + " is " + solution.getCostA(), Math.abs(distAO - solution.getCostA())<=distAO/100);
+			Assert.assertTrue("BO path is not the shortest possible, should be " + distBO + " is " +solution.getCostB(), Math.abs(distBO - solution.getCostB())<=distBO/100);
+			Assert.assertTrue("OT path is not the shortest possible, should be " + distOT + " is " +solution.getCostAB(), Math.abs(distOT - solution.getCostAB())<=distOT/100);
 		}
 	}
 
@@ -159,7 +160,8 @@ public abstract class CarPoolingAlgorithmTest {
 		ShortestPathSolution oracleBT = new AStarAlgorithm(new ShortestPathData(graph, solution.getInputData().getUser_B(), solution.getInputData().getDestination(), ArcInspectorFactory.getAllFilters().get(0))).run();
 		if (oracleAT.getStatus() == AbstractSolution.Status.OPTIMAL && oracleBT.getStatus() == AbstractSolution.Status.OPTIMAL) {
 			double upperBound = oracleAT.getCost() + oracleBT.getCost();
-			Assert.assertTrue("Path cost is superior to upper bound AT+BT", solution.getCost() <= upperBound);
+			System.out.println("Upper bound : "+upperBound+" Solution cost : "+solution.getCost());
+			Assert.assertTrue("Path cost" + solution.getCost() +" is superior to upper bound AT+BT "+upperBound, Math.round(solution.getCost()) <= Math.round(upperBound));
 			Assert.assertEquals("Origin node of AO differs from userA", solution.getInputData().getUser_A(), solution.getPath_A().getOrigin());
 			Assert.assertEquals("Origin node of BO differs from userB", solution.getInputData().getUser_B(), solution.getPath_B().getOrigin());
 			Assert.assertEquals("Incorrect end node of path OT,should be destination", solution.getInputData().getDestination(), solution.getCommonPath().getDestination());
@@ -192,5 +194,19 @@ public abstract class CarPoolingAlgorithmTest {
 			}
 		}
 
+	}
+
+	@Test
+	public void squareGraphTest(){
+		for(int i = 0;i<15;i++){
+			for(int j = 0;j<15;j++){
+				for(int k = 0;k<15;k++){
+					int i1 = new Random().nextInt(squareMapGraph.size());
+					int j1 = new Random().nextInt(squareMapGraph.size());
+					int k1 = new Random().nextInt(squareMapGraph.size());
+					carPoolingTest(squareMapGraph,squareMapGraph.getNodes().get(i1),squareMapGraph.getNodes().get(j1),squareMapGraph.getNodes().get(k1));
+				}
+			}
+		}
 	}
 }
