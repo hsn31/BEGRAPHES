@@ -17,6 +17,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 	protected MergeAlgorithm(CarPoolingData data) {
 		super(data);
 	}
+
 	protected Label newLabel(Node node,double cost,CarPoolingData data) {
 		return new Label(node,cost);
 	}
@@ -114,7 +115,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			notifyNodeMarked(item.getNode());
 			Label item_A = labels_A.get(item.getNode());
 			if (item_A != null && item_A.getState() == Label.LabelState.MARKED) {
-				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getTotalCost() + item_A.getTotalCost(), getInputData(),MergingState.MERGED);
+				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getCost() + item_A.getCost(), getInputData(),MergingState.MERGED);
 				labels_AB.put(item.getNode(), mergeLabel);
 				aStarHeap.insert(mergeLabel);
 				notifyNodeMerged(item.getNode());

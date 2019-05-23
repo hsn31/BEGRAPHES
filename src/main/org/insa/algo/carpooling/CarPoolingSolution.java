@@ -112,6 +112,16 @@ public class CarPoolingSolution extends AbstractSolution {
         }
     }
 
+    public double getCostAB(){
+        if(getInputData().getMode()==AbstractInputData.Mode.LENGTH){
+            return commonPath.getLength();
+        }
+        else{
+            return commonPath.getMinimumTravelTime();
+        }
+
+    }
+
     public double getCommonCost() {
         return costAB;
     }
