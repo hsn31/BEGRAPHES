@@ -3,6 +3,7 @@ package org.insa.algo.carpooling;
 import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.graph.Arc;
+import org.insa.graph.Node;
 import org.insa.graph.Path;
 
 import java.util.ArrayList;
@@ -132,5 +133,13 @@ public class CarPoolingSolution extends AbstractSolution {
 
     public ArrayList<Path> getIndividualPaths() {
         return pathUO;
+    }
+    public Node getJunctionNode(){
+        if(this.commonPath==null){
+            return null;
+        }
+        else {
+            return this.commonPath.getOrigin();
+        }
     }
 }

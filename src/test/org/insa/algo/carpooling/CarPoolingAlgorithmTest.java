@@ -143,6 +143,8 @@ public abstract class CarPoolingAlgorithmTest {
 			Node O = solution.getCommonPath().getOrigin();
 			Node T = solution.getCommonPath().getDestination();
 
+
+
 			double distAO = new AStarAlgorithm(new ShortestPathData(graph, A, O, solution.getInputData().getArcInspector())).run().getCost();
 			double distBO = new AStarAlgorithm(new ShortestPathData(graph, B, O, solution.getInputData().getArcInspector())).run().getCost();
 			double distOT = new AStarAlgorithm(new ShortestPathData(graph, O, T, solution.getInputData().getArcInspector())).run().getCost();
@@ -175,9 +177,14 @@ public abstract class CarPoolingAlgorithmTest {
 
 
 	protected void carPoolingTest(Graph graph, Node userA, Node userB, Node destination) {
+		System.out.println("\nTEST START");
+		System.out.println("A : "+userA.getId());
+		System.out.println("B : "+userB.getId());
+		System.out.println("T : "+destination.getId());
 		ArcInspector defaultInspector = ArcInspectorFactory.getAllFilters().get(0);
 		CarPoolingData data = new CarPoolingData(graph, userA, userB, destination, defaultInspector);
 		CarPoolingSolution solution = instanciateAlgorithm(data).run();
+		System.out.println("O : "+((solution.getJunctionNode()!=null)?solution.getJunctionNode().getId():null));
 		validityTest(graph, solution);
 		segmentOptimalityTest(graph, solution);
 

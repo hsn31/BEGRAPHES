@@ -38,10 +38,10 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			return new CarPoolingSolution(getInputData(),AbstractSolution.Status.OPTIMAL,new Path(graph,startA),new Path(graph,startB),new Path(graph,target));
 		}
 		
-		System.out.println("MERGE LAUNCHED");
-		System.out.println("A : "+startA.getId());
-		System.out.println("B : "+startB.getId());
-		System.out.println("T : "+target.getId());
+//		System.out.println("MERGE LAUNCHED");
+//		System.out.println("A : "+startA.getId());
+//		System.out.println("B : "+startB.getId());
+//		System.out.println("T : "+target.getId());
 		
 
 		HashMap<Node, Label> labels_A = new HashMap<>();
@@ -58,9 +58,11 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 
 		boolean destinationReached = false;
 		//DIJKSTRA A
-		System.out.println("DIJKSTRA A LAUNCHED");
+//		System.out.println("DIJKSTRA A LAUNCHED");
 		while (!destinationReached && dijkstraHeap.size() > 0) {
+
 			Label item = dijkstraHeap.deleteMin();
+			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
 			item.setState(Label.LabelState.MARKED);
 			notifyNodeMarked(item.getNode());
 			if (item.getNode() == target) {
@@ -90,6 +92,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
+								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+suiv.getCost());
 								dijkstraHeap.insert(suiv);
 							}
 						}
@@ -97,7 +100,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 				}
 			}
 		}
-		System.out.println("DIJKSTRA A FINISHED");
+//		System.out.println("DIJKSTRA A FINISHED");
 
 		dijkstraHeap = new BinaryHeap<>();
 		destinationReached = false;
@@ -107,21 +110,22 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		dijkstraHeap.insert(startLabel);
 
 		//DIJKSTRA B
-		System.out.println("DIJKSTRA B LAUNCHED");
-		System.out.println(startLabel.getNode().getId());
+		System.out.println("DIJKSTRA B LAUNCHED at "+startLabel.getNode().getId());
 		while (!destinationReached && dijkstraHeap.size() > 0) {
 			Label item = dijkstraHeap.deleteMin();
+			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
 			item.setState(Label.LabelState.MARKED);
 			notifyNodeMarked(item.getNode());
 			Label item_A = labels_A.get(item.getNode());
 			if (item_A != null && item_A.getState() == Label.LabelState.MARKED) {
 				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getCost() + item_A.getCost(), getInputData(),MergingState.MERGED);
+				System.out.println("Merging at "+item.getNode().getId()+" Cost A "+item_A.getCost()+" Cost B "+item.getCost());
 				labels_AB.put(item.getNode(), mergeLabel);
 				aStarHeap.insert(mergeLabel);
 				notifyNodeMerged(item.getNode());
 			}
 			if (item.getNode() == target) {
-				System.out.println("DestinationReached "+item.getCost());
+				System.out.println("DestinationReached "+item.getNode().getId()+" "+item.getCost());
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
@@ -146,6 +150,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
+								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+suiv.getCost());
 								dijkstraHeap.insert(suiv);
 							}
 						}
@@ -153,24 +158,23 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 				}
 			}
 		}
-		System.out.println("DIJKSTRA B FINISHED");
-		System.out.println(destinationReached);
+//		System.out.println("DIJKSTRA B FINISHED");
+//		System.out.println(destinationReached);
 		destinationReached = false;
 		//A STAR OT
 		System.out.println("ASTAR OT LAUNCHED");
 		while (!destinationReached && aStarHeap.size() > 0) {
 			MergeLabel item = (MergeLabel) aStarHeap.deleteMin();
-			System.out.println(item.getNode().getId());
+			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
 			item.setState(Label.LabelState.MARKED);
 			notifyMergedNodeMarked(item.getNode());
 			if (item.getNode() == target) {
+				System.out.println("DestinationReached");
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
 
 					if (data.isAllowed(arc)) {
-
-
 						MergeLabel suiv = labels_AB.get(arc.getDestination());
 						if (suiv == null) {
 							suiv = new MergeLabel(arc.getDestination(), Double.POSITIVE_INFINITY, getInputData(),MergingState.MERGED);
@@ -189,6 +193,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
+								System.out.println("Inserting "+suiv.getNode().getId()+" woth cost "+suiv.getCost());
 								aStarHeap.insert(suiv);
 							}
 						}
@@ -197,14 +202,14 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			}
 
 		}
-		System.out.println("ASTAR FINISHED");
-		System.out.println(destinationReached);
+//		System.out.println("ASTAR FINISHED");
+//		System.out.println(destinationReached);
 
 		if (labels_AB.get(target) == null) {
 			System.out.println("IMPOSSIBLE");
 			return new CarPoolingSolution(getInputData(), AbstractSolution.Status.INFEASIBLE);
 		} else {
-			System.out.println("Constructing path");
+//			System.out.println("Constructing path");
 			ArrayList<Node> pathArrayA = new ArrayList<>();
 			ArrayList<Node> pathArrayB = new ArrayList<>();
 			ArrayList<Node> pathArrayAB = new ArrayList<>();
@@ -220,7 +225,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			
 			cursorA = labels_A.get(pathArrayAB.get(0)).getPrev();
 			pathArrayA.add(pathArrayAB.get(0));
-			System.out.println("Constructing A");
+//			System.out.println("Constructing A");
 			while (cursorA != null) {
 				pathArrayA.add(0, cursorA.getOrigin());
 				cursorA = labels_A.get(cursorA.getOrigin()).getPrev();
@@ -228,7 +233,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 
 			cursorB = labels_B.get(pathArrayAB.get(0)).getPrev();
 			pathArrayB.add(pathArrayAB.get(0));
-			System.out.println("Constructing B");
+//			System.out.println("Constructing B");
 			while (cursorB != null) {
 				pathArrayB.add(0, cursorB.getOrigin());
 				cursorB = labels_B.get(cursorB.getOrigin()).getPrev();
