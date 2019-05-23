@@ -68,10 +68,9 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 
 
 		//DIJKSTRA ATB
-		//System.out.println("DIJKSTRA ABT LAUNCHED");
+		System.out.println("\nDIJKSTRA ABT LAUNCHED");
 		while (!destinationReached && (dijkstrAStarHeap.size() > 0)) {
 			HashMap<Node, Label> selectedLabels = null;
-
 
 			Label item = dijkstrAStarHeap.deleteMin();
 			System.out.println("Computing "+item.getNode().getId());
@@ -79,7 +78,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 			Label item_B = labels_B.get(item.getNode());
 			Label item_AB = labels_AB.get(item.getNode());
 			if ((item==item_A && !destinationReachedA) || (item==item_B && !destinationReachedB) || item==item_AB) {
-
+				System.out.println("Valid");
 				//Merging check
 				if (item == item_A && item_B != null && item_B.getState() == LabelState.MARKED) {
 					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
@@ -124,9 +123,11 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 						destinationReached = true;
 					} else if (computingState == COMPUTING_A) {
 						destinationReachedA = true;
+						System.out.println("REACHED A");
 
 					} else if (computingState == COMPUTING_B) {
 						destinationReachedB = true;
+						System.out.println("REACHED B");
 					}
 
 
@@ -170,6 +171,8 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 			}
 		}
 		System.out.println("DIJKSTRASTAR FINISHED");
+		System.out.println("Direct cost A "+directCostA);
+		System.out.println("Direct cost B "+directCostB);
 
 
 		if (labels_AB.get(target) == null) {
