@@ -5,10 +5,7 @@ import org.insa.algo.AbstractSolution;
 import org.insa.algo.carpooling.MergeLabel.MergingState;
 import org.insa.algo.shortestpath.Label;
 import org.insa.algo.utils.BinaryHeap;
-import org.insa.graph.Arc;
-import org.insa.graph.Graph;
-import org.insa.graph.Node;
-import org.insa.graph.Path;
+import org.insa.graph.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +55,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 
 		boolean destinationReached = false;
 		//DIJKSTRA A
-//		System.out.println("DIJKSTRA A LAUNCHED");
+		System.out.println("\nDIJKSTRA A LAUNCHED");
 		while (!destinationReached && dijkstraHeap.size() > 0) {
 
 			Label item = dijkstraHeap.deleteMin();
@@ -110,7 +107,7 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		dijkstraHeap.insert(startLabel);
 
 		//DIJKSTRA B
-		System.out.println("DIJKSTRA B LAUNCHED at "+startLabel.getNode().getId());
+		System.out.println("\nDIJKSTRA B LAUNCHED at "+startLabel.getNode().getId());
 		while (!destinationReached && dijkstraHeap.size() > 0) {
 			Label item = dijkstraHeap.deleteMin();
 			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
@@ -162,10 +159,13 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 //		System.out.println(destinationReached);
 		destinationReached = false;
 		//A STAR OT
-		System.out.println("ASTAR OT LAUNCHED");
+		System.out.println("\nASTAR OT LAUNCHED");
 		while (!destinationReached && aStarHeap.size() > 0) {
+			MergeLabel itemDebug = (MergeLabel) aStarHeap.findMin();
+			System.out.println("Computing node "+itemDebug.getNode().getId()+" "+itemDebug.getCost()+" "+itemDebug.getTotalCost());
 			MergeLabel item = (MergeLabel) aStarHeap.deleteMin();
-			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
+			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost()+" "+item.getTotalCost());
+			System.out.println("Heap size : "+aStarHeap.size());
 			item.setState(Label.LabelState.MARKED);
 			notifyMergedNodeMarked(item.getNode());
 			if (item.getNode() == target) {
@@ -173,7 +173,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
-
 					if (data.isAllowed(arc)) {
 						MergeLabel suiv = labels_AB.get(arc.getDestination());
 						if (suiv == null) {
@@ -181,9 +180,10 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 							labels_AB.put(arc.getDestination(), suiv);
 						}
 
-
 						if (suiv.getState() != Label.LabelState.MARKED) {
 							double d = evalDist(item, arc);
+							double debug = suiv.getCost();
+
 							if (d < suiv.getCost()) {
 								suiv.setCost(d);
 								suiv.setPrev(arc);
@@ -193,7 +193,9 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
-								System.out.println("Inserting "+suiv.getNode().getId()+" woth cost "+suiv.getCost());
+
+								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+(debug)+" new cost is "+d+" Total cost is "+suiv.getTotalCost());
+								System.out.println(item.getCost()+" "+evalDist(item,arc)+" "+ Point.distance(suiv.getNode().getPoint(),target.getPoint()));
 								aStarHeap.insert(suiv);
 							}
 						}
