@@ -194,8 +194,8 @@ public abstract class CarPoolingAlgorithmTest {
 	@Test
 	public void simpleGraphTest() {
 		for (int i = 0; i < nodes.length; i++) {
-			for (int j = 0; j < nodes.length; j++) {
-				for (int k = 0; k < nodes.length; k++) {
+			for (int j = i+1; j < nodes.length; j++) {
+				for (int k = j+1; k < nodes.length; k++) {
 					carPoolingTest(simpleGraph, nodes[i], nodes[j], nodes[k]);
 				}
 			}
