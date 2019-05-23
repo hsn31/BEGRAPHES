@@ -27,8 +27,8 @@ public abstract class CarPoolingAlgorithmTest {
 
 	//Square Map
 	protected static Graph squareMapGraph;
-	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
-	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
+	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 
@@ -225,7 +225,6 @@ public abstract class CarPoolingAlgorithmTest {
 		CarPoolingSolution result = instanciateAlgorithm(data).run();
 
 		Assert.assertEquals("Oracle and Algorithm finished with different status",oracle.getStatus(),result.getStatus());
-		Assert.assertTrue("Oracle and algorithm have different AO path length. Should be "+oracle.getCostA()+" is "+result.getCostA(),result.getCostA()==oracle.getCostA());
 		Assert.assertTrue("Oracle and algorithm have different path length. Should be "+oracle.getCost()+" is "+result.getCost(),oracle.getCost()==result.getCost());
 
 	}
