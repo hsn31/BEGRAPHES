@@ -78,14 +78,18 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 			Label item_B = labels_B.get(item.getNode());
 			Label item_AB = labels_AB.get(item.getNode());
 			if ((item!=item_A || !destinationReachedA) && (item!=item_B || !destinationReachedB)) {
+
+				//Merging check
 				if (item == item_A && labels_B.get(item.getNode()) != null && labels_B.get(item.getNode()).getState() == LabelState.MARKED) {
 					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
+					label.setState(LabelState.VISITED);
 					labels_AB.put(item.getNode(), label);
 					dijkstrAStarHeap.insert(label);
 					notifyNodeMerged(item.getNode());
 
 				} else if (item == item_B && labels_A.get(item.getNode()) != null && labels_A.get(item.getNode()).getState() == LabelState.MARKED) {
 					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
+					label.setState(LabelState.VISITED);
 					labels_AB.put(item.getNode(), label);
 					dijkstrAStarHeap.insert(label);
 					notifyNodeMerged(item.getNode());
