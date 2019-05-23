@@ -157,10 +157,6 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 		    percolateDown(percolateUp(index));
 
 	    }
-
-
-    	
-    	
     }
     
     @Override

@@ -42,6 +42,10 @@ public class LabelStar extends Label implements Comparable<Label> {
 			this.distToDest=Point.distance(noeud.getPoint(), data.getDestination().getPoint());
 		}
 	}
+	public LabelStar(Node noeud,double cost,double heuristicValue){
+		super(noeud,cost);
+		this.distToDest=heuristicValue;
+	}
 
 	public double getDistToDest(){
 		return this.distToDest;
