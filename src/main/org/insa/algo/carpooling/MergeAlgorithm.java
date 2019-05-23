@@ -34,12 +34,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		if(startA == startB &&  startB == target){
 			return new CarPoolingSolution(getInputData(),AbstractSolution.Status.OPTIMAL,new Path(graph,startA),new Path(graph,startB),new Path(graph,target));
 		}
-		
-//		System.out.println("MERGE LAUNCHED");
-//		System.out.println("A : "+startA.getId());
-//		System.out.println("B : "+startB.getId());
-//		System.out.println("T : "+target.getId());
-		
 
 		HashMap<Node, Label> labels_A = new HashMap<>();
 		HashMap<Node, Label> labels_B = new HashMap<>();
@@ -54,16 +48,14 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 
 
 		boolean destinationReached = false;
+
 		//DIJKSTRA A
-		System.out.println("\nDIJKSTRA A LAUNCHED");
 		while (!destinationReached && dijkstraHeap.size() > 0) {
 
 			Label item = dijkstraHeap.deleteMin();
-			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
 			item.setState(Label.LabelState.MARKED);
 			notifyNodeMarked(item.getNode());
 			if (item.getNode() == target) {
-				System.out.println("Destination Reached "+item.getCost());
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
@@ -89,7 +81,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
-								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+suiv.getCost());
 								dijkstraHeap.insert(suiv);
 							}
 						}
@@ -97,7 +88,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 				}
 			}
 		}
-//		System.out.println("DIJKSTRA A FINISHED");
 
 		dijkstraHeap = new BinaryHeap<>();
 		destinationReached = false;
@@ -107,23 +97,19 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 		dijkstraHeap.insert(startLabel);
 
 		//DIJKSTRA B
-		System.out.println("\nDIJKSTRA B LAUNCHED at "+startLabel.getNode().getId());
 		while (!destinationReached && dijkstraHeap.size() > 0) {
 			Label item = dijkstraHeap.deleteMin();
-			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost());
 			item.setState(Label.LabelState.MARKED);
 			notifyNodeMarked(item.getNode());
 			Label item_A = labels_A.get(item.getNode());
 			if (item_A != null && item_A.getState() == Label.LabelState.MARKED) {
 				MergeLabel mergeLabel = new MergeLabel(item.getNode(), item.getCost() + item_A.getCost(), getInputData(),MergingState.MERGED);
 				mergeLabel.setState(Label.LabelState.VISITED);
-				System.out.println("Merging at "+item.getNode().getId()+" Cost A "+item_A.getCost()+" Cost B "+item.getCost());
 				labels_AB.put(item.getNode(), mergeLabel);
 				aStarHeap.insert(mergeLabel);
 				notifyNodeMerged(item.getNode());
 			}
 			if (item.getNode() == target) {
-				System.out.println("DestinationReached "+item.getNode().getId()+" "+item.getCost());
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
@@ -148,7 +134,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
-								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+suiv.getCost());
 								dijkstraHeap.insert(suiv);
 							}
 						}
@@ -156,17 +141,12 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 				}
 			}
 		}
-//		System.out.println("DIJKSTRA B FINISHED");
-//		System.out.println(destinationReached);
+
 		destinationReached = false;
+
 		//A STAR OT
-		System.out.println("\nASTAR OT LAUNCHED");
 		while (!destinationReached && aStarHeap.size() > 0) {
-			MergeLabel itemDebug = (MergeLabel) aStarHeap.findMin();
-			System.out.println("Computing node "+itemDebug.getNode().getId()+" "+itemDebug.getCost()+" "+itemDebug.getTotalCost());
 			MergeLabel item = (MergeLabel) aStarHeap.deleteMin();
-			System.out.println("Computing node "+item.getNode().getId()+" "+item.getCost()+" "+item.getTotalCost());
-			System.out.println("Heap size : "+aStarHeap.size());
 			item.setState(Label.LabelState.MARKED);
 			notifyMergedNodeMarked(item.getNode());
 			if (item.getNode() == target) {
@@ -194,9 +174,6 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 									notifyNodeReached(suiv.getNode());
 									suiv.setState(Label.LabelState.VISITED);
 								}
-
-								System.out.println("Inserting "+suiv.getNode().getId()+" with cost "+(debug)+" new cost is "+d+" Total cost is "+suiv.getTotalCost());
-								System.out.println(item.getCost()+" "+evalDist(item,arc)+" "+ Point.distance(suiv.getNode().getPoint(),target.getPoint()));
 								aStarHeap.insert(suiv);
 							}
 						}
@@ -205,14 +182,11 @@ public class MergeAlgorithm extends CarPoolingAlgorithm {
 			}
 
 		}
-//		System.out.println("ASTAR FINISHED");
-//		System.out.println(destinationReached);
 
 		if (labels_AB.get(target) == null) {
 			System.out.println("IMPOSSIBLE");
 			return new CarPoolingSolution(getInputData(), AbstractSolution.Status.INFEASIBLE);
 		} else {
-//			System.out.println("Constructing path");
 			ArrayList<Node> pathArrayA = new ArrayList<>();
 			ArrayList<Node> pathArrayB = new ArrayList<>();
 			ArrayList<Node> pathArrayAB = new ArrayList<>();

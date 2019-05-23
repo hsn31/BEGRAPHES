@@ -23,10 +23,10 @@ import java.util.Random;
 
 public abstract class CarPoolingAlgorithmTest {
 	// Simple Test graph from subject
-	private static Graph simpleGraph;
+	protected static Graph simpleGraph;
 
 	//Square Map
-	private static Graph squareMapGraph;
+	protected static Graph squareMapGraph;
 	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
@@ -195,7 +195,7 @@ public abstract class CarPoolingAlgorithmTest {
 	public void simpleGraphTest() {
 		for (int i = 0; i < nodes.length; i++) {
 			for (int j = i+1; j < nodes.length; j++) {
-				for (int k = j+1; k < nodes.length; k++) {
+				for (int k = 0; k+1 < nodes.length; k++) {
 					carPoolingTest(simpleGraph, nodes[i], nodes[j], nodes[k]);
 				}
 			}
@@ -215,5 +215,45 @@ public abstract class CarPoolingAlgorithmTest {
 				}
 			}
 		}
+	}
+
+	public void oracleTest(Graph graph, Node user_a,Node user_b,Node target){
+		System.out.println("TESTING A "+user_a.getId()+" B "+user_b.getId()+" T "+target.getId());
+		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+		CarPoolingData data = new CarPoolingData(graph,user_a,user_b,target,arcInspector);
+		CarPoolingSolution oracle = instanciateOracle(data).run();
+		CarPoolingSolution result = instanciateAlgorithm(data).run();
+
+		Assert.assertEquals("Oracle and Algorithm finished with different status",oracle.getStatus(),result.getStatus());
+		Assert.assertTrue("Oracle and algorithm have different AO path length. Should be "+oracle.getCostA()+" is "+result.getCostA(),result.getCostA()==oracle.getCostA());
+		Assert.assertTrue("Oracle and algorithm have different path length. Should be "+oracle.getCost()+" is "+result.getCost(),oracle.getCost()==result.getCost());
+
+	}
+
+
+	public void oracleAllDisjointPointTest(Graph graph){
+		for(int i=0;i<graph.size();i++){
+			for(int j=0;j<graph.size();j++){
+				for(int k=0;k<graph.size();k++){
+					if(i!=j && i!=k && j!=k){
+						oracleTest(graph,graph.getNodes().get(i),graph.getNodes().get(j),graph.getNodes().get(k));
+					}
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void simpleGraphOracleTest(){
+		oracleAllDisjointPointTest(simpleGraph);
+	}
+
+	public void oracleExhaustiveTest(Graph graph){
+
+	}
+
+	public void oracleRandomTest(Graph graph){
+
 	}
 }

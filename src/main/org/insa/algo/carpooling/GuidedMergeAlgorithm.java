@@ -74,20 +74,21 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 
 
 			Label item = dijkstrAStarHeap.deleteMin();
+			System.out.println("Computing "+item.getNode().getId());
 			Label item_A = labels_A.get(item.getNode());
 			Label item_B = labels_B.get(item.getNode());
 			Label item_AB = labels_AB.get(item.getNode());
-			if ((item!=item_A || !destinationReachedA) && (item!=item_B || !destinationReachedB)) {
+			if ((item==item_A && !destinationReachedA) || (item==item_B && !destinationReachedB) || item==item_AB) {
 
 				//Merging check
-				if (item == item_A && labels_B.get(item.getNode()) != null && labels_B.get(item.getNode()).getState() == LabelState.MARKED) {
+				if (item == item_A && item_B != null && item_B.getState() == LabelState.MARKED) {
 					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
 					label.setState(LabelState.VISITED);
 					labels_AB.put(item.getNode(), label);
 					dijkstrAStarHeap.insert(label);
 					notifyNodeMerged(item.getNode());
 
-				} else if (item == item_B && labels_A.get(item.getNode()) != null && labels_A.get(item.getNode()).getState() == LabelState.MARKED) {
+				} else if (item == item_B && item_A != null && item_A.getState() == LabelState.MARKED) {
 					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
 					label.setState(LabelState.VISITED);
 					labels_AB.put(item.getNode(), label);
@@ -100,12 +101,15 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 				if (item == item_A) {
 					computingState = COMPUTING_A;
 					selectedLabels = labels_A;
+					System.out.println("FROM A");
 				} else if (item == item_B) {
 					computingState = COMPUTING_B;
 					selectedLabels = labels_B;
+					System.out.println("FROM B");
 				} else if (item == item_AB) {
 					computingState = COMPUTING_AB;
 					selectedLabels = labels_AB;
+					System.out.println("FROM O");
 				}
 				if (computingState == COMPUTING_A) {
 					notifyNodeMarked(item.getNode());
@@ -165,7 +169,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 				}
 			}
 		}
-		//System.out.println("DIJKSTRASTAR FINISHED");
+		System.out.println("DIJKSTRASTAR FINISHED");
 
 
 		if (labels_AB.get(target) == null) {
