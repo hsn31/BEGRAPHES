@@ -81,18 +81,36 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 				System.out.println("Valid");
 				//Merging check
 				if (item == item_A && item_B != null && item_B.getState() == LabelState.MARKED) {
-					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
-					label.setState(LabelState.VISITED);
-					labels_AB.put(item.getNode(), label);
-					dijkstrAStarHeap.insert(label);
-					notifyNodeMerged(item.getNode());
+					if(item_AB==null) {
+						item_AB = new MergeLabel(item.getNode(), Double.POSITIVE_INFINITY, getInputData(), MergeLabel.MergingState.MERGED);
+						labels_AB.put(item.getNode(), item_AB);
+					}
+					if(item_A.getCost() + item_B.getCost()<item_AB.getCost()) {
+						item_AB.setState(LabelState.VISITED);
+						item_AB.setCost(item_A.getCost() + item_B.getCost());
+						item_AB.setPrev(null);
+						dijkstrAStarHeap.insertOrUpdate(item_AB);
+						notifyNodeMerged(item.getNode());
+						
+						
+					}
+					
+					
 
 				} else if (item == item_B && item_A != null && item_A.getState() == LabelState.MARKED) {
-					MergeLabel label = new MergeLabel(item.getNode(), labels_A.get(item.getNode()).getCost() + labels_B.get(item.getNode()).getCost(), getInputData(), MergeLabel.MergingState.MERGED);
-					label.setState(LabelState.VISITED);
-					labels_AB.put(item.getNode(), label);
-					dijkstrAStarHeap.insert(label);
-					notifyNodeMerged(item.getNode());
+					if(item_AB==null) {
+						item_AB = new MergeLabel(item.getNode(), Double.POSITIVE_INFINITY, getInputData(), MergeLabel.MergingState.MERGED);
+						labels_AB.put(item.getNode(), item_AB);
+					}
+					if(item_A.getCost() + item_B.getCost()<item_AB.getCost()) {
+						item_AB.setState(LabelState.VISITED);
+						item_AB.setCost(item_A.getCost() + item_B.getCost());
+						item_AB.setPrev(null);
+						dijkstrAStarHeap.insertOrUpdate(item_AB);
+						notifyNodeMerged(item.getNode());
+						
+						
+					}
 				}
 
 				item.setState(LabelState.MARKED);
@@ -148,12 +166,12 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 							}
 
 
-							if (suiv.getState() != Label.LabelState.MARKED) {
+							if (suiv.getState() != Label.LabelState.MARKED || computingState == COMPUTING_AB) {
 								double d = evalDist(item, arc);
 								if (d < suiv.getCost()) {
 									suiv.setCost(d);
 									suiv.setPrev(arc);
-									if (suiv.getState() == Label.LabelState.VISITED) {
+									if (suiv.getState() == Label.LabelState.VISITED || suiv.getState()==LabelState.MARKED) {
 										dijkstrAStarHeap.remove(suiv);
 									} else {
 										notifyNodeReached(suiv.getNode());
