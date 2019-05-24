@@ -71,6 +71,7 @@ public class PerfMain {
 		String carre_dense = maps+"carre-dense.mapgr";
 		String fractale = maps+"fractal-spiral.mapgr";
 		String toulouse = maps+"toulouse.mapgr";
+		String newZealand = maps+"new-zealand.mapgr";
 
 		evaluate(carre_dense,343341,42714,"Opposite");
 		evaluate(carre_dense,196673,156393);

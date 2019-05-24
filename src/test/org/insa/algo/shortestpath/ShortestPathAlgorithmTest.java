@@ -51,8 +51,8 @@ public abstract class ShortestPathAlgorithmTest {
 	//HG Map
 	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
 
-	//HG Map
-
+	//NZ Map
+	private static String NZMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
 
 	// List of nodes
 	private static Node[] nodes;
@@ -183,7 +183,7 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 
 	@Test
-	public void algorithmMapWithOracleTest() throws NodeOutOfGraphException{
+	public void algorithmSquareMapWithOracleRandomTest() throws NodeOutOfGraphException{
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			int from = random.nextInt(squareMapGraph.size());
@@ -719,6 +719,96 @@ public abstract class ShortestPathAlgorithmTest {
 		origine = 0;
 		destination = 10;
 		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+	}
+
+	@Test
+	public void testScenarioToulouse() throws Exception{
+		String mapName = toulouseMapName;
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : TOULOUSE ---------------------------");
+		System.out.println();
+		System.out.println("----- Use periph ------");
+		origine = 22596;
+		destination = 13986;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : TOULOUSE ---------------------------");
+		System.out.println();
+		System.out.println("----- Opposite ------");
+		origine = 9888;
+		destination = 32174;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : TOULOUSE ---------------------------");
+		System.out.println();
+		System.out.println("----- Close to graph center ------");
+		origine = 4460;
+		destination = 1608;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : TOULOUSE ---------------------------");
+		System.out.println();
+		System.out.println("----- Mandatory bridge Garonne ------");
+		origine = 2767;
+		destination = 14179;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
+	}
+
+	@Test
+	public void testScenarioNewZealand() throws Exception{
+		String mapName = NZMap;
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
+		System.out.println();
+		System.out.println("----- Unreachable ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
+		System.out.println();
+		System.out.println("----- Opposite ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
+		System.out.println();
+		System.out.println("----- Close to graph center ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithoutOracleTest(mapName, origine, destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
+		System.out.println();
+		System.out.println("----- Mandatory bridge Garonne ------");
+		origine = 0;
+		destination = 0;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
 	}
 
 	@Test

@@ -27,8 +27,8 @@ public abstract class CarPoolingAlgorithmTest {
 
 	//Square Map
 	protected static Graph squareMapGraph;
-	private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
-	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
+	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 
@@ -194,8 +194,8 @@ public abstract class CarPoolingAlgorithmTest {
 	@Test
 	public void simpleGraphTest() {
 		for (int i = 0; i < nodes.length; i++) {
-			for (int j = i+1; j < nodes.length; j++) {
-				for (int k = 0; k+1 < nodes.length; k++) {
+			for (int j = 0; j < nodes.length; j++) {
+				for (int k = 0; k< nodes.length; k++) {
 					carPoolingTest(simpleGraph, nodes[i], nodes[j], nodes[k]);
 				}
 			}

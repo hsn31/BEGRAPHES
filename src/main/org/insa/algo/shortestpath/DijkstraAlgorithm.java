@@ -34,13 +34,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		Path solutionPath;
 		ArrayList<Node> nodePath = new ArrayList<>();
 		Graph graph = data.getGraph();
-		HashMap<Node, Label> labels = new HashMap<>();
 
+		HashMap<Node, Label> labels = new HashMap<>();
 		BinaryHeap<Label> binaryHeap = new BinaryHeap<>();
+
 		labels.put(data.getOrigin(),newLabel(data.getOrigin(),0));
 		binaryHeap.insert(labels.get(data.getOrigin()));
 		notifyOriginProcessed(data.getOrigin());
+
 		boolean destinationReached = false;
+
 		while (binaryHeap.size() > 0 && !destinationReached) {
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
