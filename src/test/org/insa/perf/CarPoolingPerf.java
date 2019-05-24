@@ -31,7 +31,7 @@ public class CarPoolingPerf {
 		PerformanceTest testGuidedMergeTime=new GuidedMergePerformanceTest(dataTime);
 
 		System.out.println("TEST ON MAP : "+mapName);
-		System.out.println("USER A : "+originA+"USER B :"+originB+" DESTINATION : "+destination);
+		System.out.println("USER A : "+originA+" USER B :"+originB+" DESTINATION : "+destination);
 		if(!comment.equals("")) {
 			System.out.println(comment);
 		}
@@ -63,9 +63,54 @@ public class CarPoolingPerf {
 		String fractale = maps+"fractal-spiral.mapgr";
 		String toulouse = maps+"toulouse.mapgr";
 		String newZealand = maps+"new-zealand.mapgr";
+		String california = maps+"california.mapgr";
+		String belgium = maps+"belgium.mapgr";
+		
+		System.out.println("MIDI PYRENNEES");;
 
 		evaluate(midi_pyrenees,315603,243724,109237,"Close starts, far destination");
-		//evaluate(midi_pyrenees,265855,491131,0,"Equilateralish");
+		System.out.println("***********************************");
+		evaluate(midi_pyrenees,447547,361305,76760,"Equilateralish");
+		System.out.println("***********************************");
+		evaluate(midi_pyrenees,496160,406219,613829,"Three points aligned");
+		System.out.println("***********************************");
+		evaluate(midi_pyrenees,496160,406219,613829,"Three points aligned\nDestination at the middle");
+		System.out.println("***********************************");
+		evaluate(midi_pyrenees,225084,345135,480971,"Three points aligned\nUser at the middle");
+		System.out.println("***********************************");
+		
+		System.out.println("CALIFORNIA");;
+		evaluate(california,1417789,288028,1020192,"Close starts, far destination");
+		System.out.println("***********************************");
+		evaluate(california,792971,766918,782081,"Curve required");
+		System.out.println("***********************************");
+		
+		System.out.println("BELGIUM");
+		evaluate(belgium,516403,882812,84661,"Almost equilateral");
+		System.out.println("***********************************");
+		evaluate(belgium,396597,461420,532320,"Close starts,far destination");
+		System.out.println("***********************************");
+		
+		System.out.println("NEW ZEALAND");
+		evaluate(newZealand,230743,204261,250006,"Impossible");
+		System.out.println("***********************************");
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
 
 
 

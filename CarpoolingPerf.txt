@@ -1,0 +1,186 @@
+MIDI PYRENNEES
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+USER A : 315603 USER B :243724 DESTINATION : 109237
+Close starts, far destination
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :3303
+FASTEST MODE
+EXECUTION TIME (ms) :3623
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :661
+FASTEST MODE
+EXECUTION TIME (ms) :2593
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+USER A : 447547 USER B :361305 DESTINATION : 76760
+Equilateralish
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :3106
+FASTEST MODE
+EXECUTION TIME (ms) :2180
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :1562
+FASTEST MODE
+EXECUTION TIME (ms) :2790
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+USER A : 496160 USER B :406219 DESTINATION : 613829
+Three points aligned
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :474
+FASTEST MODE
+EXECUTION TIME (ms) :612
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :625
+FASTEST MODE
+EXECUTION TIME (ms) :615
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+USER A : 496160 USER B :406219 DESTINATION : 613829
+Three points aligned
+Destination at the middle
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :463
+FASTEST MODE
+EXECUTION TIME (ms) :613
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :528
+FASTEST MODE
+EXECUTION TIME (ms) :714
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+USER A : 225084 USER B :345135 DESTINATION : 480971
+Three points aligned
+User at the middle
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :1161
+FASTEST MODE
+EXECUTION TIME (ms) :2036
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :567
+FASTEST MODE
+EXECUTION TIME (ms) :2428
+
+***********************************
+CALIFORNIA
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/california.mapgr
+USER A : 1417789 USER B :288028 DESTINATION : 1020192
+Close starts, far destination
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :24624
+FASTEST MODE
+EXECUTION TIME (ms) :27657
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :14470
+FASTEST MODE
+EXECUTION TIME (ms) :19810
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/california.mapgr
+USER A : 792971 USER B :766918 DESTINATION : 782081
+Curve required
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :10496
+FASTEST MODE
+EXECUTION TIME (ms) :19179
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :5264
+FASTEST MODE
+EXECUTION TIME (ms) :18921
+
+***********************************
+BELGIUM
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/belgium.mapgr
+USER A : 516403 USER B :882812 DESTINATION : 84661
+Almost equilateral
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :3281
+FASTEST MODE
+EXECUTION TIME (ms) :2687
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :2213
+FASTEST MODE
+EXECUTION TIME (ms) :3642
+
+***********************************
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/belgium.mapgr
+USER A : 396597 USER B :461420 DESTINATION : 532320
+Close starts,far destination
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :5171
+FASTEST MODE
+EXECUTION TIME (ms) :7627
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :1724
+FASTEST MODE
+EXECUTION TIME (ms) :17547
+
+***********************************
+NEW ZEALAND
+TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr
+USER A : 230743 USER B :204261 DESTINATION : 250006
+Impossible
+--------------------------
+MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :190
+FASTEST MODE
+EXECUTION TIME (ms) :274
+
+--------------------------
+GUIDED MERGE ALGORITHM
+SHORTEST MODE
+EXECUTION TIME (ms) :211
+FASTEST MODE
+EXECUTION TIME (ms) :414
+
+***********************************
