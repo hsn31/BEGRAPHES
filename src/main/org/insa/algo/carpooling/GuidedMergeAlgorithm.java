@@ -18,7 +18,7 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 	private static final int COMPUTING_AB = 2;
 
 
-	protected GuidedMergeAlgorithm(CarPoolingData data) {
+	public GuidedMergeAlgorithm(CarPoolingData data) {
 		super(data);
 	}
 

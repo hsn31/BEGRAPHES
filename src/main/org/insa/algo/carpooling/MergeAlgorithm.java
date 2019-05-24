@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MergeAlgorithm extends CarPoolingAlgorithm {
-	protected MergeAlgorithm(CarPoolingData data) {
+	public MergeAlgorithm(CarPoolingData data) {
 		super(data);
 	}
 
