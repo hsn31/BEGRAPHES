@@ -1,6 +1,7 @@
 package org.insa.algo.carpooling;
 
 import org.insa.algo.AbstractInputData;
+import org.insa.algo.AbstractInputData.Mode;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.shortestpath.Label;
 import org.insa.algo.shortestpath.Label.LabelState;
@@ -50,6 +51,15 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 		HashMap<Node, Label> labels_B = new HashMap<>();
 		double directCostA = Point.distance(startA.getPoint(), target.getPoint());
 		double directCostB = Point.distance(startB.getPoint(), target.getPoint());
+		if(getInputData().getMode()==Mode.TIME) {
+			double speed = Integer.min(getInputData().getMaximumSpeed(), graph.getGraphInformation().getMaximumSpeed());
+			if(speed<=0) {
+				speed=130;
+			}
+			directCostA=directCostA*3.6/speed;
+			directCostB=directCostB*3.6/speed;
+		}
+		
 		Label startLabelA = new LabelStar(startA, 0, directCostB); //All A labels have constant heuristic cost set to euclidian distance BT
 		Label startLabelB = new LabelStar(startB, 0, directCostA); //All B labels have constant heuristic cost set to euclidian distance AT
 		labels_A.put(startA, startLabelA);
@@ -170,12 +180,13 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 									suiv.setCost(d);
 									suiv.setPrev(arc);
 									if (suiv.getState() == Label.LabelState.VISITED || suiv.getState()==LabelState.MARKED) {//MergeLabels can be updated even when marked
-										dijkstrAStarHeap.remove(suiv);
+										dijkstrAStarHeap.insertOrUpdate(suiv);
 									} else {
 										notifyNodeReached(suiv.getNode());
 										suiv.setState(Label.LabelState.VISITED);
+										dijkstrAStarHeap.insert(suiv);
 									}
-									dijkstrAStarHeap.insert(suiv);
+									
 								}
 
 							}
