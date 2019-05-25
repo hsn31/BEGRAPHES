@@ -4,7 +4,6 @@ import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
-import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.*;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
@@ -16,6 +15,7 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -26,6 +26,14 @@ import static org.junit.Assert.*;
 public abstract class ShortestPathAlgorithmTest {
 	// Simple Test graph from subject
 	private static Graph graph;
+	private static Node[] nodes;
+
+	// "Tricky" graph to mess with AStar
+	public static Graph trickyGraph;
+	private static Node[][] trickyGraphNodes;
+	public static int trickyWidth=1000;
+	public static int trickyHeight =100;
+
 
 	//Square Map
 	private static Graph squareMapGraph;
@@ -51,8 +59,7 @@ public abstract class ShortestPathAlgorithmTest {
 	//NZ Map
 	private static String NZMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
 
-	// List of nodes
-	private static Node[] nodes;
+
 
 	// List of arcs in the graph, x1_x2 is the arc from node x1 (0) to x2 (1).
 	@SuppressWarnings("unused")
@@ -68,7 +75,8 @@ public abstract class ShortestPathAlgorithmTest {
 	@BeforeClass
 	public static void initAll() throws IOException {
 
-		// 10 and 20 meters per seconds
+
+		//Init the subject graph
 		RoadInformation speed10 = new RoadInformation(RoadInformation.RoadType.MOTORWAY, null, true, 1, "");
 		// Create nodes
 		nodes = new Node[6];
@@ -76,9 +84,6 @@ public abstract class ShortestPathAlgorithmTest {
 		for (int i = 0; i < nodes.length; ++i) {
 			nodes[i] = new Node(i, new Point(0,0));
 		}
-
-
-
 		x1_x2 = Node.linkNodes(nodes[0], nodes[1], 7, speed10, null);
 		x1_x3 = Node.linkNodes(nodes[0], nodes[2], 8, speed10, null);
 
@@ -94,10 +99,41 @@ public abstract class ShortestPathAlgorithmTest {
 		x5_x3 = Node.linkNodes(nodes[4], nodes[2], 2, speed10, null);
 		x5_x4 = Node.linkNodes(nodes[4], nodes[3], 2, speed10, null);
 		x5_x6 = Node.linkNodes(nodes[4], nodes[5], 3, speed10, null);
+
 		x6_x5 = Node.linkNodes(nodes[5], nodes[4], 3, speed10, null);
 
-
 		graph = new Graph("ID", "", Arrays.asList(nodes), null);
+
+		//Init the square graph
+		// Create a graph reader.
+		GraphReader reader = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(squareMapName))));
+		//Read the graph.
+		squareMapGraph = reader.read();
+		mapArcInspector = ArcInspectorFactory.getAllFilters().get(0);
+
+		//Init the tricky graph
+		trickyGraphNodes=new Node[trickyWidth][trickyHeight];
+		ArrayList<Node> toAdd=new ArrayList<>();
+		int id=0;
+		for(int x=0;x<trickyWidth;x++){
+			for(int y = 0; y< trickyHeight; y++){
+				trickyGraphNodes[x][y]=new Node(id++,new Point(x,y));
+				toAdd.add(trickyGraphNodes[x][y]);
+				if(x>0 &&( (x!=1 && x!=trickyWidth-2)|| x==0 || x==trickyWidth-1)){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+					Node.linkNodes(trickyGraphNodes[x][y],trickyGraphNodes[x-1][y],1,speed10,null);
+					Node.linkNodes(trickyGraphNodes[x-1][y],trickyGraphNodes[x][y],1,speed10,null);
+				}
+				if(y>0 && x!=trickyWidth-2 && x!=1 && (y!=1 || x==0 || x==trickyWidth)) {
+					Node.linkNodes(trickyGraphNodes[x][y],trickyGraphNodes[x][y-1],1,speed10,null);
+					Node.linkNodes(trickyGraphNodes[x][y-1],trickyGraphNodes[x][y],1,speed10,null);
+				}
+
+			}
+		}
+		trickyGraph = new Graph("TRK","Tricky map",toAdd,new GraphStatistics(null,0,0,130,2));
+
+
 		defaultArcInspector = new ArcInspector() {
 			@Override
 			public boolean isAllowed(Arc arc) {
@@ -121,13 +157,7 @@ public abstract class ShortestPathAlgorithmTest {
 		};
 
 
-//		// Create a graph reader.
-		GraphReader reader = new BinaryGraphReader(
-				new DataInputStream(new BufferedInputStream(new FileInputStream(squareMapName))));
 
-		//Read the graph.
-		squareMapGraph = reader.read();
-		mapArcInspector = ArcInspectorFactory.getAllFilters().get(0);
 
 
 	}
@@ -139,15 +169,12 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 
 
-	public void simpleGraphWithOraclePathTest(int from, int to) throws NodeOutOfGraphException {
+	//Test SHORTEST scenario
+	public void simpleGraphWithOraclePathTest(int from, int to) {
 
 		ShortestPathData shortestPathData = new ShortestPathData(graph, nodes[from], nodes[to], defaultArcInspector);
 		ShortestPathAlgorithm oracleAlgorithm = instanciateOracle(shortestPathData);
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(shortestPathData);
-		
-
-
-
 		ShortestPathSolution oracleSolution = oracleAlgorithm.doRun();
 		ShortestPathSolution solution = algorithm.doRun();
 
@@ -169,23 +196,19 @@ public abstract class ShortestPathAlgorithmTest {
 
 	}
 
+	//Test with every pair of nodes in the simple graph
 	@Test
 	public void algorithmSimpleGraphWithOracleTest() {
 		for (int from = 0; from < nodes.length; from++) {
 			for (int to = 0; to < nodes.length; to++) {
-				try {
 				simpleGraphWithOraclePathTest(from, to);
-				}
-				catch (NodeOutOfGraphException e) {
-					// TODO: handle exception
-				}
 			}
 		}
 
 	}
 
 	@Test
-	public void algorithmSquareMapWithOracleRandomTest() throws NodeOutOfGraphException{
+	public void algorithmSquareMapWithOracleRandomTest() {
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			int from = random.nextInt(squareMapGraph.size());
@@ -201,10 +224,8 @@ public abstract class ShortestPathAlgorithmTest {
 			if (from != to) {
 				assertEquals("Oracle and Algorithm finished with different status on map " + squareMapName, oracleSolution.getStatus(), solution.getStatus());
 				assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), AbstractSolution.Status.OPTIMAL == solution.getStatus() || solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
-
-				//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 				if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
-					assertTrue(oracleSolution.getPath().getLength() == solution.getPath().getLength());
+					assertTrue("Oracle and algorithm solution have different cost",oracleSolution.getCost() == solution.getCost());
 				}
 
 			}
@@ -215,12 +236,9 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//Test de la distance et du temps avec Oracle
 
-	public void algorithmMapWithOracleTestDistanceOrTime(String mapName, int typeEvaluation, int origine, int destination) throws IOException {
+	public void algorithmMapWithOracleTestDistanceOrTime(Graph graph, int typeEvaluation, int origine, int destination)  {
 		//Soit temps =0, soit distance =1.
-		GraphReader reader = new BinaryGraphReader(
-				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 
-		Graph graph = reader.read();
 
 		ArcInspector arcInspector;
 
@@ -273,11 +291,13 @@ public abstract class ShortestPathAlgorithmTest {
 			}
 
 			assertTrue("Expected cost was" + costExpected + "actual is" + costSolution, costExpected == costSolution);
-			assertEquals("Oracle and Algorithm solution give differrent number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
-			assertTrue("Different lenghth for Oracle solution and Algorithm solution", oracleSolution.getPath().getLength() == solution.getPath().getLength());
-			assertEquals("Different arcs founded for Algorithm and Oracle solutions", oracleSolution.getPath().getArcs(), solution.getPath().getArcs());
+			assertTrue("Solution path should be valid",solution.getPath().isValid());
 
 		}
+	}
+	public void algorithmMapWithOracleTestDistanceOrTime(String mapName,int typeEvaluation, int origine, int destination) throws IOException{
+		Graph graph = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))) ).read();
+		algorithmMapWithOracleTestDistanceOrTime(graph,typeEvaluation,origine,destination);
 	}
 	
 
@@ -382,29 +402,6 @@ public abstract class ShortestPathAlgorithmTest {
 		origine = 38926;
 		destination = 59015;
 		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
-
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : Existe ------------");
-		origine = -1;
-		destination = 59015;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-	
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : Existe ----------------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 38926;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = -1;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 
@@ -431,26 +428,6 @@ public abstract class ShortestPathAlgorithmTest {
 		destination = 85265;
 		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
 
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : Existe ------------");
-		origine = -1;
-		destination = 85265;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : Existe ----------------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 38926;
-		destination = 300000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = -1;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -477,26 +454,6 @@ public abstract class ShortestPathAlgorithmTest {
 		destination = 857;
 		algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
 
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : Existe ------------");
-		origine = 2000;
-		destination = 857;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : Existe ----------------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 607;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 2000;
-		destination = 2000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -523,26 +480,6 @@ public abstract class ShortestPathAlgorithmTest {
 		destination = 541;
 		algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
 
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : Existe ------------");
-		origine = 2000;
-		destination = 857;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : Existe ----------------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 607;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 2000;
-		destination = 2000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -669,26 +606,6 @@ public abstract class ShortestPathAlgorithmTest {
 		algorithmMapWithoutOracleTest(mapName, origine, destination);
 
 
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : Existe ------------");
-		origine = -1;
-		destination = 59015;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : Existe ----------------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = 38926;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
-
-		System.out.println("----- Cas de sommets inexistants ------");
-		System.out.println("----- Origine : N'existe pas ----------");
-		System.out.println("----- Destination : N'existe pas ------");
-		origine = -1;
-		destination = 200000;
-		algorithmOutOfGrapheTest(mapName, origine, destination);
 	}
 
 	@Test
@@ -822,6 +739,30 @@ public abstract class ShortestPathAlgorithmTest {
 		origine = 9950;
 		destination = 15860;
 		algorithmMapWithoutOracleTest(mapName, origine, destination);
+	}
+	@Test
+	public void testScenarioMinTempsDistTricky() throws Exception {
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : TRICKY WALLS----------------------------");
+		System.out.println();
+
+		System.out.println("----- Proche en euclidien, loin en distance ------");
+		origine = trickyWidth*2+trickyWidth/2; //Middle of third row
+		destination = trickyWidth/2;//Middle of first row
+		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,1, origine, destination);
+
+
+		System.out.println("----- Départ sur un noeud isolé ------");
+		origine = trickyWidth+1;//Second row first column, not linked
+		destination = trickyWidth* trickyHeight /2+trickyWidth/2;//Middle of the graph
+		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,1, origine, destination);
 	}
 
 }
