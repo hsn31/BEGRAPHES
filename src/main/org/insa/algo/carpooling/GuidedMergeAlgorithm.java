@@ -174,12 +174,12 @@ public class GuidedMergeAlgorithm extends CarPoolingAlgorithm {
 							}
 
 
-							if (suiv.getState() != Label.LabelState.MARKED || computingState == COMPUTING_AB) {//MergeLabels can be updated even when marked
+							if (suiv.getState() != Label.LabelState.MARKED /*|| computingState == COMPUTING_AB*/) {//MergeLabels can be updated even when marked
 								double d = evalDist(item, arc);
 								if (d < suiv.getCost()) {
 									suiv.setCost(d);
 									suiv.setPrev(arc);
-									if (suiv.getState() == Label.LabelState.VISITED || suiv.getState()==LabelState.MARKED) {//MergeLabels can be updated even when marked
+									if (suiv.getState() == Label.LabelState.VISITED /*|| suiv.getState()==LabelState.MARKED*/) {//MergeLabels can be updated even when marked
 										dijkstrAStarHeap.insertOrUpdate(suiv);
 									} else {
 										notifyNodeReached(suiv.getNode());
