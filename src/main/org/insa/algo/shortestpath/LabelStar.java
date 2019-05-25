@@ -1,9 +1,10 @@
 package org.insa.algo.shortestpath;
 
-import org.insa.algo.AbstractInputData;
-import org.insa.algo.carpooling.CarPoolingData;
 import org.insa.graph.Node;
-import org.insa.graph.Point;
+import org.insa.graph.Point; //Class representing a point (position) on Earth.
+import org.insa.algo.AbstractInputData;
+import org.insa.algo.carpooling.CarPoolingAlgorithm;
+import org.insa.algo.carpooling.CarPoolingData;
 
 public class LabelStar extends Label implements Comparable<Label> {
 	protected double distToDest;
@@ -55,16 +56,16 @@ public class LabelStar extends Label implements Comparable<Label> {
 		return this.getCost()+this.getDistToDest();
 	}
 
-	@Override
-	public int compareTo(Label o) {
-		if(o.getTotalCost()>this.getTotalCost()){
-			return -1;
-		}
-		else if(o.getTotalCost()==this.getTotalCost()){
-			return 0;
-		}
-		else{
-			return 1;
-		}
+@Override
+public int compareTo(Label o) {
+	if(o.getTotalCost()>this.getTotalCost()){
+		return -1;
 	}
+	else if(o.getTotalCost()==this.getTotalCost()){
+		return 0;
+	}
+	else{
+		return 1;
+	}
+}
 }
