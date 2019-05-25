@@ -8,6 +8,7 @@ import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.*;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -214,7 +215,7 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//Test de la distance et du temps avec Oracle
 
-	public void algorithmMapWithOracleTestDistanceOrTime(String mapName, int typeEvaluation, int origine, int destination) throws Exception {
+	public void algorithmMapWithOracleTestDistanceOrTime(String mapName, int typeEvaluation, int origine, int destination) throws IOException {
 		//Soit temps =0, soit distance =1.
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
@@ -247,7 +248,7 @@ public abstract class ShortestPathAlgorithmTest {
 			//Hors du graph
 
 			System.out.println("ERREUR : Param�tres invalides ");
-			assertTrue("End status incorrect,should be INFEASIBLE is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+			assertEquals("End status incorrect" + solution.getStatus().toString(), solution.getStatus(), AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
 			System.out.println("Origine et Destination identiques");
@@ -311,55 +312,45 @@ public abstract class ShortestPathAlgorithmTest {
 
 		Graph graph = reader.read();
 
-		/** Recherche du chemin le plus rapide **/
+		/* Recuperation de la solution de Algorithm en mode FASTEST*/
 		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(2);
-
 		ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination),
 				arcInspector);
 
 		ShortestPathAlgorithm algorithm = instanciateAlgorithm(data);
 
-		/* Recuperation de la solution de Algorithm */
-		ShortestPathSolution solution = algorithm.doRun();
+		ShortestPathSolution solutionFastest = algorithm.doRun();
+
+
+		/* Recuperation de la solution de Algorithm en mode SHORTEST*/
+		arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+		data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
+		algorithm = instanciateAlgorithm(data);
+		ShortestPathSolution solutionShortest = algorithm.doRun();
+
+		Assert.assertEquals("Both fastest and shortest solution shoudl have the same end status",solutionFastest.getStatus(),solutionShortest.getStatus());
 
 		if (origine < 0 || destination < 0 || origine > (graph.size() - 1) || destination > (graph.size() - 1)) {
 			//Hors du graph
 
 			System.out.println("ERREUR : Param�tres invalides ");
-			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
+			assertTrue("End status incorrect,should be INFEASIBLE or OPTIMAL, is " + solutionFastest.getStatus().toString(), solutionFastest.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
 			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
-			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
-			assertEquals(solution.getPath().getArcs().size(), 0);
+			assertEquals(AbstractSolution.Status.OPTIMAL, solutionFastest.getStatus());
+			assertEquals(solutionFastest.getPath().getArcs().size(), 0);
 
 
-		} else if (solution.getPath() == null) {
-			assertTrue(solution.getPath() == null);
+		} else if (solutionFastest.getPath() == null) {
+			assertEquals("No path found, end status should be INFEASIBLE", AbstractSolution.Status.INFEASIBLE,solutionFastest.getStatus());
 		} else {
 
-			costFastestSolutionInTime = solution.getPath().getMinimumTravelTime();
-			costFastestSolutionInDistance = solution.getPath().getLength();
-
-
-			arcInspector = ArcInspectorFactory.getAllFilters().get(0);
-
-			data = new ShortestPathData(graph, graph.get(origine), graph.get(destination), arcInspector);
-
-			algorithm = instanciateAlgorithm(data);
-
-			solution = algorithm.doRun();
-
-
-			if (solution.getPath() == null) {
-				assertTrue(solution.getPath() == null);
-			} else {
-				costShortestSolutionInTime = solution.getPath().getMinimumTravelTime();
-				costShortestSolutionInDistance = solution.getPath().getLength();
-			}
-
+			costFastestSolutionInTime = solutionFastest.getPath().getMinimumTravelTime();
+			costFastestSolutionInDistance = solutionFastest.getPath().getLength();
+			costShortestSolutionInDistance = solutionShortest.getPath().getLength();
+			costShortestSolutionInTime = solutionShortest.getPath().getMinimumTravelTime();
 			assertTrue(costFastestSolutionInTime <= costShortestSolutionInTime);
-
 			assertTrue(costFastestSolutionInDistance >= costShortestSolutionInDistance);
 
 		}
@@ -370,7 +361,7 @@ public abstract class ShortestPathAlgorithmTest {
 	//DEBUT DES TESTS
 
 	@Test
-	public void testScenarioDistanceHG() throws Exception {
+	public void testScenarioDistanceHG() throws IOException {
 
 		String mapName = hgMapName;
 
