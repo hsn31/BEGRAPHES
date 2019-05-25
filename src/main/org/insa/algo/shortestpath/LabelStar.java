@@ -1,10 +1,9 @@
 package org.insa.algo.shortestpath;
 
-import org.insa.graph.Node;
-import org.insa.graph.Point; //Class representing a point (position) on Earth.
 import org.insa.algo.AbstractInputData;
-import org.insa.algo.carpooling.CarPoolingAlgorithm;
 import org.insa.algo.carpooling.CarPoolingData;
+import org.insa.graph.Node;
+import org.insa.graph.Point;
 
 public class LabelStar extends Label implements Comparable<Label> {
 	protected double distToDest;

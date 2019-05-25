@@ -1,15 +1,15 @@
 package org.insa.graph;
 
-import static org.junit.Assert.assertEquals;
+import org.insa.graph.RoadInformation.RoadType;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.insa.graph.RoadInformation.RoadType;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class GraphTest {
 

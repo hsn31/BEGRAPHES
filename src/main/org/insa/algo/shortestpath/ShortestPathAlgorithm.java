@@ -1,7 +1,6 @@
 package org.insa.algo.shortestpath;
 
 import org.insa.algo.AbstractAlgorithm;
-import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.Node;
 
 public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPathObserver> {

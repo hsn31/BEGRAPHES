@@ -1,9 +1,7 @@
 package org.insa.algo.shortestpath;
 
-import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.utils.BinaryHeap;
-import org.insa.exception.NodeOutOfGraphException;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;

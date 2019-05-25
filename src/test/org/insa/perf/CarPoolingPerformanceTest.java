@@ -1,6 +1,5 @@
 package org.insa.perf;
 
-import org.insa.algo.AbstractAlgorithm;
 import org.insa.algo.AbstractInputData;
 import org.insa.algo.carpooling.CarPoolingAlgorithm;
 

@@ -1,8 +1,8 @@
 package org.insa.algo.shortestpath;
 
-import java.io.PrintStream;
-
 import org.insa.graph.Node;
+
+import java.io.PrintStream;
 
 public class ShortestPathTextObserver implements ShortestPathObserver {
 

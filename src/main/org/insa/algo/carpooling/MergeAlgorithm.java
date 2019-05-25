@@ -5,7 +5,10 @@ import org.insa.algo.AbstractSolution;
 import org.insa.algo.carpooling.MergeLabel.MergingState;
 import org.insa.algo.shortestpath.Label;
 import org.insa.algo.utils.BinaryHeap;
-import org.insa.graph.*;
+import org.insa.graph.Arc;
+import org.insa.graph.Graph;
+import org.insa.graph.Node;
+import org.insa.graph.Path;
 
 import java.util.ArrayList;
 import java.util.HashMap;

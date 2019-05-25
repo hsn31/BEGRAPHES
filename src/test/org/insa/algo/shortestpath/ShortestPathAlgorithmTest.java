@@ -10,19 +10,15 @@ import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 
@@ -64,6 +60,10 @@ public abstract class ShortestPathAlgorithmTest {
 	private static ArcInspector defaultArcInspector;
 	private static ArcInspector mapArcInspector;
 
+
+	//Method to override to define a concrete test class
+	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData);
+
 	@BeforeClass
 	public static void initAll() throws IOException {
 
@@ -71,11 +71,12 @@ public abstract class ShortestPathAlgorithmTest {
 		RoadInformation speed10 = new RoadInformation(RoadInformation.RoadType.MOTORWAY, null, true, 1, "");
 		// Create nodes
 		nodes = new Node[6];
+		// Create graph from subject
 		for (int i = 0; i < nodes.length; ++i) {
 			nodes[i] = new Node(i, new Point(0,0));
 		}
 
-		// Add arcs...
+
 
 		x1_x2 = Node.linkNodes(nodes[0], nodes[1], 7, speed10, null);
 		x1_x3 = Node.linkNodes(nodes[0], nodes[2], 8, speed10, null);
@@ -114,7 +115,7 @@ public abstract class ShortestPathAlgorithmTest {
 
 			@Override
 			public AbstractInputData.Mode getMode() {
-				return null;
+				return AbstractInputData.Mode.LENGTH;
 			}
 		};
 
@@ -129,10 +130,10 @@ public abstract class ShortestPathAlgorithmTest {
 
 
 	}
-	public abstract ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData) throws NodeOutOfGraphException;
 
 
-	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) throws NodeOutOfGraphException{
+	//Bellman Ford algorithm as Oracle
+	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) {
 		return new BellmanFordAlgorithm(shortestPathData);
 	}
 
@@ -249,9 +250,9 @@ public abstract class ShortestPathAlgorithmTest {
 			assertTrue("End status incorrect,should be INFEASIBLE is " + solution.getStatus().toString(), solution.getStatus() == AbstractSolution.Status.INFEASIBLE);
 
 		} else if (origine == destination) {
-			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
-			assertTrue(AbstractSolution.Status.OPTIMAL == solution.getStatus());
-			assertTrue("error" + solution.getPath().getArcs().size(), solution.getPath().getArcs().size() == 0);
+			System.out.println("Origine et Destination identiques");
+			assertEquals("Solution status should be OPTIMAL",AbstractSolution.Status.OPTIMAL,solution.getStatus());
+			assertEquals("Path size should be 0", 0,solution.getPath().getArcs().size());
 
 		} else if (solution.getPath() == null) {
 			assertEquals(oracleSolution.getPath(), solution.getPath());
@@ -270,15 +271,12 @@ public abstract class ShortestPathAlgorithmTest {
 				costExpected = oracleSolution.getPath().getLength();
 			}
 
-			assertTrue("expected" + costExpected + "and was" + costSolution, costExpected == costSolution);
+			assertTrue("Expected cost was" + costExpected + "actual is" + costSolution, costExpected == costSolution);
 			assertEquals("Oracle and Algorithm solution give differrent number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
 			assertTrue("Different lenghth for Oracle solution and Algorithm solution", oracleSolution.getPath().getLength() == solution.getPath().getLength());
 			assertEquals("Different arcs founded for Algorithm and Oracle solutions", oracleSolution.getPath().getArcs(), solution.getPath().getArcs());
 
 		}
-
-		System.out.println();
-		System.out.println();
 	}
 	
 
@@ -301,7 +299,7 @@ public abstract class ShortestPathAlgorithmTest {
 	
 	//Exactement le meme Test visant la distance et le temps mais sans Oracle
 
-	public void algorithmMapWithoutOracleTest(String mapName, int origine, int destination) throws Exception {
+	public void algorithmMapWithoutOracleTest(String mapName, int origine, int destination) throws IOException {
 
 		double costFastestSolutionInTime = Double.POSITIVE_INFINITY;
 		double costFastestSolutionInDistance = Double.POSITIVE_INFINITY;

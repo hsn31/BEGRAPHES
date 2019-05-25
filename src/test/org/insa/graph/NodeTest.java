@@ -1,13 +1,13 @@
 package org.insa.graph;
 
-import static org.junit.Assert.assertEquals;
+import org.insa.graph.RoadInformation.RoadType;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.insa.graph.RoadInformation.RoadType;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class NodeTest {
 
