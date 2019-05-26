@@ -27,24 +27,19 @@ public abstract class CarPoolingAlgorithmTest {
 
 	//Square Map
 	protected static Graph squareMapGraph;
-	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
+
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
-
-
-	//Guadeloup Map
-	private static String guadeloupMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/guadeloupe.mapgr";
-
-	//Toulouse Map
-	private static String toulouseMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
-
-
-	//INSA Map
-	private static String insaMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
-
-	//HG Map
-	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
+	private String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	private String midi_pyrenees= maps+"midi-pyrenees.mapgr";
+	private String carre_dense = maps+"carre-dense.mapgr";
+	private String fractale = maps+"fractal-spiral.mapgr";
+	private String toulouse = maps+"toulouse.mapgr";
+	private String newZealand = maps+"new-zealand.mapgr";
+	private String california = maps+"california.mapgr";
+	private String belgium = maps+"belgium.mapgr";
+	//private static String squareMapName = maps+"carre.mapgr";
 
 	//HG Map
 
@@ -191,6 +186,16 @@ public abstract class CarPoolingAlgorithmTest {
 
 	}
 
+	protected void carPoolingTest(String mapName,int userA,int userB,int destination) throws IOException{
+		Graph graph = new BinaryGraphReader(
+				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName)))).read();
+		Node a = graph.get(userA);
+		Node b = graph.get(userB);
+		Node t = graph.get(destination);
+		carPoolingTest(graph,a,b,t);
+
+	}
+
 	@Test
 	public void simpleGraphTest() {
 		for (int i = 0; i < nodes.length; i++) {
@@ -230,22 +235,58 @@ public abstract class CarPoolingAlgorithmTest {
 	}
 
 
-	public void oracleAllDisjointPointTest(Graph graph){
+	public void oracleAllPointsTest(Graph graph){
 		for(int i=0;i<graph.size();i++){
 			for(int j=0;j<graph.size();j++){
 				for(int k=0;k<graph.size();k++){
-					if(i!=j && i!=k && j!=k){
+
 						oracleTest(graph,graph.getNodes().get(i),graph.getNodes().get(j),graph.getNodes().get(k));
-					}
+
 				}
 			}
 		}
 
 	}
 
+
+
 	@Test
 	public void simpleGraphOracleTest(){
-		oracleAllDisjointPointTest(simpleGraph);
+		oracleAllPointsTest(simpleGraph);
+	}
+
+	//Test cases on various maps, see performance tests for scenarii details
+
+
+	@Test
+	public void midiPyrennesTest() throws IOException{
+
+		System.out.println("MIDI PYRENNEES");
+		carPoolingTest(midi_pyrenees,315603,243724,109237);
+		carPoolingTest(midi_pyrenees,447547,361305,76760);
+		carPoolingTest(midi_pyrenees,496160,406219,613829);
+		carPoolingTest(midi_pyrenees,496160,406219,613829);
+		carPoolingTest(midi_pyrenees,225084,345135,480971);
+
+	}
+	@Test
+	public void  californiaTest() throws IOException{
+		System.out.println("CALIFORNIA");;
+		carPoolingTest(california,1417789,288028,1020192);
+		carPoolingTest(california,792971,766918,782081);
+
+	}
+	@Test
+	public void belgiumTest()throws IOException{
+		System.out.println("BELGIUM");
+		carPoolingTest(belgium,516403,882812,84661);
+		carPoolingTest(belgium,396597,461420,532320);
+
+	}
+	@Test
+	public void newZealandTest()throws IOException{
+		System.out.println("NEW ZEALAND");
+		carPoolingTest(newZealand,230743,204261,250006);
 	}
 
 	public void oracleExhaustiveTest(Graph graph){

@@ -13,7 +13,7 @@ public class LabelStar extends Label implements Comparable<Label> {
 		if (data.getMode() == AbstractInputData.Mode.TIME) {
 			int speed = data.getMaximumSpeed();
 			if(speed<=0) {
-				
+
 				speed=data.getGraph().getGraphInformation().getMaximumSpeed();
 			}
 			else {
@@ -30,7 +30,7 @@ public class LabelStar extends Label implements Comparable<Label> {
 		if (data.getMode() == AbstractInputData.Mode.TIME) {
 			int speed = data.getMaximumSpeed();
 			if(speed<=0) {
-				
+
 				speed=data.getGraph().getGraphInformation().getMaximumSpeed();
 			}
 			else {
@@ -56,16 +56,16 @@ public class LabelStar extends Label implements Comparable<Label> {
 		return this.getCost()+this.getDistToDest();
 	}
 
-@Override
-public int compareTo(Label o) {
-	if(o.getTotalCost()>this.getTotalCost()){
-		return -1;
+	@Override
+	public int compareTo(Label o) {
+		if(o.getTotalCost()>this.getTotalCost()){
+			return -1;
+		}
+		else if(o.getTotalCost()==this.getTotalCost()){
+			return 0;
+		}
+		else{
+			return 1;
+		}
 	}
-	else if(o.getTotalCost()==this.getTotalCost()){
-		return 0;
-	}
-	else{
-		return 1;
-	}
-}
 }

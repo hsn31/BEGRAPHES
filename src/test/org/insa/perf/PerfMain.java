@@ -12,16 +12,23 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class PerfMain {
+import static org.insa.algo.shortestpath.ShortestPathAlgorithmTest.wallGraph;
+import static org.insa.algo.shortestpath.ShortestPathAlgorithmTest.wallWidth;
+import static org.insa.algo.shortestpath.ShortestPathAlgorithmTest.wallHeight;
 
+
+public class PerfMain {
 
 	public static void evaluate(String mapName,int origin,int destination,String comment) throws IOException {
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 
 		Graph graph = reader.read();
+		evaluate(graph,origin,destination,comment);
 
-
+	}
+	public static void evaluate(Graph graph,int origin,int destination,String comment) {
+		String mapName = graph.getMapName();
 		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(0);
 		ShortestPathData data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), arcInspector);
 		ShortestPathPerformanceTest test = new DijkstraPerformanceTest(data);
@@ -91,6 +98,13 @@ public class PerfMain {
 		evaluate(midi_pyrenees,265855,491131,"Opposite Bis");
 		evaluate(midi_pyrenees,610190,28680,"Close center");
 		evaluate(midi_pyrenees,343586,76028,"Mandatory curve");
+
+		evaluate(newZealand,230743,250006,"Unreachable");
+		evaluate(newZealand,204261,250006,"Unreachable");
+
+		evaluate(wallGraph, wallWidth *2+ wallWidth /2, wallWidth /2,"Close in euclidian distance, far in graph");
+		evaluate(wallGraph, wallWidth +1, wallWidth * wallHeight /2+ wallWidth /2,"Isolated start node");
+		evaluate(wallGraph, wallWidth +1, wallWidth * wallHeight /2+ wallWidth /2,"Unreachable destination");
 
 
 	}
