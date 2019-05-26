@@ -6,4 +6,9 @@ public class AStarAlgorithmTest extends ShortestPathAlgorithmTest {
 	public ShortestPathAlgorithm instanciateAlgorithm(ShortestPathData shortestPathData){
 		return new AStarAlgorithm(shortestPathData);
 	}
+
+	@Override
+	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) {
+		return new DijkstraAlgorithm(shortestPathData);
+	}
 }

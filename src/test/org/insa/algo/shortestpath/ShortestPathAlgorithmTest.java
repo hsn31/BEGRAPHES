@@ -28,11 +28,15 @@ public abstract class ShortestPathAlgorithmTest {
 	private static Graph graph;
 	private static Node[] nodes;
 
-	// "Tricky" graph to mess with AStar
-	public static Graph trickyGraph;
-	private static Node[][] trickyGraphNodes;
-	public static int trickyWidth=1000;
-	public static int trickyHeight =100;
+	// "Wall" graph to mess with AStar
+	public static Graph wallGraph;
+	private static Node[][] wallGraphNodes;
+	public static int wallWidth =1000;
+	public static int wallHeight =100;
+
+	//"BottleNeck" graph to mess even more
+	private static Graph bottleNeckGraph;
+	private static Node[][] bottleNeckGraphNodes;
 
 
 	//Square Map
@@ -112,26 +116,49 @@ public abstract class ShortestPathAlgorithmTest {
 		squareMapGraph = reader.read();
 		mapArcInspector = ArcInspectorFactory.getAllFilters().get(0);
 
-		//Init the tricky graph
-		trickyGraphNodes=new Node[trickyWidth][trickyHeight];
+		//Init the wall graph
+		wallGraphNodes =new Node[wallWidth][wallHeight];
 		ArrayList<Node> toAdd=new ArrayList<>();
 		int id=0;
-		for(int x=0;x<trickyWidth;x++){
-			for(int y = 0; y< trickyHeight; y++){
-				trickyGraphNodes[x][y]=new Node(id++,new Point(x,y));
-				toAdd.add(trickyGraphNodes[x][y]);
-				if(x>0 &&( (x!=1 && x!=trickyWidth-2)|| x==0 || x==trickyWidth-1)){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
-					Node.linkNodes(trickyGraphNodes[x][y],trickyGraphNodes[x-1][y],1,speed10,null);
-					Node.linkNodes(trickyGraphNodes[x-1][y],trickyGraphNodes[x][y],1,speed10,null);
+		for(int x = 0; x< wallWidth; x++){
+			for(int y = 0; y< wallHeight; y++){
+				wallGraphNodes[x][y]=new Node(id++,new Point(x,y));
+				toAdd.add(wallGraphNodes[x][y]);
+				if(x>0 &&( (x!=1 && x!= wallWidth -2)|| x==0 || x== wallWidth -1)){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x-1][y],1,speed10,null);
+					Node.linkNodes(wallGraphNodes[x-1][y], wallGraphNodes[x][y],1,speed10,null);
 				}
-				if(y>0 && x!=trickyWidth-2 && x!=1 && (y!=1 || x==0 || x==trickyWidth)) {
-					Node.linkNodes(trickyGraphNodes[x][y],trickyGraphNodes[x][y-1],1,speed10,null);
-					Node.linkNodes(trickyGraphNodes[x][y-1],trickyGraphNodes[x][y],1,speed10,null);
+				if(y>0 && x!= wallWidth -2 && x!=1 && (y!=1 || x==0 || x== wallWidth-1)) {
+					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x][y-1],1,speed10,null);
+					Node.linkNodes(wallGraphNodes[x][y-1], wallGraphNodes[x][y],1,speed10,null);
 				}
 
 			}
 		}
-		trickyGraph = new Graph("TRK","Tricky map",toAdd,new GraphStatistics(null,0,0,130,2));
+		wallGraph = new Graph("WAL","Wall map",toAdd,new GraphStatistics(null,0,0,130,2));
+
+
+		bottleNeckGraphNodes=new Node[wallWidth][wallHeight];
+		toAdd = new ArrayList<>();
+		id=0;
+		//Init the bottleneck graph
+		for(int x = 0; x< wallWidth; x++){
+			for(int y = 0; y< wallHeight; y++){
+				bottleNeckGraphNodes[x][y]=new Node(id++,new Point(x,y));
+				toAdd.add(bottleNeckGraphNodes[x][y]);
+				if(x>0 &&( (x!=1 && x!= wallWidth -2)|| x==0 || x== wallWidth -1)){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x-1][y],1,speed10,null);
+					Node.linkNodes(bottleNeckGraphNodes[x-1][y], bottleNeckGraphNodes[x][y],1,speed10,null);
+				}
+				if(y>0 && x!= wallWidth -2 && x!=1 && (y!=1 || x==0 || x== wallWidth-1)) {
+					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x][y-1],1,speed10,null);
+					Node.linkNodes(bottleNeckGraphNodes[x][y-1], bottleNeckGraphNodes[x][y],1,speed10,null);
+				}
+
+			}
+		}
+		Node.linkNodes(bottleNeckGraphNodes[wallWidth/2][0],bottleNeckGraphNodes[wallWidth/2][1],wallHeight*wallWidth,speed10,null);
+		bottleNeckGraph = new Graph("BTL","Bottleneck",toAdd,new GraphStatistics(null,0,0,130,2));
 
 
 		defaultArcInspector = new ArcInspector() {
@@ -683,36 +710,19 @@ public abstract class ShortestPathAlgorithmTest {
 		System.out.println("----- Test de validité avec oracle sur une carte-----");
 		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
 		System.out.println();
+		System.out.println("----- Reachable ------");
+		origine = 230743;
+		destination = 250006;
+		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
+		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
+
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validité avec oracle sur une carte-----");
+		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
+		System.out.println();
 		System.out.println("----- Unreachable ------");
-		origine = 0;
-		destination = 0;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
-
-		System.out.println("*****************************************************");
-		System.out.println("----- Test de validité avec oracle sur une carte-----");
-		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
-		System.out.println();
-		System.out.println("----- Opposite ------");
-		origine = 0;
-		destination = 0;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
-
-		System.out.println("*****************************************************");
-		System.out.println("----- Test de validité avec oracle sur une carte-----");
-		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
-		System.out.println();
-		System.out.println("----- Close to graph center ------");
-		origine = 0;
-		destination = 0;
-		algorithmMapWithoutOracleTest(mapName, origine, destination);
-
-		System.out.println("*****************************************************");
-		System.out.println("----- Test de validité avec oracle sur une carte-----");
-		System.out.println("----- Carte : NEW ZEALAND ---------------------------");
-		System.out.println();
-		System.out.println("----- Mandatory bridge Garonne ------");
-		origine = 0;
-		destination = 0;
+		origine = 204261;
+		destination = 250006;
 		algorithmMapWithOracleTestDistanceOrTime(mapName,0,origine,destination);
 		algorithmMapWithOracleTestDistanceOrTime(mapName,1,origine,destination);
 	}
@@ -741,28 +751,69 @@ public abstract class ShortestPathAlgorithmTest {
 		algorithmMapWithoutOracleTest(mapName, origine, destination);
 	}
 	@Test
-	public void testScenarioMinTempsDistTricky() throws Exception {
+	public void testScenarioMinTempsDistWall() throws Exception {
 
 
 		int origine;
 		int destination;
 		System.out.println("*****************************************************");
 		System.out.println("----- Test de validit� sans oracle sur une carte-----");
-		System.out.println("----- Carte : TRICKY WALLS----------------------------");
+		System.out.println("----- Carte : WALLS----------------------------");
 		System.out.println();
 
 		System.out.println("----- Proche en euclidien, loin en distance ------");
-		origine = trickyWidth*2+trickyWidth/2; //Middle of third row
-		destination = trickyWidth/2;//Middle of first row
-		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,0, origine, destination);
-		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,1, origine, destination);
+		origine = wallWidth *2+ wallWidth /2; //Middle of third row
+		destination = wallWidth /2;//Middle of first row
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,1, origine, destination);
 
 
 		System.out.println("----- Départ sur un noeud isolé ------");
-		origine = trickyWidth+1;//Second row first column, not linked
-		destination = trickyWidth* trickyHeight /2+trickyWidth/2;//Middle of the graph
-		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,0, origine, destination);
-		algorithmMapWithOracleTestDistanceOrTime(trickyGraph,1, origine, destination);
+		origine = wallWidth +1;//Second row second column, not linked
+		destination = wallWidth * wallHeight /2+ wallWidth /2;//Middle of the graph
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,1, origine, destination);
+
+		System.out.println("----- Destination sur un noeud isolé ------");
+		origine = wallWidth/2;//First row middle
+		destination = wallWidth+1;//Second row second column, not linked
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph,1, origine, destination);
+		
+		
 	}
+	/*
+	@Test
+	public void testScenarioMinTempsDistBottleNeck() throws Exception {
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : WALLS----------------------------");
+		System.out.println();
+
+		System.out.println("----- Proche en euclidien, loin en distance ------");
+		origine = wallWidth *2+ wallWidth /2; //Middle of third row
+		destination = wallWidth /2;//Middle of first row
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,1, origine, destination);
+
+
+		System.out.println("----- Départ sur un noeud isolé ------");
+		origine = wallWidth +1;//Second row second column, not linked
+		destination = wallWidth * wallHeight /2+ wallWidth /2;//Middle of the graph
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,1, origine, destination);
+
+		System.out.println("----- Destination sur un noeud isolé ------");
+		origine = wallWidth/2;//First row middle
+		destination = wallWidth+1;//Second row second column, not linked
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(bottleNeckGraph,1, origine, destination);
+
+
+	}*/
 
 }
