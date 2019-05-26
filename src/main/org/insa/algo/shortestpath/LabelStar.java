@@ -6,7 +6,7 @@ import org.insa.algo.AbstractInputData;
 import org.insa.algo.carpooling.CarPoolingAlgorithm;
 import org.insa.algo.carpooling.CarPoolingData;
 
-public class LabelStar extends Label implements Comparable<Label> {
+public class LabelStar extends Label {
 	protected double distToDest;
 	public LabelStar(Node noeud, double cost, ShortestPathData data) {
 		super(noeud,cost);
@@ -50,22 +50,10 @@ public class LabelStar extends Label implements Comparable<Label> {
 	public double getDistToDest(){
 		return this.distToDest;
 	}
-	//redéfinir getTotalCost dans LabelStar
+	//redéfinir getTotalCost
+	@Override
 	public double getTotalCost() {
 		//cout depuis l'origine + cout estimé à la destination
 		return this.getCost()+this.getDistToDest();
-	}
-
-	@Override
-	public int compareTo(Label o) {
-		if(o.getTotalCost()>this.getTotalCost()){
-			return -1;
-		}
-		else if(o.getTotalCost()==this.getTotalCost()){
-			return 0;
-		}
-		else{
-			return 1;
-		}
 	}
 }
