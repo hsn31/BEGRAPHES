@@ -73,7 +73,8 @@ public class PerfMain {
 
 
 	public static void main(String[] args) throws IOException {
-		String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+		//String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+		String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
 		String midi_pyrenees= maps+"midi-pyrenees.mapgr";
 		String carre_dense = maps+"carre-dense.mapgr";
 		String fractale = maps+"fractal-spiral.mapgr";

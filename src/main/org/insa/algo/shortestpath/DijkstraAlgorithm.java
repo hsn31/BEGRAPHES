@@ -31,7 +31,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		AbstractSolution.Status status = AbstractSolution.Status.INFEASIBLE;
 		Path solutionPath;
 		ArrayList<Node> nodePath = new ArrayList<>();
+
 		Graph graph = data.getGraph();
+		if(data.getOrigin() == data.getDestination()){
+			status = AbstractSolution.Status.OPTIMAL;
+			nodePath.add(data.getOrigin());
+			solutionPath = Path.createShortestPathFromNodes(graph,nodePath);
+			return new ShortestPathSolution(data, status, solutionPath);
+
+		}
+
 
 		HashMap<Node, Label> labels = new HashMap<>();
 		BinaryHeap<Label> binaryHeap = new BinaryHeap<>();
@@ -89,7 +98,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			cursor = labels.get(cursor.getPrev().getOrigin());
 			//System.out.println("Path constructing"); TEST
 		}
-		if (nodePath.size() > 1 || data.getOrigin() == data.getDestination()) { // si on a bien atteint la destination ou si origine et destination étaient identiques
+		if (nodePath.size() > 1) { // si on a bien atteint la destination ou si origine et destination étaient identiques
 			status = AbstractSolution.Status.OPTIMAL;
 			solutionPath = Path.createShortestPathFromNodes(graph, nodePath);
 			solution = new ShortestPathSolution(data, status, solutionPath);

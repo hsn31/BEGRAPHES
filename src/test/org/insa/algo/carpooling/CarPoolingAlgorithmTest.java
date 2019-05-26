@@ -32,7 +32,8 @@ public abstract class CarPoolingAlgorithmTest {
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
-	private String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	//private String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	private String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
 	private String midi_pyrenees = maps + "midi-pyrenees.mapgr";
 	private String carre_dense = maps + "carre-dense.mapgr";
 	private String fractale = maps + "fractal-spiral.mapgr";

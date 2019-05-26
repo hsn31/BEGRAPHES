@@ -45,23 +45,24 @@ public abstract class ShortestPathAlgorithmTest {
 	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
+	private String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
 
 
 	//Guadeloup Map
-	private static String guadeloupMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/guadeloupe.mapgr";
+	private String guadeloupMap = maps+"guadeloupe.mapgr";
 
 	//Toulouse Map
-	private static String toulouseMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+	private String toulouseMapName = maps+"toulouse.mapgr";
 
 
 	//INSA Map
-	private static String insaMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
+	private  String insaMapName = maps+"insa.mapgr";
 
 	//HG Map
-	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
+	private  String hgMapName = maps+"haute-garonne.mapgr";
 
 	//NZ Map
-	private static String NZMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
+	private String NZMap = maps+"new-zealand.mapgr";
 
 
 	// List of arcs in the graph, x1_x2 is the arc from node x1 (0) to x2 (1).
