@@ -42,26 +42,28 @@ public abstract class ShortestPathAlgorithmTest {
 	//Square Map
 	private static Graph squareMapGraph;
 	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
-	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
+	//private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
-	//private static String squareMapName ="D:\\Tï¿½lï¿½chargements\\carre.mapgr";
+	private static String squareMapName ="D:\\Téléchargements\\carre.mapgr";
+	//vive la simplification
+	private static String simple ="D:\\Téléchargements\\";
 
 
 	//Guadeloup Map
-	private static String guadeloupMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/guadeloupe.mapgr";
+	private static String guadeloupMap = simple+"guadeloupe.mapgr";
 
 	//Toulouse Map
-	private static String toulouseMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+	private static String toulouseMapName = simple+"toulouse.mapgr";
 
 
 	//INSA Map
-	private static String insaMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
+	private static String insaMapName = simple+"insa.mapgr";
 
 	//HG Map
-	private static String hgMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
+	private static String hgMapName = simple+"haute-garonne.mapgr";
 
 	//NZ Map
-	private static String NZMap = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
+	private static String NZMap = simple+"new-zealand.mapgr";
 
 
 	// List of arcs in the graph, x1_x2 is the arc from node x1 (0) to x2 (1).
