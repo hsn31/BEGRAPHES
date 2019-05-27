@@ -297,10 +297,7 @@ public abstract class ShortestPathAlgorithmTest {
 			assertEquals("Solution status should be OPTIMAL", AbstractSolution.Status.OPTIMAL, solution.getStatus());
 			assertEquals("Path size should be 0", 0, solution.getPath().getArcs().size());
 
-		} else if (solution.getPath() == null) {
-			assertEquals(oracleSolution.getPath(), solution.getPath());
-
-		} else {
+			} else if (oracleSolution.getPath()!=null) {
 			assertEquals("Algorithm and oracle path have different number of nodes", oracleSolution.getPath().size(), solution.getPath().size());
 			double costSolution;
 			double costExpected;
@@ -314,7 +311,7 @@ public abstract class ShortestPathAlgorithmTest {
 				costExpected = oracleSolution.getPath().getLength();
 			}
 
-			assertTrue("Expected cost was" + costExpected + "actual is" + costSolution, costExpected == costSolution);
+			assertTrue("Expected cost was " + costExpected + " actual is " + costSolution, costExpected == costSolution);
 			assertTrue("Solution path should be valid", solution.getPath().isValid());
 
 		}
@@ -326,30 +323,14 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 
 
-	public void algorithmOutOfGrapheTest(String mapName, int origine, int destination) throws IOException {
-		GraphReader reader = new BinaryGraphReader(
-				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-
-		Graph graph = reader.read();
-		ArcInspector arcInspector = ArcInspectorFactory.getAllFilters().get(2);
-		try {
-			ShortestPathData data = new ShortestPathData(graph, graph.get(origine), graph.get(destination),
-					arcInspector);
-			fail();
-		} catch (IndexOutOfBoundsException e) {
-
-		}
-
-	}
-
 	//Exactement le meme Test visant la distance et le temps mais sans Oracle
 
 	public void algorithmMapWithoutOracleTest(String mapName, int origine, int destination) throws IOException {
 
-		double costFastestSolutionInTime = Double.POSITIVE_INFINITY;
-		double costFastestSolutionInDistance = Double.POSITIVE_INFINITY;
-		double costShortestSolutionInTime = Double.POSITIVE_INFINITY;
-		double costShortestSolutionInDistance = Double.POSITIVE_INFINITY;
+		double costFastestSolutionInTime;
+		double costFastestSolutionInDistance;
+		double costShortestSolutionInTime;
+		double costShortestSolutionInDistance;
 
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
@@ -383,23 +364,29 @@ public abstract class ShortestPathAlgorithmTest {
 		} else if (origine == destination) {
 			System.out.println("Origine et Destination identiques"); //cf conv messenger du 24/04/2019
 			assertEquals(AbstractSolution.Status.OPTIMAL, solutionFastest.getStatus());
+			assertEquals(AbstractSolution.Status.OPTIMAL, solutionShortest.getStatus());
 			assertEquals(solutionFastest.getPath().getArcs().size(), 0);
+			assertEquals(solutionShortest.getPath().getArcs().size(), 0);
 
 
 		} else if (solutionFastest.getPath() == null) {
 			assertEquals("No path found, end status should be INFEASIBLE", AbstractSolution.Status.INFEASIBLE, solutionFastest.getStatus());
+			assertEquals("No path found, end status should be INFEASIBLE", AbstractSolution.Status.INFEASIBLE, solutionShortest.getStatus());
 		} else {
+			//On vérifie la validité des chemins trouvés
+			assertTrue("Fastest solution path is not valid",solutionFastest.getPath().isValid());
+			assertTrue("Shortest solution path is not valid",solutionShortest.getPath().isValid());
 
 			costFastestSolutionInTime = solutionFastest.getPath().getMinimumTravelTime();
 			costFastestSolutionInDistance = solutionFastest.getPath().getLength();
 			costShortestSolutionInDistance = solutionShortest.getPath().getLength();
 			costShortestSolutionInTime = solutionShortest.getPath().getMinimumTravelTime();
+
+			//On vérifie la cohérence des résultats fastest et shortest
 			assertTrue(costFastestSolutionInTime <= costShortestSolutionInTime);
 			assertTrue(costFastestSolutionInDistance >= costShortestSolutionInDistance);
 
 		}
-		System.out.println();
-		System.out.println();
 	}
 
 	//DEBUT DES TESTS
@@ -569,7 +556,7 @@ public abstract class ShortestPathAlgorithmTest {
 
 
 	@Test
-	public void testScenarioDistanceGuadeloupe() throws Exception {
+	public void testScenarioDistanceGuadeloupe()  {
 		try {
 			String mapName = guadeloupMap;
 
@@ -598,7 +585,7 @@ public abstract class ShortestPathAlgorithmTest {
 	}
 
 	@Test
-	public void testScenarioTempsGuadeloupe() throws Exception {
+	public void testScenarioTempsGuadeloupe() {
 		try {
 			String mapName = guadeloupMap;
 
@@ -614,7 +601,7 @@ public abstract class ShortestPathAlgorithmTest {
 			System.out.println("----- Cas d'un chemin simple ------");
 			origine = 9922;
 			destination = 34328;
-			algorithmMapWithOracleTestDistanceOrTime(mapName, 10, origine, destination);
+			algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
 
 			System.out.println("----- Cas de sommets non connexes ------");
 			origine = 9950;

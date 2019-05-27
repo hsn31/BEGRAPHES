@@ -32,8 +32,12 @@ public interface CarPoolingObserver {
 	 * @param node Destination.
 	 */
 	public void notifyDestinationReached(Node node);
-	
+
+	//Notify the observer that a node has been reached by A and B and a Merged Label has been inserted
+
 	public void notifyNodeMerged(Node node);
+
+	//Notify the observer that a merged label has been marked
 	
 	public void notifyMergedNodeMarked(Node node);
 

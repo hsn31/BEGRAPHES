@@ -9,6 +9,6 @@ public class AStarAlgorithmTest extends ShortestPathAlgorithmTest {
 
 	@Override
 	public ShortestPathAlgorithm instanciateOracle(ShortestPathData shortestPathData) {
-		return new DijkstraAlgorithm(shortestPathData);
+		return new BellmanFordAlgorithm(shortestPathData);
 	}
 }
