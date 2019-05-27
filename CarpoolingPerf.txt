@@ -5,16 +5,16 @@ Close starts, far destination
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :3303
+EXECUTION TIME (ms) :4110
 FASTEST MODE
-EXECUTION TIME (ms) :3623
+EXECUTION TIME (ms) :4340
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :661
+EXECUTION TIME (ms) :915
 FASTEST MODE
-EXECUTION TIME (ms) :2593
+EXECUTION TIME (ms) :2845
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
@@ -23,16 +23,16 @@ Equilateralish
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :3106
+EXECUTION TIME (ms) :2747
 FASTEST MODE
-EXECUTION TIME (ms) :2180
+EXECUTION TIME (ms) :3182
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :1562
+EXECUTION TIME (ms) :2003
 FASTEST MODE
-EXECUTION TIME (ms) :2790
+EXECUTION TIME (ms) :3420
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
@@ -41,16 +41,16 @@ Three points aligned
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :474
+EXECUTION TIME (ms) :721
 FASTEST MODE
-EXECUTION TIME (ms) :612
+EXECUTION TIME (ms) :787
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :625
+EXECUTION TIME (ms) :690
 FASTEST MODE
-EXECUTION TIME (ms) :615
+EXECUTION TIME (ms) :916
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
@@ -60,16 +60,16 @@ Destination at the middle
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :463
+EXECUTION TIME (ms) :574
 FASTEST MODE
-EXECUTION TIME (ms) :613
+EXECUTION TIME (ms) :1424
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :528
+EXECUTION TIME (ms) :693
 FASTEST MODE
-EXECUTION TIME (ms) :714
+EXECUTION TIME (ms) :824
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
@@ -79,16 +79,16 @@ User at the middle
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :1161
+EXECUTION TIME (ms) :1421
 FASTEST MODE
-EXECUTION TIME (ms) :2036
+EXECUTION TIME (ms) :2272
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :567
+EXECUTION TIME (ms) :834
 FASTEST MODE
-EXECUTION TIME (ms) :2428
+EXECUTION TIME (ms) :2851
 
 ***********************************
 CALIFORNIA
@@ -98,16 +98,16 @@ Close starts, far destination
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :24624
+EXECUTION TIME (ms) :27431
 FASTEST MODE
-EXECUTION TIME (ms) :27657
+EXECUTION TIME (ms) :28685
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :14470
+EXECUTION TIME (ms) :15208
 FASTEST MODE
-EXECUTION TIME (ms) :19810
+EXECUTION TIME (ms) :22224
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/california.mapgr
@@ -116,16 +116,16 @@ Curve required
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :10496
+EXECUTION TIME (ms) :9593
 FASTEST MODE
-EXECUTION TIME (ms) :19179
+EXECUTION TIME (ms) :18751
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :5264
+EXECUTION TIME (ms) :6465
 FASTEST MODE
-EXECUTION TIME (ms) :18921
+EXECUTION TIME (ms) :23072
 
 ***********************************
 BELGIUM
@@ -135,16 +135,16 @@ Almost equilateral
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :3281
+EXECUTION TIME (ms) :4142
 FASTEST MODE
-EXECUTION TIME (ms) :2687
+EXECUTION TIME (ms) :3159
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :2213
+EXECUTION TIME (ms) :2704
 FASTEST MODE
-EXECUTION TIME (ms) :3642
+EXECUTION TIME (ms) :3761
 
 ***********************************
 TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/belgium.mapgr
@@ -153,16 +153,16 @@ Close starts,far destination
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :5171
+EXECUTION TIME (ms) :6135
 FASTEST MODE
-EXECUTION TIME (ms) :7627
+EXECUTION TIME (ms) :8579
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :1724
+EXECUTION TIME (ms) :1925
 FASTEST MODE
-EXECUTION TIME (ms) :17547
+EXECUTION TIME (ms) :5100
 
 ***********************************
 NEW ZEALAND
@@ -172,15 +172,15 @@ Impossible
 --------------------------
 MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :190
+EXECUTION TIME (ms) :247
 FASTEST MODE
-EXECUTION TIME (ms) :274
+EXECUTION TIME (ms) :452
 
 --------------------------
 GUIDED MERGE ALGORITHM
 SHORTEST MODE
-EXECUTION TIME (ms) :211
+EXECUTION TIME (ms) :278
 FASTEST MODE
-EXECUTION TIME (ms) :414
+EXECUTION TIME (ms) :362
 
 ***********************************
