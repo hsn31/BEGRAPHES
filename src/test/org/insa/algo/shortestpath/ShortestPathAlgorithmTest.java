@@ -41,11 +41,11 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//Square Map
 	private static Graph squareMapGraph;
-	//private static String squareMapName = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
-	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
-
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
-	private String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
+	
+	private static String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	//private String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
+	
 
 
 	//Guadeloup Map
@@ -63,6 +63,9 @@ public abstract class ShortestPathAlgorithmTest {
 
 	//NZ Map
 	private String NZMap = maps+"new-zealand.mapgr";
+	
+	//Square map
+	private static String squareMapName = maps+"carre.mapgr";
 
 
 	// List of arcs in the graph, x1_x2 is the arc from node x1 (0) to x2 (1).
@@ -135,8 +138,8 @@ public abstract class ShortestPathAlgorithmTest {
 
 			}
 		}
-		wallGraph = new Graph("WAL", "Wall map", toAdd, new GraphStatistics(null, 0, 0, 130, 2));
-
+		wallGraph = new Graph("WALL", "Wall map", toAdd, new GraphStatistics(null, 0, 0, 130, 2));
+		
 
 		bottleNeckGraphNodes = new Node[wallWidth][wallHeight];
 		toAdd = new ArrayList<>();
@@ -209,7 +212,7 @@ public abstract class ShortestPathAlgorithmTest {
 
 			//Assume.assumeTrue(solution.getStatus() != AbstractSolution.Status.INFEASIBLE);
 			if (solution.getStatus() != AbstractSolution.Status.INFEASIBLE) {
-				assertEquals("Oracle and Algorithm solution give differrent number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
+				assertEquals("Oracle and Algorithm solution give different number of nodes in path", oracleSolution.getPath().size(), solution.getPath().size());
 				assertTrue("Different lenghth for Oracle solution and Algorithm solution", oracleSolution.getPath().getLength() == solution.getPath().getLength());
 				for (int i = 0; i < oracleSolution.getPath().getArcs().size(); i++) {
 					assertEquals("Different arcs founded for Algorithm and Oracle solutions", oracleSolution.getPath().getArcs().get(i), solution.getPath().getArcs().get(i));
@@ -307,8 +310,8 @@ public abstract class ShortestPathAlgorithmTest {
 				costExpected = oracleSolution.getPath().getMinimumTravelTime();
 
 			} else {
-				costSolution = solution.getPath().getLength();
-				costExpected = oracleSolution.getPath().getLength();
+				costSolution = solution.getCost();
+				costExpected = oracleSolution.getCost();
 			}
 
 			assertTrue("Expected cost was " + costExpected + " actual is " + costSolution, costExpected == costSolution);
@@ -731,9 +734,9 @@ public abstract class ShortestPathAlgorithmTest {
 			System.out.println("----- Test de validité avec oracle sur une carte-----");
 			System.out.println("----- Carte : NEW ZEALAND ---------------------------");
 			System.out.println();
-			System.out.println("----- Reachable ------");
+			System.out.println("----- Unreachable ------");
 			origine = 230743;
-			destination = 250006;
+			destination = 194871;
 			algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
 			algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
 
@@ -741,9 +744,9 @@ public abstract class ShortestPathAlgorithmTest {
 			System.out.println("----- Test de validité avec oracle sur une carte-----");
 			System.out.println("----- Carte : NEW ZEALAND ---------------------------");
 			System.out.println();
-			System.out.println("----- Unreachable ------");
-			origine = 204261;
-			destination = 250006;
+			System.out.println("----- Reachable ------");
+			origine = 300693;
+			destination = 194871;
 			algorithmMapWithOracleTestDistanceOrTime(mapName, 0, origine, destination);
 			algorithmMapWithOracleTestDistanceOrTime(mapName, 1, origine, destination);
 		} catch (IOException e) {

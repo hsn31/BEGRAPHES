@@ -29,11 +29,9 @@ public abstract class CarPoolingAlgorithmTest {
 	//Square Map
 	protected static Graph squareMapGraph;
 
-	private static String squareMapName = "C:\\Users\\Brice\\Desktop\\carre.mapgr";
 
-	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
-	//private String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
-	private String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
+	private static String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	//private static String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
 	private String midi_pyrenees = maps + "midi-pyrenees.mapgr";
 	private String carre_dense = maps + "carre-dense.mapgr";
 	private String fractale = maps + "fractal-spiral.mapgr";
@@ -41,7 +39,7 @@ public abstract class CarPoolingAlgorithmTest {
 	private String newZealand = maps + "new-zealand.mapgr";
 	private String california = maps + "california.mapgr";
 	private String belgium = maps + "belgium.mapgr";
-	//private static String squareMapName = maps+"carre.mapgr";
+	private static String squareMapName = maps+"carre.mapgr";
 
 	//HG Map
 
