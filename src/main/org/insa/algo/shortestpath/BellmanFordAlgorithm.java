@@ -18,6 +18,7 @@ public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+        System.out.println("BELLMAN FORD RUNNING");
 
         // Retrieve the graph.
         ShortestPathData data = getInputData();
@@ -93,7 +94,7 @@ public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
             // Create the final solution.
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
         }
-
+        System.out.println("BELLMAN FORD OVER");
         return solution;
     }
 
