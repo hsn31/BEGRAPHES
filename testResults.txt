@@ -1,235 +1,265 @@
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 343341 DESTINATION : 42714
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 844529 DESTINATION : 889773
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :1266
+EXECUTION TIME (ms) :2635
 FASTEST MODE
-EXECUTION TIME (ms) : 987
+TIME (ms) : 2431
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 343341 DESTINATION : 42714
+AStar TEST ON MAP : 
+ORIGIN : 844529 DESTINATION : 889773
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :372
+EXECUTION TIME (ms) :631
 FASTEST MODE
-EXECUTION TIME (ms) : 250
+TIME (ms) : 468
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 196673 DESTINATION : 156393
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 68836 DESTINATION : 818567
+Center
 SHORTEST MODE
-EXECUTION TIME (ms) :1659
+EXECUTION TIME (ms) :1
 FASTEST MODE
-EXECUTION TIME (ms) : 1112
+TIME (ms) : 0
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 196673 DESTINATION : 156393
+AStar TEST ON MAP : 
+ORIGIN : 68836 DESTINATION : 818567
+Center
 SHORTEST MODE
-EXECUTION TIME (ms) :8
+EXECUTION TIME (ms) :1
 FASTEST MODE
-EXECUTION TIME (ms) : 8
+TIME (ms) : 0
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 276013 DESTINATION : 3423
-Close
+DIJKSTRA TEST ON MAP : New-Zealand
+ORIGIN : 230743 DESTINATION : 250006
+Unreachable
 SHORTEST MODE
-EXECUTION TIME (ms) :43
+EXECUTION TIME (ms) :162
 FASTEST MODE
-EXECUTION TIME (ms) : 43
+TIME (ms) : 173
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 276013 DESTINATION : 3423
-Close
+AStar TEST ON MAP : New-Zealand
+ORIGIN : 230743 DESTINATION : 250006
+Unreachable
 SHORTEST MODE
-EXECUTION TIME (ms) :3
+EXECUTION TIME (ms) :171
 FASTEST MODE
-EXECUTION TIME (ms) : 22
+TIME (ms) : 183
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 239886 DESTINATION : 3423
+DIJKSTRA TEST ON MAP : New-Zealand
+ORIGIN : 204261 DESTINATION : 250006
+Unreachable
 SHORTEST MODE
-EXECUTION TIME (ms) :335
+EXECUTION TIME (ms) :148
 FASTEST MODE
-EXECUTION TIME (ms) : 321
+TIME (ms) : 296
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 239886 DESTINATION : 3423
+AStar TEST ON MAP : New-Zealand
+ORIGIN : 204261 DESTINATION : 250006
+Unreachable
 SHORTEST MODE
-EXECUTION TIME (ms) :5
+EXECUTION TIME (ms) :39
 FASTEST MODE
-EXECUTION TIME (ms) : 5
+TIME (ms) : 132
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 169473 DESTINATION : 131823
+DIJKSTRA TEST ON MAP : Toulouse
+ORIGIN : 22596 DESTINATION : 13986
+Use periph
 SHORTEST MODE
-EXECUTION TIME (ms) :590
+EXECUTION TIME (ms) :26
 FASTEST MODE
-EXECUTION TIME (ms) : 2566
+TIME (ms) : 13
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr
-ORIGIN : 169473 DESTINATION : 131823
+AStar TEST ON MAP : Toulouse
+ORIGIN : 22596 DESTINATION : 13986
+Use periph
 SHORTEST MODE
 EXECUTION TIME (ms) :17
 FASTEST MODE
-EXECUTION TIME (ms) : 18
+TIME (ms) : 9
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/fractal-spiral.mapgr
-ORIGIN : 844529 DESTINATION : 889773
-Opposite
-SHORTEST MODE
-EXECUTION TIME (ms) :2963
-FASTEST MODE
-EXECUTION TIME (ms) : 4288
-
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/fractal-spiral.mapgr
-ORIGIN : 844529 DESTINATION : 889773
-Opposite
-SHORTEST MODE
-EXECUTION TIME (ms) :513
-FASTEST MODE
-EXECUTION TIME (ms) : 487
-
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/fractal-spiral.mapgr
-ORIGIN : 68836 DESTINATION : 818567
-Center
-SHORTEST MODE
-EXECUTION TIME (ms) :1
-FASTEST MODE
-EXECUTION TIME (ms) : 0
-
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/fractal-spiral.mapgr
-ORIGIN : 68836 DESTINATION : 818567
-Center
-SHORTEST MODE
-EXECUTION TIME (ms) :1
-FASTEST MODE
-EXECUTION TIME (ms) : 0
-
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
-ORIGIN : 22596 DESTINATION : 13986
-Use periph
-SHORTEST MODE
-EXECUTION TIME (ms) :32
-FASTEST MODE
-EXECUTION TIME (ms) : 17
-
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
-ORIGIN : 22596 DESTINATION : 13986
-Use periph
-SHORTEST MODE
-EXECUTION TIME (ms) :20
-FASTEST MODE
-EXECUTION TIME (ms) : 12
-
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+DIJKSTRA TEST ON MAP : Toulouse
 ORIGIN : 9888 DESTINATION : 32174
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :38
+EXECUTION TIME (ms) :30
 FASTEST MODE
-EXECUTION TIME (ms) : 40
+TIME (ms) : 36
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+AStar TEST ON MAP : Toulouse
 ORIGIN : 9888 DESTINATION : 32174
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :18
+EXECUTION TIME (ms) :17
 FASTEST MODE
-EXECUTION TIME (ms) : 59
+TIME (ms) : 56
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+DIJKSTRA TEST ON MAP : Toulouse
 ORIGIN : 4460 DESTINATION : 1608
 Close center
 SHORTEST MODE
-EXECUTION TIME (ms) :6
+EXECUTION TIME (ms) :7
 FASTEST MODE
-EXECUTION TIME (ms) : 5
+TIME (ms) : 7
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+AStar TEST ON MAP : Toulouse
 ORIGIN : 4460 DESTINATION : 1608
 Close center
 SHORTEST MODE
 EXECUTION TIME (ms) :3
 FASTEST MODE
-EXECUTION TIME (ms) : 7
+TIME (ms) : 8
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+DIJKSTRA TEST ON MAP : Toulouse
 ORIGIN : 2767 DESTINATION : 14179
 Mandatory bridge Garonne
 SHORTEST MODE
 EXECUTION TIME (ms) :16
 FASTEST MODE
-EXECUTION TIME (ms) : 9
+TIME (ms) : 9
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr
+AStar TEST ON MAP : Toulouse
 ORIGIN : 2767 DESTINATION : 14179
 Mandatory bridge Garonne
 SHORTEST MODE
+EXECUTION TIME (ms) :2
+FASTEST MODE
+TIME (ms) : 4
+
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 343341 DESTINATION : 42714
+Opposite
+SHORTEST MODE
+EXECUTION TIME (ms) :493
+FASTEST MODE
+TIME (ms) : 286
+
+AStar TEST ON MAP : 
+ORIGIN : 343341 DESTINATION : 42714
+Opposite
+SHORTEST MODE
+EXECUTION TIME (ms) :66
+FASTEST MODE
+TIME (ms) : 70
+
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 196673 DESTINATION : 156393
+SHORTEST MODE
+EXECUTION TIME (ms) :626
+FASTEST MODE
+TIME (ms) : 862
+
+AStar TEST ON MAP : 
+ORIGIN : 196673 DESTINATION : 156393
+SHORTEST MODE
+EXECUTION TIME (ms) :4
+FASTEST MODE
+TIME (ms) : 4
+
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 276013 DESTINATION : 3423
+Close
+SHORTEST MODE
+EXECUTION TIME (ms) :151
+FASTEST MODE
+TIME (ms) : 28
+
+AStar TEST ON MAP : 
+ORIGIN : 276013 DESTINATION : 3423
+Close
+SHORTEST MODE
+EXECUTION TIME (ms) :2
+FASTEST MODE
+TIME (ms) : 2
+
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 239886 DESTINATION : 3423
+SHORTEST MODE
+EXECUTION TIME (ms) :268
+FASTEST MODE
+TIME (ms) : 265
+
+AStar TEST ON MAP : 
+ORIGIN : 239886 DESTINATION : 3423
+SHORTEST MODE
 EXECUTION TIME (ms) :3
 FASTEST MODE
-EXECUTION TIME (ms) : 4
+TIME (ms) : 4
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+DIJKSTRA TEST ON MAP : 
+ORIGIN : 169473 DESTINATION : 131823
+SHORTEST MODE
+EXECUTION TIME (ms) :594
+FASTEST MODE
+TIME (ms) : 631
+
+AStar TEST ON MAP : 
+ORIGIN : 169473 DESTINATION : 131823
+SHORTEST MODE
+EXECUTION TIME (ms) :15
+FASTEST MODE
+TIME (ms) : 13
+
+DIJKSTRA TEST ON MAP : Midi-Pyrénées
 ORIGIN : 397488 DESTINATION : 432851
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :610
+EXECUTION TIME (ms) :606
 FASTEST MODE
-EXECUTION TIME (ms) : 835
+TIME (ms) : 758
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+AStar TEST ON MAP : Midi-Pyrénées
 ORIGIN : 397488 DESTINATION : 432851
 Opposite
 SHORTEST MODE
-EXECUTION TIME (ms) :1052
+EXECUTION TIME (ms) :1036
 FASTEST MODE
-EXECUTION TIME (ms) : 1458
+TIME (ms) : 1156
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+DIJKSTRA TEST ON MAP : Midi-Pyrénées
 ORIGIN : 265855 DESTINATION : 491131
 Opposite Bis
 SHORTEST MODE
-EXECUTION TIME (ms) :639
+EXECUTION TIME (ms) :726
 FASTEST MODE
-EXECUTION TIME (ms) : 752
+TIME (ms) : 592
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+AStar TEST ON MAP : Midi-Pyrénées
 ORIGIN : 265855 DESTINATION : 491131
 Opposite Bis
 SHORTEST MODE
-EXECUTION TIME (ms) :413
+EXECUTION TIME (ms) :1069
 FASTEST MODE
-EXECUTION TIME (ms) : 406
+TIME (ms) : 394
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+DIJKSTRA TEST ON MAP : Midi-Pyrénées
 ORIGIN : 610190 DESTINATION : 28680
 Close center
 SHORTEST MODE
-EXECUTION TIME (ms) :145
+EXECUTION TIME (ms) :125
 FASTEST MODE
-EXECUTION TIME (ms) : 91
+TIME (ms) : 88
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+AStar TEST ON MAP : Midi-Pyrénées
 ORIGIN : 610190 DESTINATION : 28680
 Close center
 SHORTEST MODE
 EXECUTION TIME (ms) :20
 FASTEST MODE
-EXECUTION TIME (ms) : 53
+TIME (ms) : 50
 
-DIJKSTRA TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+DIJKSTRA TEST ON MAP : Midi-Pyrénées
 ORIGIN : 343586 DESTINATION : 76028
 Mandatory curve
 SHORTEST MODE
-EXECUTION TIME (ms) :236
+EXECUTION TIME (ms) :229
 FASTEST MODE
-EXECUTION TIME (ms) : 409
+TIME (ms) : 235
 
-AStar TEST ON MAP : /home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/midi-pyrenees.mapgr
+AStar TEST ON MAP : Midi-Pyrénées
 ORIGIN : 343586 DESTINATION : 76028
 Mandatory curve
 SHORTEST MODE
-EXECUTION TIME (ms) :60
+EXECUTION TIME (ms) :49
 FASTEST MODE
-EXECUTION TIME (ms) : 126
-
-
+TIME (ms) : 106
