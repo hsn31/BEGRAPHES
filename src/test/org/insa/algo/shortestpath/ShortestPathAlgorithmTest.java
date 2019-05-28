@@ -31,7 +31,7 @@ public abstract class ShortestPathAlgorithmTest {
 	// "Wall" graph to mess with AStar
 	public static Graph wallGraph;
 	private static Node[][] wallGraphNodes;
-	public static int wallWidth = 1000;
+	public static int wallWidth = 100;
 	public static int wallHeight = 100;
 
 	//"BottleNeck" graph to mess even more
@@ -123,17 +123,20 @@ public abstract class ShortestPathAlgorithmTest {
 		wallGraphNodes = new Node[wallWidth][wallHeight];
 		ArrayList<Node> toAdd = new ArrayList<>();
 		int id = 0;
+		String grid="";
 		for (int x = 0; x < wallWidth; x++) {
+			String word="";
 			for (int y = 0; y < wallHeight; y++) {
 				wallGraphNodes[x][y] = new Node(id++, new Point(x, y));
 				toAdd.add(wallGraphNodes[x][y]);
-				if (x > 0 && ((x != 1 &&x!=2 && x != wallWidth - 1&& x != wallWidth - 2))){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
-					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x - 1][y], 1, speed10, null);
-					Node.linkNodes(wallGraphNodes[x - 1][y], wallGraphNodes[x][y], 1, speed10, null);
+				String c = "-";
+				if (x > 0 && ((x != 1 &&x!=2 && x != wallWidth - 1&& x != wallWidth - 2) || (y==0 || y==wallHeight-1))){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x - 1][y], 10, speed10, null);
+					Node.linkNodes(wallGraphNodes[x - 1][y], wallGraphNodes[x][y], 10, speed10, null);
 				}
 				if (y > 0 && x != wallWidth - 2 && x != 1 && (y != 1 || x == 0 || x == wallWidth - 1)) {
-					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x][y - 1], 1, speed10, null);
-					Node.linkNodes(wallGraphNodes[x][y - 1], wallGraphNodes[x][y], 1, speed10, null);
+					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x][y - 1], 10, speed10, null);
+					Node.linkNodes(wallGraphNodes[x][y - 1], wallGraphNodes[x][y], 10, speed10, null);
 				}
 
 			}
@@ -150,12 +153,12 @@ public abstract class ShortestPathAlgorithmTest {
 				bottleNeckGraphNodes[x][y] = new Node(id++, new Point(x, y));
 				toAdd.add(bottleNeckGraphNodes[x][y]);
 				if (x > 0 && ((x != 1 && x!=2 && x != wallWidth - 2) || x == 0 || x == wallWidth - 1)) {//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
-					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x - 1][y], 1, speed10, null);
-					Node.linkNodes(bottleNeckGraphNodes[x - 1][y], bottleNeckGraphNodes[x][y], 1, speed10, null);
+					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x - 1][y], 10, speed10, null);
+					Node.linkNodes(bottleNeckGraphNodes[x - 1][y], bottleNeckGraphNodes[x][y], 10, speed10, null);
 				}
 				if (y > 0 && x != wallWidth - 2 && x != 1 && x!=2 && (y != 1 || x == 0 || x == wallWidth - 1)) {
-					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x][y - 1], 1, speed10, null);
-					Node.linkNodes(bottleNeckGraphNodes[x][y - 1], bottleNeckGraphNodes[x][y], 1, speed10, null);
+					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x][y - 1], 10, speed10, null);
+					Node.linkNodes(bottleNeckGraphNodes[x][y - 1], bottleNeckGraphNodes[x][y], 10, speed10, null);
 				}
 
 			}
@@ -783,6 +786,38 @@ public abstract class ShortestPathAlgorithmTest {
 
 	@Test
 	public void testScenarioWall() {
+
+
+		int origine;
+		int destination;
+		System.out.println("*****************************************************");
+		System.out.println("----- Test de validit� sans oracle sur une carte-----");
+		System.out.println("----- Carte : WALLS----------------------------");
+		System.out.println();
+
+		System.out.println("----- Proche en euclidien, loin en distance ------");
+		origine = wallWidth * 2 + wallWidth / 2; //Middle of third row
+		destination = wallWidth / 2;//Middle of first row
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 1, origine, destination);
+
+
+		System.out.println("----- Départ sur un noeud isolé ------");
+		origine = wallWidth + 1;//Second row second column, not linked
+		destination = wallWidth * wallHeight / 2 + wallWidth / 2;//Middle of the graph
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 1, origine, destination);
+
+		System.out.println("----- Destination sur un noeud isolé ------");
+		origine = wallWidth / 2;//First row middle
+		destination = wallWidth + 1;//Second row second column, not linked
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 0, origine, destination);
+		algorithmMapWithOracleTestDistanceOrTime(wallGraph, 1, origine, destination);
+
+
+	}
+	@Test
+	public void testScenarioBottleNeck() {
 
 
 		int origine;
