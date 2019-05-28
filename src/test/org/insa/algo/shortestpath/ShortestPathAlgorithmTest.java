@@ -43,8 +43,8 @@ public abstract class ShortestPathAlgorithmTest {
 	private static Graph squareMapGraph;
 	//private static String squareMapName ="D:\\T�l�chargements\\carre.mapgr";
 	
-	//private static String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
-	private static String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
+	private static String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
+	//private static String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
 	
 
 

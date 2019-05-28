@@ -275,7 +275,7 @@ public class Path {
      * Test Case is correct. 30-03-19
      */
     public boolean isValid() {
-        boolean test=false;
+        
         
     	if (this.isEmpty()) {
     		return true;
@@ -286,16 +286,15 @@ public class Path {
     	}else if (this.arcs.get(0).getOrigin()==this.getOrigin()){
     		
     		for (int i=1; i<arcs.size(); i++) {
-    			if (this.arcs.get(i).getOrigin()==this.arcs.get(i-1).getDestination()) {
-    				test=true;
-    			}else {
+    			if (!(this.arcs.get(i).getOrigin()==this.arcs.get(i-1).getDestination())) {
     				return false;
+    				
     			}
     		}
-
-    			return test;
+    		return true;
    
     	}else {
+    		System.out.println("End return");
     		return false;
     	}
     		

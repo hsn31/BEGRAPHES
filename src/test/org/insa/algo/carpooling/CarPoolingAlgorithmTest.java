@@ -32,13 +32,13 @@ public abstract class CarPoolingAlgorithmTest {
 
 	private static String maps = "/home/decaeste/Bureau/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/";
 	//private static String maps = "C:\\Users\\Brice\\Documents\\Cours 3A MIC\\Graphe\\Maps\\";
-	private String midi_pyrenees = maps + "midi-pyrenees.mapgr";
-	private String carre_dense = maps + "carre-dense.mapgr";
-	private String fractale = maps + "fractal-spiral.mapgr";
-	private String toulouse = maps + "toulouse.mapgr";
-	private String newZealand = maps + "new-zealand.mapgr";
-	private String california = maps + "california.mapgr";
-	private String belgium = maps + "belgium.mapgr";
+	private static String midi_pyrenees = maps + "midi-pyrenees.mapgr";
+	private static String carre_dense = maps + "carre-dense.mapgr";
+	private static String fractale = maps + "fractal-spiral.mapgr";
+	private static String toulouse = maps + "toulouse.mapgr";
+	private static String newZealand = maps + "new-zealand.mapgr";
+	private static String california = maps + "california.mapgr";
+	private static String belgium = maps + "belgium.mapgr";
 	private static String squareMapName = maps+"carre.mapgr";
 
 	//HG Map
