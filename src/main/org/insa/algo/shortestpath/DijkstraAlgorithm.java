@@ -27,12 +27,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	@Override
 	protected ShortestPathSolution doRun() {
 		ShortestPathData data = getInputData();
+		Graph graph = data.getGraph();
+
 		ShortestPathSolution solution;
 		AbstractSolution.Status status = AbstractSolution.Status.INFEASIBLE;
 		Path solutionPath;
 		ArrayList<Node> nodePath = new ArrayList<>();
 
-		Graph graph = data.getGraph();
 		if(data.getOrigin() == data.getDestination()){
 			status = AbstractSolution.Status.OPTIMAL;
 			nodePath.add(data.getOrigin());
@@ -41,16 +42,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 		}
 
-
 		HashMap<Node, Label> labels = new HashMap<>();
 		BinaryHeap<Label> binaryHeap = new BinaryHeap<>();
-
-		labels.put(data.getOrigin(),newLabel(data.getOrigin(),0));
+		Label startLabel = new Label(data.getOrigin(),0);
+		labels.put(data.getOrigin(),startLabel);
 		binaryHeap.insert(labels.get(data.getOrigin()));
 		notifyOriginProcessed(data.getOrigin());
 
 		boolean destinationReached = false;
-
 		while (binaryHeap.size() > 0 && !destinationReached) {
 			Label item = binaryHeap.findMin();
 			binaryHeap.deleteMin();
@@ -61,16 +60,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				destinationReached = true;
 			} else {
 				for (Arc arc : item.getNode().getSuccessors()) {
-
 					if (data.isAllowed(arc)) {
-
-
 						Label suiv = labels.get(arc.getDestination());
 						if(suiv==null){
 							suiv=newLabel(arc.getDestination(),Double.POSITIVE_INFINITY);
 							labels.put(arc.getDestination(),suiv);
 						}
-
 
 						if (suiv.getState() != Label.LabelState.MARKED) {
 							double d = evalDist(item, arc);
@@ -86,6 +81,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								binaryHeap.insert(suiv);
 							}
 						}
+
 					}
 				}
 			}

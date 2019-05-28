@@ -71,5 +71,8 @@ public class Label implements Comparable<Label> {
 		}
 	}
 
-
+	@Override
+	public String toString() {
+		return this.getNode().getId()+" "+this.getTotalCost();
+	}
 }
