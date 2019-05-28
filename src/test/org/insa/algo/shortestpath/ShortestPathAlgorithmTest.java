@@ -130,7 +130,7 @@ public abstract class ShortestPathAlgorithmTest {
 				wallGraphNodes[x][y] = new Node(id++, new Point(x, y));
 				toAdd.add(wallGraphNodes[x][y]);
 				String c = "-";
-				if (x > 0 && ((x != 1 &&x!=2 && x != wallWidth - 1&& x != wallWidth - 2) || (y==0 || y==wallHeight-1))){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+				if (x > 0 && ((x != 1 && x!=2 && x != wallWidth - 2) || y == 0 || y == wallHeight - 1)){//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
 					Node.linkNodes(wallGraphNodes[x][y], wallGraphNodes[x - 1][y], 10, speed10, null);
 					Node.linkNodes(wallGraphNodes[x - 1][y], wallGraphNodes[x][y], 10, speed10, null);
 				}
@@ -152,11 +152,11 @@ public abstract class ShortestPathAlgorithmTest {
 			for (int y = 0; y < wallHeight; y++) {
 				bottleNeckGraphNodes[x][y] = new Node(id++, new Point(x, y));
 				toAdd.add(bottleNeckGraphNodes[x][y]);
-				if (x > 0 && ((x != 1 && x!=2 && x != wallWidth - 2) || x == 0 || x == wallWidth - 1)) {//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
+				if (x > 0 && ((x != 1 && x!=2 && x != wallWidth - 2) || y == 0 || y == wallHeight - 1)) {//Link horizontally except on two columns. For this column, only link hozirontally the top and bottom nodes
 					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x - 1][y], 10, speed10, null);
 					Node.linkNodes(bottleNeckGraphNodes[x - 1][y], bottleNeckGraphNodes[x][y], 10, speed10, null);
 				}
-				if (y > 0 && x != wallWidth - 2 && x != 1 && x!=2 && (y != 1 || x == 0 || x == wallWidth - 1)) {
+				if (y > 0 && x != wallWidth - 2 && x != 1 && (y != 1 || x == 0 || x == wallWidth - 1)) {
 					Node.linkNodes(bottleNeckGraphNodes[x][y], bottleNeckGraphNodes[x][y - 1], 10, speed10, null);
 					Node.linkNodes(bottleNeckGraphNodes[x][y - 1], bottleNeckGraphNodes[x][y], 10, speed10, null);
 				}
