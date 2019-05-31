@@ -85,7 +85,7 @@ public class PerfMain {
 		evaluate(fractale,844529,889773,"Opposite");
 		evaluate(fractale,68836,818567,"Center");
 
-		evaluate(newZealand,230743,250006,"Unreachable");
+		evaluate(newZealand,230743,250006,"Reachable");
 		evaluate(newZealand,204261,250006,"Unreachable");
 
 
